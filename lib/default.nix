@@ -7,6 +7,7 @@ let
       callLibs = file: import file { inherit inputs lib self; };
     in
     {
+      network = callLibs ./network;
       path = callLibs ./path.nix;
     }
   );
