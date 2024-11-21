@@ -26,7 +26,13 @@
             (pkgs.callPackage inputs.pyproject-nix.build.packages {
               python = pkgs.python311;
             }).overrideScope
-              (lib.composeExtensions overlay pyprojectOverrides);
+              (
+                lib.composeManyExtensions [
+                  inputs.pyproject-build-systems.overlays.default
+                  overlay
+                  pyprojectOverrides
+                ]
+              );
         in
         {
           devshells.default = {
@@ -102,6 +108,12 @@
     uv2nix = {
       url = "github:pyproject-nix/uv2nix";
       inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
