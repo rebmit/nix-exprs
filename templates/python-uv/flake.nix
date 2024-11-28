@@ -1,15 +1,13 @@
 {
   outputs =
-    inputs@{ flake-parts, ... }:
+    inputs@{ flake-parts, rebmit, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
+      inherit (rebmit.lib) systems;
       imports = [
         inputs.devshell.flakeModule
         inputs.git-hooks-nix.flakeModule
         inputs.treefmt-nix.flakeModule
+        inputs.rebmit.flakeModule
       ];
       perSystem =
         {
@@ -73,34 +71,22 @@
   inputs = {
     # flake-parts
 
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
+    flake-parts.follows = "rebmit/flake-parts";
 
     # nixpkgs
 
-    nixpkgs.follows = "nixpkgs-unstable";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.follows = "rebmit/nixpkgs";
+    nixpkgs-unstable.follows = "rebmit/nixpkgs-unstable";
 
     # flake modules
 
-    devshell = {
-      url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    git-hooks-nix = {
-      url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
-    };
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    devshell.follows = "rebmit/devshell";
+    git-hooks-nix.follows = "rebmit/git-hooks-nix";
+    treefmt-nix.follows = "rebmit/treefmt-nix";
 
     # libraries
 
+    rebmit.url = "github:rebmit/nix-exprs";
     pyproject-nix = {
       url = "github:pyproject-nix/pyproject.nix";
       inputs.nixpkgs.follows = "nixpkgs";
