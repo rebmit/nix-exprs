@@ -37,6 +37,7 @@
             packages = [
               (pythonSet.mkVirtualEnv "python-uv-env" workspace.deps.all)
               pkgs.python311Packages.uv
+              pkgs.just
               config.treefmt.build.wrapper
             ];
             env = [

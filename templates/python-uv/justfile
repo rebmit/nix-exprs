@@ -1,0 +1,7 @@
+set shell := ["bash", "-c"]
+
+add *name:
+  uv add {{name}} --no-sync
+
+remove *name:
+  uv remove {{name}} --no-sync
