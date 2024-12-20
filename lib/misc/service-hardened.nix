@@ -32,6 +32,11 @@ lib.mapAttrs (_k: lib.mkOptionDefault) {
   RestrictSUIDSGID = true;
   SystemCallArchitectures = "native";
   SystemCallErrorNumber = "EPERM";
-  SystemCallFilter = [ "@system-service" ];
+  SystemCallFilter = [
+    ""
+    "@system-service"
+    "~@resources"
+    "~@privileged"
+  ];
   UMask = "0077";
 }
