@@ -33,4 +33,5 @@ lib.mapAttrs (_k: lib.mkOptionDefault) {
   SystemCallArchitectures = "native";
   SystemCallErrorNumber = "EPERM";
   SystemCallFilter = [ "@system-service" ];
+  UMask = "0077";
 }
