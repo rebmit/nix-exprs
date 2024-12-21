@@ -319,9 +319,7 @@ let
           octet' = then_ colon octet;
 
           fromOctets = a: b: c: d: e: f: {
-            mac = bit.or (bit.left 8 (
-              bit.or (bit.left 8 (bit.or (bit.left 8 (bit.or (bit.left 8 (bit.or (bit.left 8 a) b)) c)) d)) e
-            )) f;
+            mac = bit.or (bit.left 8 (bit.or (bit.left 8 (bit.or (bit.left 8 (bit.or (bit.left 8 (bit.or (bit.left 8 a) b)) c)) d)) e)) f;
           };
         in
         liftA6 fromOctets octet octet' octet' octet' octet' octet';
