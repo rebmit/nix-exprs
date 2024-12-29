@@ -35,7 +35,7 @@
     # nixpkgs
 
     nixpkgs.follows = "nixpkgs-unstable";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:rebmit/nixpkgs/nixos-unstable";
 
     # flake modules
 
