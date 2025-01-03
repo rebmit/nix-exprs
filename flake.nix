@@ -35,7 +35,7 @@
     # nixpkgs
 
     nixpkgs.follows = "nixpkgs-unstable";
-    nixpkgs-unstable.url = "github:rebmit/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "https://git.rebmit.moe/rebmit/nixpkgs/archive/nixos-unstable.tar.gz";
 
     # flake modules
 
@@ -46,7 +46,6 @@
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
       inputs.flake-compat.follows = "flake-compat";
       inputs.gitignore.follows = "gitignore-nix";
     };
