@@ -124,11 +124,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1735672756,
-        "narHash": "sha256-cq5kVHcJVramwGSn1k+mo1ALY6qbmq4BB2UXGrBsWN8=",
-        "rev": "718d476346fb298d548489af03b16bb232e1f433",
+        "lastModified": 1735969814,
+        "narHash": "sha256-aZXDu+GuOzAe0apRTMTsMNofk19ea+eJuYmD+XiMXDE=",
+        "rev": "3bc26b44002b0da9544ff1955217832b5d4a6b97",
         "type": "tarball",
-        "url": "https://git.rebmit.moe/api/v1/repos/rebmit/nixpkgs/archive/718d476346fb298d548489af03b16bb232e1f433.tar.gz"
+        "url": "https://git.rebmit.moe/api/v1/repos/rebmit/nixpkgs/archive/3bc26b44002b0da9544ff1955217832b5d4a6b97.tar.gz"
       },
       "original": {
         "type": "tarball",
