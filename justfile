@@ -6,4 +6,4 @@ up:
 
 [group('nix')]
 upp input:
-  nix flake lock --update-input {{input}}
+  nix flake update {{input}}
