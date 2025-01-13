@@ -43,11 +43,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1735774679,
-        "narHash": "sha256-soePLBazJk0qQdDVhdbM98vYdssfs3WFedcq+raipRI=",
+        "lastModified": 1736143030,
+        "narHash": "sha256-+hu54pAoLDEZT9pjHlqL9DNzWz0NbUn8NEAHP7PQPzU=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "f2f7418ce0ab4a5309a4596161d154cfc877af66",
+        "rev": "b905f6fc23a9051a6e1b741e1438dbfc0634c6de",
         "type": "github"
       },
       "original": {
@@ -124,15 +124,18 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1736141843,
-        "narHash": "sha256-M0Li3InbGabZqevfDlvIebTI14bfMXsgbVXGh9vZk98=",
-        "rev": "5ab8dde6c55fcbd59ff303ac53ef9659693b5f3a",
-        "type": "tarball",
-        "url": "https://git.rebmit.moe/api/v1/repos/rebmit/nixpkgs/archive/5ab8dde6c55fcbd59ff303ac53ef9659693b5f3a.tar.gz"
+        "lastModified": 1736767083,
+        "narHash": "sha256-OZHDb8i/n8CSLpakfODz0t46heIcGq6C367Yggg2lwc=",
+        "owner": "rebmit",
+        "repo": "nixpkgs",
+        "rev": "5a8b017272b9ca8f7df4fcb9a024dfa644d2b395",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://git.rebmit.moe/rebmit/nixpkgs/archive/nixos-unstable.tar.gz"
+        "owner": "rebmit",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
@@ -157,11 +160,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1735905407,
-        "narHash": "sha256-1hKMRIT+QZNWX46e4gIovoQ7H8QRb7803ZH4qSKI45o=",
+        "lastModified": 1736154270,
+        "narHash": "sha256-p2r8xhQZ3TYIEKBoiEhllKWQqWNJNoT9v64Vmg4q8Zw=",
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "rev": "29806abab803e498df96d82dd6f34b32eb8dd2c8",
+        "rev": "13c913f5deb3a5c08bb810efd89dc8cb24dd968b",
         "type": "github"
       },
       "original": {
