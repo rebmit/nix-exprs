@@ -2,7 +2,6 @@
   lib,
   rustPlatform,
   fetchFromGitHub,
-  ...
 }:
 
 rustPlatform.buildRustPackage rec {
