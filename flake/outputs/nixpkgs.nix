@@ -9,9 +9,6 @@ in
     { ... }:
     {
       nixpkgs = {
-        config = {
-          allowUnfree = true;
-        };
         inherit overlays;
       };
     };
