@@ -11,15 +11,15 @@
 
 stdenv.mkDerivation {
   pname = "bird";
-  version = "3.1.0-unstable-2025-04-29";
+  version = "3.1.1-unstable-2025-05-19";
 
   src = fetchFromGitea {
     domain = "git.rebmit.moe";
     owner = "rebmit";
     repo = "bird";
-    rev = "75f1a9e63ff1d8ae282db59e721d77928e745373";
+    rev = "b868af051ff4ef1c35bd1499c97e1ec1ddc797c8";
     fetchSubmodules = false;
-    sha256 = "sha256-MIA/6xf4+iLfFvXrMJdiop/oVs/JrJcnBmxa3N+bLMQ=";
+    sha256 = "sha256-z7JmuqFS663+Gh+Z9DTu+rR5FWr4i/+UgUbY3mwbTDg=";
   };
 
   nativeBuildInputs = [
