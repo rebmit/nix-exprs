@@ -41,7 +41,7 @@
     # flake modules
 
     devshell = {
-      url = "github:numtide/devshell/main";
+      url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     git-hooks-nix = {
