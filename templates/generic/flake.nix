@@ -12,41 +12,16 @@
       perSystem =
         {
           config,
-          pkgs,
           lib,
           ...
         }:
-        let
-          workspace = inputs.uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
-          overlay = workspace.mkPyprojectOverlay { sourcePreference = "wheel"; };
-          pyprojectOverrides = _final: _prev: { };
-          pythonSet =
-            (pkgs.callPackage inputs.pyproject-nix.build.packages {
-              python = pkgs.python312;
-            }).overrideScope
-              (
-                lib.composeManyExtensions [
-                  inputs.pyproject-build-systems.overlays.default
-                  overlay
-                  pyprojectOverrides
-                ]
-              );
-        in
         {
           devshells.default = {
             packages = [
-              (pythonSet.mkVirtualEnv "python-uv-env" workspace.deps.all)
-              pkgs.python312Packages.uv
-              pkgs.just
               config.treefmt.build.wrapper
             ];
             env = [
               (lib.nameValuePair "DEVSHELL_NO_MOTD" 1)
-              (lib.nameValuePair "UV_PYTHON" "${lib.getExe pkgs.python312}")
-              {
-                name = "PYTHONPATH";
-                unset = true;
-              }
             ];
             devshell.startup.pre-commit-hook.text = config.pre-commit.installationScript;
           };
@@ -56,8 +31,6 @@
             programs = {
               nixfmt.enable = true;
               deadnix.enable = true;
-              ruff-check.enable = true;
-              ruff-format.enable = true;
             };
           };
 
@@ -89,21 +62,6 @@
 
     rebmit = {
       url = "https://git.rebmit.moe/rebmit/nix-exprs/archive/master.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    pyproject-nix = {
-      url = "github:pyproject-nix/pyproject.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    uv2nix = {
-      url = "github:pyproject-nix/uv2nix";
-      inputs.pyproject-nix.follows = "pyproject-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    pyproject-build-systems = {
-      url = "github:pyproject-nix/build-system-pkgs";
-      inputs.pyproject-nix.follows = "pyproject-nix";
-      inputs.uv2nix.follows = "uv2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
