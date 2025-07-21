@@ -21,7 +21,8 @@
           inputs.devshell.flakeModule
           inputs.git-hooks-nix.flakeModule
           inputs.treefmt-nix.flakeModule
-        ] ++ selfLib.path.buildModuleList ./flake;
+        ]
+        ++ selfLib.path.buildModuleList ./flake;
       }
     );
 
