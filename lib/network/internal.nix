@@ -1,5 +1,6 @@
 # Portions of this file are sourced from
 # https://gist.github.com/duairc/5c9bb3c922e5d501a1edb9e7b3b845ba
+# https://gist.github.com/PatrickDaG/c075f5ef8a7cba59b0999d8a0dd7a7ce
 { ... }:
 let
   list = {
@@ -7,20 +8,45 @@ let
   };
 
   bit = rec {
-    shift =
+    lut = builtins.foldl' (l: n: l ++ [ (2 * builtins.elemAt l n) ]) [ 1 ] (builtins.genList (x: x) 62);
+
+    intmin = (-9223372036854775807) - 1;
+    intmax = 9223372036854775807;
+
+    left =
       n: x:
-      if n < 0 then
-        x * math.pow 2 (-n)
+      if n >= 64 then
+        0
+      else if n == 0 then
+        x
+      else if n < 0 then
+        right (-n) x
+      else
+        let
+          inv = 63 - n;
+          mask = if inv == 63 then intmax else (builtins.elemAt lut inv) - 1;
+          masked = builtins.bitAnd x mask;
+          checker = if inv == 63 then intmin else builtins.elemAt lut inv;
+          negate = (builtins.bitAnd x checker) != 0;
+          mult = if n == 63 then intmin else builtins.elemAt lut n;
+          result = masked * mult;
+        in
+        if !negate then result else intmin + result;
+
+    right =
+      n: x:
+      if n >= 64 then
+        if x < 0 then -1 else 0
+      else if n == 0 then
+        x
+      else if n < 0 then
+        left (-n) x
       else
         let
           safeDiv = n: d: if d == 0 then 0 else n / d;
-          d = math.pow 2 n;
+          d = builtins.elemAt lut (n - 1);
         in
-        if x < 0 then not (safeDiv (not x) d) else safeDiv x d;
-
-    left = n: shift (-n);
-
-    right = shift;
+        if x < 0 then not (safeDiv (safeDiv (not x) 2) d) else (safeDiv (safeDiv x 2) d);
 
     and = builtins.bitAnd;
 
