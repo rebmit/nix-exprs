@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchFromGitea,
+  fetchFromGitHub,
   autoreconfHook,
   flex,
   bison,
@@ -11,13 +11,12 @@
 
 stdenv.mkDerivation {
   pname = "bird";
-  version = "2.17.1-unstable-2025-05-19";
+  version = "2.17.1-unstable-2025-09-01";
 
-  src = fetchFromGitea {
-    domain = "git.rebmit.moe";
+  src = fetchFromGitHub {
     owner = "rebmit";
     repo = "bird";
-    rev = "cd5972bdb3ee5e75a833c552445578c98bafd416";
+    rev = "a9c6ded5cdeef7c933af71aae2d95ea636679a95";
     fetchSubmodules = false;
     sha256 = "sha256-ThVqSUVJnson4W0ZpTOdBsTc/KNl1Q1a7BPb3cWdFYc=";
   };
@@ -42,10 +41,10 @@ stdenv.mkDerivation {
     "--runstatedir=/run/bird"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "BIRD Internet Routing Daemon";
     homepage = "http://bird.network.cz";
-    license = licenses.gpl2Plus;
-    platforms = platforms.linux;
+    license = lib.licenses.gpl2Plus;
+    platforms = lib.platforms.linux;
   };
 }

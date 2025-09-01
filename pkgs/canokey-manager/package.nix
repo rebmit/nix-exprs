@@ -8,7 +8,7 @@
 }:
 
 python3Packages.buildPythonPackage {
-  pname = "yubikey-manager";
+  pname = "canokey-manager";
   version = "5.4.0-unstable-2025-03-26";
   pyproject = true;
 
@@ -21,7 +21,7 @@ python3Packages.buildPythonPackage {
 
   postPatch = ''
     substituteInPlace "ykman/pcsc/__init__.py" \
-      --replace 'pkill' '${if stdenv.hostPlatform.isLinux then procps else "/usr"}/bin/pkill'
+      --replace-fail 'pkill' '${if stdenv.hostPlatform.isLinux then procps else "/usr"}/bin/pkill'
   '';
 
   nativeBuildInputs = with python3Packages; [
@@ -31,13 +31,25 @@ python3Packages.buildPythonPackage {
 
   propagatedBuildInputs = with python3Packages; [
     cryptography
-    pyscard
+    (pyscard.overrideAttrs (
+      final: _prev: {
+        version = "2.2.1";
+        src = fetchFromGitHub {
+          owner = "LudovicRousseau";
+          repo = "pyscard";
+          tag = final.version;
+          hash = "sha256-RXCz6Npb/MrykHxtUsYlghCPeTwjDC6s9258iLA7OKs=";
+        };
+      }
+    ))
     fido2
     click
     keyring
   ];
 
   pythonRelaxDeps = [
+    "cryptography"
+    "fido2"
     "keyring"
   ];
 
@@ -46,11 +58,11 @@ python3Packages.buildPythonPackage {
     makefun
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Command line tool for configuring any YubiKey over all USB transports";
     homepage = "https://github.com/canokeys/yubikey-manager";
-    license = licenses.bsd2;
-    platforms = platforms.unix;
+    license = lib.licenses.bsd2;
+    platforms = lib.platforms.unix;
     mainProgram = "ckman";
   };
 }
