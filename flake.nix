@@ -47,8 +47,8 @@
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
       inputs.gitignore.follows = "gitignore-nix";
+      inputs.flake-compat.follows = "";
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -64,13 +64,6 @@
     haumea = {
       url = "github:nix-community/haumea";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # misc
-
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
     };
   };
 }

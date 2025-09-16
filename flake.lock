@@ -20,22 +20,6 @@
         "type": "github"
       }
     },
-    "flake-compat": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1747046372,
-        "narHash": "sha256-CIVLLkVgvHYbgI2UpXvIIBJ12HWgX+fjA8Xf8PUmqCY=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "9100a0f413b0c601e0533d1d94ffd501ce2e7885",
-        "type": "github"
-      },
-      "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -58,9 +42,7 @@
     },
     "git-hooks-nix": {
       "inputs": {
-        "flake-compat": [
-          "flake-compat"
-        ],
+        "flake-compat": [],
         "gitignore": [
           "gitignore-nix"
         ],
@@ -69,11 +51,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1755960406,
-        "narHash": "sha256-RF7j6C1TmSTK9tYWO6CdEMtg6XZaUKcvZwOCD2SICZs=",
+        "lastModified": 1757974173,
+        "narHash": "sha256-4DpXmct/2rcLgScT1CXOLr0TUeIlrBB1rnFqCOf5MUw=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "e891a93b193fcaf2fc8012d890dc7f0befe86ec2",
+        "rev": "302af509428169db34f268324162712d10559f74",
         "type": "github"
       },
       "original": {
@@ -124,11 +106,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1756922006,
-        "narHash": "sha256-1tmxuCsDAIURTjUyFsPpDTPajxdJ3S5b0qr1vYW/C2Y=",
+        "lastModified": 1758023937,
+        "narHash": "sha256-gg0dt3rHkJMyaDHxU3m7a7mFGPDi4N9wdT/ecg73qYA=",
         "owner": "rebmit",
         "repo": "nixpkgs",
-        "rev": "b030ce03263bbf687b637770d1f9d0c9952277b3",
+        "rev": "fc02d406148f96515d8d733d82ce5e74c20e38b2",
         "type": "github"
       },
       "original": {
@@ -141,7 +123,6 @@
     "root": {
       "inputs": {
         "devshell": "devshell",
-        "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
         "git-hooks-nix": "git-hooks-nix",
         "gitignore-nix": "gitignore-nix",
