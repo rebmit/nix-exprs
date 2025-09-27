@@ -4,15 +4,15 @@
   fetchFromGitHub,
 }:
 
-rustPlatform.buildRustPackage (finalAttrs: {
+rustPlatform.buildRustPackage {
   pname = "ranet";
-  version = "0.12.0";
+  version = "0.12.0-unstable-2025-09-22";
 
   src = fetchFromGitHub {
-    owner = "NickCao";
+    owner = "rebmit";
     repo = "ranet";
-    rev = "v${finalAttrs.version}";
-    sha256 = "sha256-xHdIuT/j35amoTjc4/s0uFFVLiM7BmLIEaZLGSa3QGU";
+    rev = "32ba9d976d807a954d1981a4f9f6aedec09081dc";
+    sha256 = "sha256-1p42aLmA9rzJBz8TQ59ectLHJbiiYBgYUHb+ljEYKQM=";
   };
 
   cargoHash = "sha256-Qd7Hy/Mq2XihTB7RHQYjRKjaM5eigLxL+MpVyUmBozk=";
@@ -27,4 +27,4 @@ rustPlatform.buildRustPackage (finalAttrs: {
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };
-})
+}
