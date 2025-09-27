@@ -4,16 +4,16 @@
   fetchFromGitHub,
 }:
 
-stdenvNoCC.mkDerivation (finalAttrs: {
+stdenvNoCC.mkDerivation {
   pname = "firefox-gnome-theme";
-  version = "142";
+  version = "142-unstable-2025-09-17";
 
   src = fetchFromGitHub {
     owner = "rafaelmardojai";
     repo = "firefox-gnome-theme";
-    rev = "v${finalAttrs.version}";
+    rev = "0909cfe4a2af8d358ad13b20246a350e14c2473d";
     fetchSubmodules = false;
-    sha256 = "sha256-kyxuK5Fras7QYiJmUomqdq8NlgWV66hmNvxcJnGCpUE=";
+    sha256 = "sha256-lizRM2pj6PHrR25yimjyFn04OS4wcdbc38DCdBVa2rk=";
   };
 
   installPhase = ''
@@ -27,4 +27,4 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     license = lib.licenses.unlicense;
     platforms = lib.platforms.all;
   };
-})
+}
