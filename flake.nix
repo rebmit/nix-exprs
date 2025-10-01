@@ -1,31 +1,6 @@
 {
   description = "a collection of common nix expressions used by rebmit";
 
-  outputs =
-    inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      { config, lib, ... }:
-      let
-        selfLib = import ./lib { inherit inputs lib; };
-      in
-      {
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-          "aarch64-darwin"
-        ];
-        flake.lib = selfLib // {
-          inherit (config) systems;
-        };
-        imports = [
-          inputs.devshell.flakeModule
-          inputs.git-hooks-nix.flakeModule
-          inputs.treefmt-nix.flakeModule
-        ]
-        ++ selfLib.path.buildModuleList ./flake;
-      }
-    );
-
   inputs = {
     # flake-parts
 
@@ -61,9 +36,16 @@
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    haumea = {
-      url = "github:nix-community/haumea";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
+
+  outputs =
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { lib, ... }:
+      {
+        imports = lib.fileset.toList (
+          lib.fileset.fileFilter (file: file.hasExt "nix" && !lib.hasPrefix "_" file.name) ./modules
+        );
+      }
+    );
 }

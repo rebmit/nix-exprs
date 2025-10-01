@@ -84,33 +84,13 @@
         "type": "github"
       }
     },
-    "haumea": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1708375098,
-        "narHash": "sha256-DaFJp3wDHgOqx98U0SF57bXaH2Orp106c+jSdPCVu1E=",
-        "owner": "nix-community",
-        "repo": "haumea",
-        "rev": "ec6350fd9353e7f27ce0e85d31f82e3ed73e4d70",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "haumea",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1758987506,
-        "narHash": "sha256-/qS1ukae7D628oozMbTdC3SQw9qTmrA+NIVhD5uJWVo=",
+        "lastModified": 1759170307,
+        "narHash": "sha256-P7o0W7ArB3PY8ohSYUd1henlfBM75U7m9uN6mD83A/A=",
         "owner": "rebmit",
         "repo": "nixpkgs",
-        "rev": "ea934b0ba5545c4395c380ac1389c0c6c6145acd",
+        "rev": "a66c113965ae088f39654aec40d3ac591fc6581e",
         "type": "github"
       },
       "original": {
@@ -126,7 +106,6 @@
         "flake-parts": "flake-parts",
         "git-hooks-nix": "git-hooks-nix",
         "gitignore-nix": "gitignore-nix",
-        "haumea": "haumea",
         "nixpkgs": "nixpkgs",
         "treefmt-nix": "treefmt-nix"
       }

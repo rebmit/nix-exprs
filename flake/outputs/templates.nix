@@ -1,4 +1,0 @@
-{ ... }:
-{
-  flake.templates = import ../../templates;
-}
