@@ -1,5 +1,5 @@
 # Portions of this file are sourced from
-# https://github.com/linyinfeng/dotfiles/tree/b618b0fd16fb9c79ab7199ed51c4c0f98a392cea/lib
+# https://github.com/linyinfeng/dotfiles/blob/b618b0fd16fb9c79ab7199ed51c4c0f98a392cea/lib/flatten-tree.nix (MIT License)
 { lib, ... }:
 let
   inherit (lib.attrsets)
