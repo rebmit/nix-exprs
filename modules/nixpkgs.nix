@@ -2,6 +2,7 @@
 # https://github.com/linyinfeng/nur-packages/blob/73fea6901c19df2f480e734a75bc22dbabde3a53/flake-modules/nixpkgs.nix (MIT License)
 {
   inputs,
+  self,
   lib,
   flake-parts-lib,
   ...
@@ -48,21 +49,21 @@ let
             '';
           };
           config = mkOption {
-            type = types.attrsOf types.anything;
+            type = types.attrsOf types.raw;
             default = { };
             description = ''
               Configuration attribute set passed to nixpkgs.
             '';
           };
           overlays = mkOption {
-            type = types.listOf types.anything;
+            type = types.listOf types.raw;
             default = [ ];
             description = ''
               List of overlays layers used to extend Nixpkgs.
             '';
           };
           crossOverlays = mkOption {
-            type = types.listOf types.anything;
+            type = types.listOf types.raw;
             default = [ ];
             description = ''
               List of overlays to apply to target packages only.
@@ -89,4 +90,10 @@ in
   imports = [ nixpkgsModule ];
 
   flake.modules.flake.nixpkgs = nixpkgsModule;
+
+  perSystem = {
+    nixpkgs = {
+      overlays = [ self.overlays.default ];
+    };
+  };
 }
