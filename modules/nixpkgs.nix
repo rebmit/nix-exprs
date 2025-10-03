@@ -1,5 +1,6 @@
 # Portions of this file are sourced from
 # https://github.com/linyinfeng/nur-packages/blob/73fea6901c19df2f480e734a75bc22dbabde3a53/flake-modules/nixpkgs.nix (MIT License)
+# https://github.com/drupol/infra/blob/554c9279106bfbf6cc51646dccb5e5cae4f1affb/modules/flake-parts/unfree-packages.nix (MIT License)
 {
   inputs,
   self,
@@ -9,6 +10,7 @@
 }:
 let
   inherit (lib) types;
+  inherit (lib.lists) foldl any;
   inherit (lib.options) mkOption;
   inherit (flake-parts-lib) mkPerSystemOption;
 
@@ -85,11 +87,69 @@ let
       }
     );
   };
+
+  nixpkgsAllowedPredicatesModule = _: {
+    options.perSystem = mkPerSystemOption (
+      { config, ... }:
+      let
+        mkPredicatesOption =
+          description:
+          mkOption {
+            type = (types.functionTo types.bool) // {
+              merge =
+                _loc: defs:
+                let
+                  funcs = map (d: d.value) defs;
+                in
+                foldl (acc: f: acc ++ [ f ]) [ ] funcs;
+            };
+            default = _p: false;
+            inherit description;
+          };
+
+        cfg = config.nixpkgs.allowedPredicates;
+      in
+      {
+        options.nixpkgs.allowedPredicates = {
+          unfree = mkPredicatesOption ''
+            List of predicates deciding which packages are allowed even if unfree.
+            Only effective when `allowUnfree = false`.
+          '';
+          nonSource = mkPredicatesOption ''
+            List of predicates deciding which packages are allowed even if they are not built from source.
+            Only effective when `allowNonSource = false`.
+          '';
+          broken = mkPredicatesOption ''
+            List of predicates deciding which packages are allowed even if marked as broken.
+            Only effective when `allowBroken = false`.
+          '';
+          insecure = mkPredicatesOption ''
+            List of predicates deciding which packages are allowed even if marked as insecure.
+          '';
+        };
+
+        config = {
+          nixpkgs.config = {
+            allowUnfreePredicate = p: any (f: f p) cfg.unfree;
+            allowNonSourcePredicate = p: any (f: f p) cfg.nonSource;
+            allowBrokenPredicate = p: any (f: f p) cfg.broken;
+            allowInsecurePredicate = p: any (f: f p) cfg.insecure;
+          };
+        };
+      }
+    );
+  };
 in
 {
-  imports = [ nixpkgsModule ];
+  imports = [
+    nixpkgsModule
+    nixpkgsAllowedPredicatesModule
+  ];
 
-  flake.modules.flake.nixpkgs = nixpkgsModule;
+  flake.modules.flake = {
+    nixpkgs = nixpkgsModule;
+    nixpkgsAllowedPredicates = nixpkgsAllowedPredicatesModule;
+  };
 
   perSystem = {
     nixpkgs = {
