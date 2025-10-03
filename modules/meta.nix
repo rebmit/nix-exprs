@@ -2,16 +2,20 @@
 let
   inherit (lib) types;
   inherit (lib.options) mkOption;
+
+  metaModule = _: {
+    options.flake.meta = mkOption {
+      type = types.lazyAttrsOf types.anything;
+      description = ''
+        A set of freeform attributes for flake internal usage.
+      '';
+    };
+  };
 in
 {
-  options.flake.meta = mkOption {
-    type = types.lazyAttrsOf types.anything;
-    description = ''
-      A set of freeform attributes for flake internal usage.
-    '';
-  };
+  imports = [ metaModule ];
 
-  config = {
-    flake.meta.uri = "github:rebmit/nix-exprs";
-  };
+  flake.modules.flake.meta = metaModule;
+
+  flake.meta.uri = "github:rebmit/nix-exprs";
 }
