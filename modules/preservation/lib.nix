@@ -2,13 +2,14 @@
 # https://github.com/nix-community/preservation/blob/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11/lib.nix (MIT License)
 # https://github.com/linyinfeng/dotfiles/blob/e87f7de2a4c11379e874c8d372e985b1836c042a/nixos/modules/environment/global-persistence/default.nix (MIT License)
 # https://github.com/NixOS/nixpkgs/blob/0a53886700520c494906ab04a4f9b39d61bfdfb9/nixos/modules/system/boot/systemd/tmpfiles.nix (MIT License)
-{ lib, ... }:
+{
+  lib,
+  selfLib,
+  ...
+}:
 let
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists)
-    foldl'
-    length
-    sublist
     concatLists
     filter
     optional
@@ -18,21 +19,25 @@ let
     sort
     singleton
     ;
-  inherit (lib.modules) evalModules mkDefault mkMerge;
+  inherit (lib.modules)
+    evalModules
+    mkDefault
+    mkMerge
+    ;
   inherit (lib.options) mkOption;
   inherit (lib.strings)
     escapeC
     concatStringsSep
     concatStrings
-    hasSuffix
     hasPrefix
-    removePrefix
-    removeSuffix
-    substring
-    splitString
     optionalString
     ;
   inherit (lib.trivial) lessThan;
+  inherit (selfLib.path)
+    concatTwoPaths
+    concatPaths
+    parentDirectory
+    ;
 
   escapeArgument = escapeC [
     "\t"
@@ -57,26 +62,6 @@ let
         option: if option.value == null then option.name else "${option.name}=${option.value}"
       ) mountOptions
     );
-
-  concatTwoPaths =
-    parent: child:
-    if hasSuffix "/" parent then
-      if hasPrefix "/" child then parent + (removePrefix "/" child) else parent + child
-    else if hasPrefix "/" child then
-      parent + child
-    else
-      parent + "/" + child;
-
-  concatPaths = foldl' concatTwoPaths "";
-
-  parentDirectory =
-    path:
-    assert "/" == (substring 0 1 path);
-    let
-      parts = splitString "/" (removeSuffix "/" path);
-      len = length parts;
-    in
-    if len < 1 then "/" else concatPaths ([ "/" ] ++ (sublist 0 (len - 1) parts));
 
   parentNormalize = prefix: paths: sort lessThan (filter (hasPrefix prefix) (unique paths));
   parentDirectories = prefix: paths: parentNormalize prefix (map parentDirectory paths);
