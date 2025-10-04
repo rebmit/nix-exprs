@@ -9,11 +9,6 @@ let
   inherit (lib.lists) filter;
   inherit (lib.meta) getExe;
   inherit (lib.strings) toJSON;
-
-  inherit (config.passthru.preservation)
-    getAllDirectories
-    getAllFiles
-    ;
 in
 {
   perSystem =
@@ -142,6 +137,8 @@ in
         testScript =
           { nodes, ... }:
           let
+            inherit (nodes.machine.passthru.preservation) getAllDirectories getAllFiles;
+
             rebmitHome = nodes.machine.users.users.rebmit.home;
 
             allFiles = getAllFiles nodes.machine.preservation;

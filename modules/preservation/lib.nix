@@ -81,15 +81,6 @@ let
   onlyForInitrd = forInitrd: filter (conf: conf.inInitrd == forInitrd);
 in
 {
-  passthru.preservation = {
-    inherit
-      getAllDirectories
-      getAllFiles
-      getUserDirectories
-      getUserFiles
-      ;
-  };
-
   flake.modules.nixos.preservation =
     { options, ... }:
     let
@@ -378,6 +369,10 @@ in
     {
       passthru.preservation = {
         inherit
+          getAllDirectories
+          getAllFiles
+          getUserDirectories
+          getUserFiles
           mkRuleFileContent
           mkRegularMountUnits
           mkInitrdMountUnits
