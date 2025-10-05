@@ -206,6 +206,7 @@ in
               confExcludePaths = [
                 # keep-sorted start
                 "gai.conf"
+                "hosts"
                 "iproute2"
                 "nscd.conf"
                 "nsswitch.conf"

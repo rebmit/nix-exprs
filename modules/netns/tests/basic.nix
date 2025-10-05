@@ -35,6 +35,9 @@ in
                   "net.ipv6.conf.all.forwarding" = 1;
                   "net.ipv6.conf.default.forwarding" = 1;
                 };
+                hosts = {
+                  "1.1.1.1" = [ "one.one.one.one" ];
+                };
               };
             };
 
@@ -73,12 +76,12 @@ in
               machine.fail("test -e ${path}/netns-run-entropy")
 
               print(machine.succeed("cat ${path}/netns-run-init"))
-              actual = machine.succeed("netns-run-init ${path}/stat -Lc '%i' /proc/self/ns/net")
+              actual   = machine.succeed("netns-run-init ${path}/stat -Lc '%i' /proc/self/ns/net")
               expected = machine.succeed("stat -Lc '%i' /proc/1/ns/net")
               t.assertEqual(actual, expected, "Network namespace switch did not occur as expected")
 
               print(machine.succeed("cat ${path}/netns-run-enthalpy"))
-              actual = machine.succeed("netns-run-enthalpy ${path}/stat -Lc '%i' /proc/self/ns/net")
+              actual   = machine.succeed("netns-run-enthalpy ${path}/stat -Lc '%i' /proc/self/ns/net")
               expected = machine.succeed("stat -Lc '%i' /run/netns/enthalpy")
               t.assertEqual(actual, expected, "Network namespace switch did not occur as expected")
 
@@ -103,13 +106,28 @@ in
 
             # sysctl
             with subtest("Network namespace specific kernel runtime parameters are set"):
-              actual = machine.succeed("sysctl net.ipv6.conf.all.forwarding")
+              actual   = machine.succeed("sysctl net.ipv6.conf.all.forwarding")
               expected = "0"
               t.assertIn(expected, actual, "sysctl config mismatch")
 
-              actual = machine.succeed("netns-run-enthalpy ${path}/sysctl net.ipv6.conf.all.forwarding")
+              actual   = machine.succeed("netns-run-enthalpy ${path}/sysctl net.ipv6.conf.all.forwarding")
               expected = "1"
               t.assertIn(expected, actual, "sysctl config mismatch")
+
+            # hosts
+            with subtest("Hosts are in place"):
+              actual   = machine.succeed("cat /etc/hosts")
+              expected = "one.one.one.one"
+              t.assertNotIn(expected, actual, "hosts mismatch")
+
+              actual   = machine.succeed("netns-run-enthalpy ${path}/cat /etc/hosts")
+              expected = "one.one.one.one"
+              t.assertIn(expected, actual, "hosts mismatch")
+              print(actual)
+
+              actual   = machine.succeed("netns-run-enthalpy ${path}/getent hosts one.one.one.one")
+              expected = "1.1.1.1"
+              t.assertIn(expected, actual, "hosts mismatch")
 
             # services/nscd.nix
             with subtest("Network namespaces have isolated nscd socket"):
