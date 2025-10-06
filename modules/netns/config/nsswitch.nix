@@ -21,15 +21,17 @@ in
         {
           _file = ./nsswitch.nix;
 
-          options.nssDatabases = {
-            hosts = mkOption {
-              type = types.listOf types.str;
-              default = [ ];
-              description = ''
-                List of hosts entries to configure in {file}`/etc/nsswitch.conf`.
-                Note that "files" is always prepended, and "dns" and "myhostname" are always appended.
-                This option only takes effect if nscd is enabled.
-              '';
+          options = {
+            nssDatabases = {
+              hosts = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+                description = ''
+                  List of hosts entries to configure in {file}`/etc/nsswitch.conf`.
+                  Note that "files" is always prepended, and "dns" and "myhostname" are always appended.
+                  This option only takes effect if nscd is enabled.
+                '';
+              };
             };
           };
 

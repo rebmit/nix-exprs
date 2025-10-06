@@ -83,7 +83,6 @@ in
               {
                 Type = "oneshot";
                 RemainAfterExit = true;
-                NetworkNamespacePath = cfg.netnsPath;
                 ExecStart = "${config.systemd.package}/lib/systemd/systemd-sysctl";
               }
             ];
