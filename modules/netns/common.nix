@@ -7,6 +7,7 @@ let
     nameValuePair
     mapAttrsToList
     ;
+  inherit (lib.lists) optionals;
   inherit (lib.modules) mkIf;
   inherit (lib.options) mkOption mkEnableOption;
 in
@@ -18,11 +19,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns)
-        mkNetnsOption
-        attrsToProperties
-        evalSystemdService
-        ;
+      inherit (config.passthru.netns.lib) mkNetnsOption mkNetnsRunWrapper;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;
     in
@@ -45,13 +42,24 @@ in
                   Path to the network namespace, see {manpage}`ip-netns(8)`.
                 '';
               };
-              config = mkOption {
+              serviceConfig = mkOption {
                 type = types.submodule {
                   freeformType = (pkgs.formats.json { }).type;
                 };
                 default = { };
                 description = ''
-                  Systemd service configuration for entering the network namespace.
+                  Systemd service configuration applied to services running inside
+                  this network namespace.
+                '';
+              };
+              unitConfig = mkOption {
+                type = types.submodule {
+                  freeformType = (pkgs.formats.json { }).type;
+                };
+                default = { };
+                description = ''
+                  Systemd unit configuration applied to services running inside
+                  this network namespace.
                 '';
               };
               build = mkOption {
@@ -66,17 +74,18 @@ in
             };
 
             config = mkIf config.enable {
-              config = {
-                serviceConfig = {
-                  NetworkNamespacePath = config.netnsPath;
-                };
-                after = [ "netns-${name}.service" ];
-                partOf = [ "netns-${name}.service" ];
-                wants = [ "netns-${name}.service" ];
-                wantedBy = [
-                  "netns-${name}.service"
-                  "multi-user.target"
-                ];
+              serviceConfig = {
+                NetworkNamespacePath = config.netnsPath;
+              };
+
+              unitConfig = {
+                After = [ "netns-${name}.service" ];
+                PartOf = [ "netns-${name}.service" ];
+                Requires = [ "netns-${name}.service" ];
+              };
+
+              build = {
+                netnsRunWrapper = mkNetnsRunWrapper name config;
               };
             };
           }
@@ -95,6 +104,7 @@ in
             path = with pkgs; [ iproute2 ];
             script = ''
               ip netns add ${name}
+              ip -n ${name} link set lo up
             '';
             preStop = ''
               ip netns del ${name}
@@ -113,35 +123,8 @@ in
         ) enabledNetns;
 
         environment.systemPackages =
-          mapAttrsToList
-            (
-              name: cfg:
-              let
-                inherit (evalSystemdService cfg.config) unitConfig serviceConfig;
-              in
-              pkgs.writeShellApplication {
-                name = "netns-run-${name}";
-                text = ''
-                  systemd-run --pipe --pty \
-                    ${attrsToProperties unitConfig} \
-                    ${attrsToProperties serviceConfig} \
-                    --property="User=$USER" \
-                    --same-dir \
-                    --wait "$@"
-                '';
-              }
-            )
-            (
-              if (enabledNetns != { }) then
-                (
-                  enabledNetns
-                  // {
-                    init.config = { };
-                  }
-                )
-              else
-                { }
-            );
+          mapAttrsToList (_name: cfg: cfg.build.netnsRunWrapper) enabledNetns
+          ++ (optionals (enabledNetns != { }) [ (mkNetnsRunWrapper "init" { }) ]);
       };
     };
 }

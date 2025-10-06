@@ -13,7 +13,7 @@ in
   flake.modules.nixos.netns =
     { config, ... }:
     let
-      inherit (config.passthru.netns) mkNetnsOption;
+      inherit (config.passthru.netns.lib) mkNetnsOption;
 
       inherit (config.networking) hostName domain;
     in

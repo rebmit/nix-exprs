@@ -7,19 +7,60 @@ let
   inherit (lib) types;
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) concatLists isList;
-  inherit (lib.modules) evalModules;
-  inherit (lib.options) mkOption;
+  inherit (lib.modules) mkDefault;
+  inherit (lib.options) mkOption mkEnableOption;
   inherit (lib.strings) concatStringsSep;
   inherit (selfLib.path) concatTwoPaths;
 in
 {
   flake.modules.nixos.netns =
     {
-      options,
+      pkgs,
       utils,
       ...
     }:
     let
+      bindMountOptions =
+        { name, ... }:
+        {
+          options = {
+            enable = mkEnableOption "the bind mount" // {
+              default = true;
+            };
+            mountPoint = mkOption {
+              type = types.str;
+              description = ''
+                The mount point in the auxiliary mount namespace.
+              '';
+            };
+            hostPath = mkOption {
+              type = types.str;
+              description = ''
+                The host path in the init mount namespace.
+              '';
+            };
+            isReadOnly = mkOption {
+              type = types.bool;
+              default = true;
+              description = ''
+                Whether the mounted path should be accessed in read-only mode.
+              '';
+            };
+            recursive = mkOption {
+              type = types.bool;
+              default = true;
+              description = ''
+                Whether to perform a recursive bind mount.
+              '';
+            };
+          };
+
+          config = {
+            mountPoint = mkDefault name;
+            hostPath = mkDefault name;
+          };
+        };
+
       mkNetnsOption =
         module:
         mkOption {
@@ -44,32 +85,38 @@ in
           )
         );
 
-      evalSystemdService =
-        service:
-        (evalModules {
-          modules = [
-            {
-              options.services = mkOption {
-                inherit (options.systemd.services) type;
-                default = { };
-              };
-            }
-            { config.services.dummy = service; }
-          ];
-        }).config.services.dummy;
-
       mkRuntimeDirectory = netns: service: "netns-${netns}/${service}";
       mkRuntimeDirectoryPath = netns: service: concatTwoPaths "/run" "netns-${netns}/${service}";
+
+      mkNetnsRunWrapper =
+        name: cfg:
+        pkgs.writeShellApplication {
+          name = "netns-run-${name}";
+          text = ''
+            systemd-run --pipe --pty \
+              ${attrsToProperties (cfg.unitConfig or { })} \
+              ${attrsToProperties (cfg.serviceConfig or { })} \
+              --property="User=$USER" \
+              --same-dir \
+              --wait "$@"
+          '';
+        };
     in
     {
       passthru.netns = {
-        inherit
-          mkNetnsOption
-          attrsToProperties
-          evalSystemdService
-          mkRuntimeDirectory
-          mkRuntimeDirectoryPath
-          ;
+        options = {
+          inherit bindMountOptions;
+        };
+
+        lib = {
+          inherit
+            mkNetnsOption
+            attrsToProperties
+            mkRuntimeDirectory
+            mkRuntimeDirectoryPath
+            mkNetnsRunWrapper
+            ;
+        };
       };
     };
 }

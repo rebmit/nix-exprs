@@ -23,13 +23,20 @@ in
 
             services.resolved.enable = true;
             systemd.network.enable = true;
-            networking.useNetworkd = true;
+
+            networking = {
+              useNetworkd = true;
+              hosts = {
+                "127.0.0.1" = [ "one.one.one.one" ];
+              };
+            };
 
             netns = {
               entropy = {
                 enable = false;
               };
               enthalpy = {
+                bindMounts."/run/current-system" = { }; # only for tests
                 confext."oldfile".text = "old-generation";
                 sysctl = {
                   "net.ipv6.conf.all.forwarding" = 1;
@@ -39,6 +46,11 @@ in
                   "1.1.1.1" = [ "one.one.one.one" ];
                 };
               };
+            };
+
+            users.users.rebmit = {
+              uid = 1000;
+              isNormalUser = true;
             };
 
             specialisation.new-generation.configuration = {
@@ -97,6 +109,10 @@ in
 
             # nsswitch.nix
             with subtest("Network namespace specific /etc/nsswitch.conf is in place"):
+              actual   = machine.succeed("netns-run-enthalpy ${path}/getent passwd rebmit")
+              expected = "1000"
+              t.assertIn(expected, actual, "passwd entries mismatch")
+
               actual = machine.succeed("cat /etc/nsswitch.conf")
               t.assertIn("resolve [!UNAVAIL=return]", actual)
 
@@ -106,6 +122,8 @@ in
 
             # sysctl
             with subtest("Network namespace specific kernel runtime parameters are set"):
+              machine.succeed("systemctl status netns-enthalpy-sysctl.service")
+
               actual   = machine.succeed("sysctl net.ipv6.conf.all.forwarding")
               expected = "0"
               t.assertIn(expected, actual, "sysctl config mismatch")
@@ -116,14 +134,12 @@ in
 
             # hosts
             with subtest("Hosts are in place"):
-              actual   = machine.succeed("cat /etc/hosts")
-              expected = "one.one.one.one"
-              t.assertNotIn(expected, actual, "hosts mismatch")
+              print(machine.succeed("cat /etc/hosts"))
+              print(machine.succeed("netns-run-enthalpy ${path}/cat /etc/hosts"))
 
-              actual   = machine.succeed("netns-run-enthalpy ${path}/cat /etc/hosts")
-              expected = "one.one.one.one"
+              actual   = machine.succeed("getent hosts one.one.one.one")
+              expected = "127.0.0.1"
               t.assertIn(expected, actual, "hosts mismatch")
-              print(actual)
 
               actual   = machine.succeed("netns-run-enthalpy ${path}/getent hosts one.one.one.one")
               expected = "1.1.1.1"

@@ -21,7 +21,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns)
+      inherit (config.passthru.netns.lib)
         mkNetnsOption
         mkRuntimeDirectory
         mkRuntimeDirectoryPath
@@ -42,13 +42,15 @@ in
           };
 
           config = mkIf config.enable {
-            config = {
-              serviceConfig = {
-                BindPaths = mkIf config.services.nscd.enable [
-                  "${mkRuntimeDirectoryPath name "nscd"}:/run/nscd:norbind"
-                ];
-                TemporaryFileSystem = mkIf (!config.services.nscd.enable) [ "/run/nscd" ];
-              };
+            serviceConfig = {
+              BindPaths = mkIf config.services.nscd.enable [
+                "${mkRuntimeDirectoryPath name "nscd"}:/run/nscd:norbind"
+              ];
+              TemporaryFileSystem = mkIf (!config.services.nscd.enable) [ "/run/nscd" ];
+            };
+
+            unitConfig = {
+              After = [ "netns-${name}-nscd.service" ];
             };
           };
         }
@@ -56,7 +58,7 @@ in
 
       config = mkMerge [
         {
-          systemd.tmpfiles.settings."20-nscd" = {
+          systemd.tmpfiles.settings.nscd = {
             "/run/nscd".d = {
               mode = "0755";
               inherit (config.services.nscd) user;
@@ -71,32 +73,41 @@ in
         }
 
         {
-          systemd.tmpfiles.settings."20-nscd" = mapAttrs' (
+          systemd.tmpfiles.settings.nscd = mapAttrs' (
             name: _: nameValuePair (mkRuntimeDirectoryPath name "nscd") { d = { }; }
           ) nscdEnabledNetns;
 
           systemd.services = mapAttrs' (
             name: cfg:
-            nameValuePair "netns-${name}-nscd" (
-              mkHardenedService (mkMerge [
-                cfg.config
+            nameValuePair "netns-${name}-nscd" (mkHardenedService {
+              serviceConfig = mkMerge [
+                cfg.serviceConfig
                 {
-                  serviceConfig = {
-                    Type = "notify";
-                    Restart = "on-failure";
-                    RestartSec = 5;
-                    DynamicUser = true;
-                    RuntimeDirectory = mkRuntimeDirectory name "nscd";
-                    RuntimeDirectoryPreserve = true;
-                    ExecStart = "${pkgs.nsncd}/bin/nsncd";
-                  };
-                  environment = {
-                    LD_LIBRARY_PATH = config.system.nssModules.path;
-                    NSNCD_SOCKET_PATH = "${mkRuntimeDirectoryPath name "nscd"}/socket";
-                  };
+                  Type = "notify";
+                  Restart = "on-failure";
+                  RestartSec = 5;
+                  DynamicUser = true;
+                  RuntimeDirectory = mkRuntimeDirectory name "nscd";
+                  RuntimeDirectoryPreserve = true;
+                  ExecStart = "${pkgs.nsncd}/bin/nsncd";
                 }
-              ])
-            )
+              ];
+              environment = {
+                LD_LIBRARY_PATH = config.system.nssModules.path;
+                NSNCD_SOCKET_PATH = "${mkRuntimeDirectoryPath name "nscd"}/socket";
+              };
+              after = [
+                "netns-${name}.service"
+                "netns-${name}-confext.service"
+                "netns-${name}-sysctl.service"
+              ];
+              partOf = [ "netns-${name}.service" ];
+              requires = [ "netns-${name}.service" ];
+              wantedBy = [
+                "netns-${name}.service"
+                "multi-user.target"
+              ];
+            })
           ) nscdEnabledNetns;
         }
       ];

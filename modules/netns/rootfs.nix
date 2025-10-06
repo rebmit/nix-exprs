@@ -14,47 +14,13 @@ let
   inherit (lib.lists) filter all;
   inherit (lib.meta) getExe;
   inherit (lib.modules) mkDefault mkIf;
-  inherit (lib.options) mkOption mkEnableOption;
+  inherit (lib.options) mkOption;
   inherit (lib.strings)
     concatStringsSep
     concatMapStringsSep
     escapeShellArgs
     hasPrefix
     ;
-
-  bindMountOptions =
-    { name, ... }:
-    {
-      options = {
-        enable = mkEnableOption "the bind mount" // {
-          default = true;
-        };
-        mountPoint = mkOption {
-          type = types.str;
-          description = ''
-            The mount point in the auxiliary mount namespace.
-          '';
-        };
-        hostPath = mkOption {
-          type = types.str;
-          description = ''
-            The host path in the init mount namespace.
-          '';
-        };
-        isReadOnly = mkOption {
-          type = types.bool;
-          default = false;
-          description = ''
-            Whether the mounted path should be accessed in read-only mode.
-          '';
-        };
-      };
-
-      config = {
-        mountPoint = mkDefault name;
-        hostPath = mkDefault name;
-      };
-    };
 in
 {
   flake.modules.nixos.netns =
@@ -65,7 +31,8 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns) mkNetnsOption mkRuntimeDirectoryPath;
+      inherit (config.passthru.netns.lib) mkNetnsOption mkRuntimeDirectoryPath;
+      inherit (config.passthru.netns.options) bindMountOptions;
       inherit (config.environment) etc;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;
@@ -172,34 +139,35 @@ in
                 ) etcHardlinks}
               '';
 
-              config =
+              serviceConfig =
                 let
+                  toRecursiveOption = flag: if flag then "rbind" else "norbind";
+
                   enabledBindMounts = filter (d: d.enable) (attrValues config.bindMounts);
                   rwBinds = filter (d: !d.isReadOnly) enabledBindMounts;
                   roBinds = filter (d: d.isReadOnly) enabledBindMounts;
                 in
                 {
-                  serviceConfig = {
-                    RootDirectory = config.rootDirectory;
-                    MountAPIVFS = "yes";
-                    TemporaryFileSystem = [ "/run/netns-${name}" ]; # workaround
-                    BindPaths = map (d: "${d.hostPath}:${d.mountPoint}:rbind") rwBinds;
-                    BindReadOnlyPaths = map (d: "${d.hostPath}:${d.mountPoint}:rbind") roBinds;
-                  };
-                  after = [ "netns-${name}-confext.service" ];
+                  ProtectSystem = "strict";
+                  TemporaryFileSystem = [ config.rootDirectory ];
+                  RootDirectory = config.rootDirectory;
+                  MountAPIVFS = "yes";
+                  BindPaths = map (d: "${d.hostPath}:${d.mountPoint}:${toRecursiveOption d.recursive}") rwBinds;
+                  BindReadOnlyPaths = map (
+                    d: "${d.hostPath}:${d.mountPoint}:${toRecursiveOption d.recursive}"
+                  ) roBinds;
                 };
 
-              # per systemd-tmpfiles rules and activation scripts
+              unitConfig = {
+                After = [ "netns-${name}-confext.service" ];
+              };
+
+              # minimal required bind mounts per systemd-tmpfiles rules and activation scripts
               bindMounts = {
-                "/bin" = { };
-                "/home" = { };
                 "/nix" = { };
-                "/root" = { };
-                "/run" = { };
-                "/srv" = { };
-                "/tmp" = { };
-                "/usr" = { };
                 "/var" = { };
+                "/bin" = { };
+                "/usr" = { };
               };
 
               # paths that should not inherit from `config.environment.etc`

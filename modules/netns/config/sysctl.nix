@@ -22,7 +22,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns) mkNetnsOption;
+      inherit (config.passthru.netns.lib) mkNetnsOption;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;
     in
@@ -61,8 +61,8 @@ in
               "net.ipv4.ping_group_range" = mkDefault "0 2147483647";
             };
 
-            config = {
-              after = [ "netns-${name}-sysctl.service" ];
+            unitConfig = {
+              After = [ "netns-${name}-sysctl.service" ];
             };
 
             confext."sysctl.d/60-netns.conf".text = concatStrings (
@@ -79,7 +79,7 @@ in
           name: cfg:
           nameValuePair "netns-${name}-sysctl" {
             serviceConfig = mkMerge [
-              cfg.config.serviceConfig
+              cfg.serviceConfig
               {
                 Type = "oneshot";
                 RemainAfterExit = true;
@@ -90,9 +90,11 @@ in
             after = [
               "netns-${name}.service"
               "netns-${name}-confext.service"
+              "systemd-modules-load.service"
+              "systemd-sysctl.service"
             ];
             partOf = [ "netns-${name}.service" ];
-            wants = [ "netns-${name}.service" ];
+            requires = [ "netns-${name}.service" ];
             wantedBy = [
               "netns-${name}.service"
               "multi-user.target"
