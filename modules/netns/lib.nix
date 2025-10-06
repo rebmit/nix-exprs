@@ -7,7 +7,7 @@ let
   inherit (lib) types;
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) concatLists isList;
-  inherit (lib.modules) mkDefault;
+  inherit (lib.modules) mkDefault mkBefore mkAfter;
   inherit (lib.options) mkOption mkEnableOption;
   inherit (lib.strings) concatStringsSep;
   inherit (selfLib.path) concatTwoPaths;
@@ -20,6 +20,8 @@ in
       ...
     }:
     let
+      inherit (utils.systemdUtils.lib) makeJobScript;
+
       bindMountOptions =
         { name, ... }:
         {
@@ -86,7 +88,7 @@ in
         );
 
       mkRuntimeDirectory = netns: service: "netns-${netns}/${service}";
-      mkRuntimeDirectoryPath = netns: service: concatTwoPaths "/run" "netns-${netns}/${service}";
+      mkRuntimeDirectoryPath = netns: service: concatTwoPaths "/run" (mkRuntimeDirectory netns service);
 
       mkNetnsRunWrapper =
         name: cfg:
@@ -101,6 +103,40 @@ in
               --wait "$@"
           '';
         };
+
+      # drop if systemd can do this in the future
+      mkRuntimeDirectoryConfiguration =
+        netns: service: target: mode:
+        let
+          runtimeDirectory = mkRuntimeDirectory netns service;
+        in
+        {
+          ExecStartPre = mkBefore [
+            "+${
+              makeJobScript {
+                name = "netns-${netns}-${service}-runtime-directory-setup";
+                text = ''
+                  mkdir -pv "${target}"
+                  chown -Rv "$(stat -c '%u:%g' '${concatTwoPaths "/run" runtimeDirectory}')" "${target}"
+                  chmod -v "${mode}" "${target}"
+                '';
+                enableStrictShellChecks = true;
+              }
+            }"
+          ];
+          ExecStopPost = mkAfter [
+            "+${
+              makeJobScript {
+                name = "netns-${netns}-${service}-runtime-directory-clean";
+                text = ''
+                  rm -rfv "${target}"
+                '';
+                enableStrictShellChecks = true;
+              }
+            }"
+          ];
+          RuntimeDirectory = runtimeDirectory;
+        };
     in
     {
       passthru.netns = {
@@ -112,9 +148,9 @@ in
           inherit
             mkNetnsOption
             attrsToProperties
-            mkRuntimeDirectory
             mkRuntimeDirectoryPath
             mkNetnsRunWrapper
+            mkRuntimeDirectoryConfiguration
             ;
         };
       };

@@ -36,7 +36,6 @@ in
                 enable = false;
               };
               enthalpy = {
-                bindMounts."/run/current-system" = { }; # only for tests
                 confext."oldfile".text = "old-generation";
                 sysctl = {
                   "net.ipv6.conf.all.forwarding" = 1;
