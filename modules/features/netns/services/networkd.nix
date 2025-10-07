@@ -131,7 +131,14 @@ in
           nameValuePair "netns-${name}-networkd" (mkHardenedService {
             serviceConfig = mkMerge [
               cfg.serviceConfig
-              (mkRuntimeDirectoryConfiguration name "networkd" "/run/systemd/netif" "0755")
+              (mkRuntimeDirectoryConfiguration {
+                netns = name;
+                service = "networkd";
+                runtimeDirectory = "/run/systemd/netif";
+                runtimeDirectoryMode = "0755";
+                runtimeDirectoryPreserve = true;
+                runtimeDirectoryPreserveMode = "0755";
+              })
               {
                 AmbientCapabilities = [
                   "CAP_NET_ADMIN"

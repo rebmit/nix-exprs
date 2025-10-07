@@ -91,7 +91,12 @@ in
           nameValuePair "netns-${name}-bird" (mkHardenedService {
             serviceConfig = mkMerge [
               cfg.serviceConfig
-              (mkRuntimeDirectoryConfiguration name "bird" "/run/bird" "0750")
+              (mkRuntimeDirectoryConfiguration {
+                netns = name;
+                service = "bird";
+                runtimeDirectory = "/run/bird";
+                runtimeDirectoryMode = "0750";
+              })
               {
                 Type = "forking";
                 Restart = "on-failure";

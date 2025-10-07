@@ -85,9 +85,16 @@ in
 
       # drop if systemd can do this in the future
       mkRuntimeDirectoryConfiguration =
-        netns: service: target: mode:
+        {
+          netns,
+          service,
+          runtimeDirectory,
+          runtimeDirectoryMode ? "0755",
+          runtimeDirectoryPreserve ? false,
+          runtimeDirectoryPreserveMode ? "0750",
+        }:
         let
-          runtimeDirectory = mkRuntimeDirectory netns service;
+          dummyRuntimeDirectory = mkRuntimeDirectory netns service;
         in
         {
           ExecStartPre = mkBefore [
@@ -95,9 +102,9 @@ in
               makeJobScript {
                 name = "netns-${netns}-${service}-runtime-directory-setup";
                 text = ''
-                  mkdir -pv "${target}"
-                  chown -Rv "$(stat -c '%u:%g' '${concatTwoPaths "/run" runtimeDirectory}')" "${target}"
-                  chmod -v "${mode}" "${target}"
+                  mkdir -pv "${runtimeDirectory}"
+                  chown -Rv "$(stat -c '%u:%g' '${concatTwoPaths "/run" dummyRuntimeDirectory}')" "${runtimeDirectory}"
+                  chmod -v "${runtimeDirectoryMode}" "${runtimeDirectory}"
                 '';
                 enableStrictShellChecks = true;
               }
@@ -107,14 +114,21 @@ in
             "+${
               makeJobScript {
                 name = "netns-${netns}-${service}-runtime-directory-clean";
-                text = ''
-                  rm -rfv "${target}"
-                '';
+                text =
+                  if runtimeDirectoryPreserve then
+                    ''
+                      chown -Rv root:root "${runtimeDirectory}"
+                      chmod -v "${runtimeDirectoryPreserveMode}" "${runtimeDirectory}"
+                    ''
+                  else
+                    ''
+                      rm -rfv "${runtimeDirectory}"
+                    '';
                 enableStrictShellChecks = true;
               }
             }"
           ];
-          RuntimeDirectory = runtimeDirectory;
+          RuntimeDirectory = dummyRuntimeDirectory;
         };
     in
     {

@@ -54,7 +54,12 @@ in
           nameValuePair "netns-${name}-nscd" (mkHardenedService {
             serviceConfig = mkMerge [
               cfg.serviceConfig
-              (mkRuntimeDirectoryConfiguration name "nscd" "/run/nscd" "0755")
+              (mkRuntimeDirectoryConfiguration {
+                netns = name;
+                service = "nscd";
+                runtimeDirectory = "/run/nscd";
+                runtimeDirectoryMode = "0755";
+              })
               {
                 Type = "notify";
                 BindReadOnlyPaths = [ "/run/systemd/userdb" ];
