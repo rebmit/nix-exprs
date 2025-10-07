@@ -70,7 +70,7 @@ in
               "20-enthalpy" = {
                 matchConfig.Name = "enthalpy";
                 networkConfig = {
-                  Address = [ (cidrHost 1 cfg.prefix) ];
+                  Address = [ "${cidrHost 1 cfg.prefix}/128" ];
                 };
               };
             };

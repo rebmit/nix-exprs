@@ -97,7 +97,7 @@ in
           netnumInternal = toPieces netnum;
         in
         if checkMask netnumInternal mask then
-          "${toStringFromExpandedIp (bitwiseOr address netnumInternal)}/${toString ipv6Bits}"
+          toStringFromExpandedIp (bitwiseOr address netnumInternal)
         else
           throw "invalid netnum";
 

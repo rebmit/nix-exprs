@@ -10,7 +10,6 @@ let
   inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) mkOption mkEnableOption;
   inherit (lib.strings) concatStringsSep;
-  inherit (lib.network.ipv6) fromString;
   inherit (selfLib.network.ipv6) cidrHost;
 in
 {
@@ -52,7 +51,7 @@ in
             ipv4Address = "192.0.0.1";
             ipv6Address = "fc00::";
             prefix = cfg.clat.prefix;
-            mappings."192.0.0.2" = (fromString cfg.clat.address).address;
+            mappings."192.0.0.2" = cfg.clat.address;
           };
 
           services.networkd.networks = {
@@ -62,7 +61,7 @@ in
                 { Address = "192.0.0.2/32"; }
               ];
               routes = [
-                { Destination = cfg.clat.address; }
+                { Destination = "${cfg.clat.address}/128"; }
                 {
                   Destination = "0.0.0.0/0";
                   PreferredSource = "192.0.0.2";
