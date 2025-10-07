@@ -121,6 +121,7 @@ in
               # paths that should not inherit from `config.environment.etc`
               confExcludePaths = [
                 # keep-sorted start
+                "bird"
                 "gai.conf"
                 "hosts"
                 "iproute2"
