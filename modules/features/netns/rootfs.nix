@@ -101,6 +101,14 @@ in
                 hostPath = "${config.rootDirectory}/run";
                 isReadOnly = false;
               };
+
+              # libsystemd
+              "/run/systemd/journal".recursive = false;
+              "/run/systemd/machines".recursive = false;
+              "/run/systemd/seats".recursive = false;
+              "/run/systemd/sessions".recursive = false;
+              "/run/systemd/system".recursive = false;
+              "/run/systemd/users".recursive = false;
             };
 
             serviceConfig =
