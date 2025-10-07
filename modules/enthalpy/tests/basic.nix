@@ -1,0 +1,184 @@
+{ config, ... }:
+{
+  perSystem =
+    { pkgs, ... }:
+    let
+      common = {
+        imports = [
+          config.flake.modules.nixos.enthalpy
+          config.flake.modules.nixos.netns
+          config.flake.modules.nixos.immutable
+        ];
+
+        services.resolved.enable = true;
+        systemd.network.enable = true;
+        networking.useNetworkd = true;
+
+        networking.firewall.enable = false;
+
+        services.enthalpy = {
+          enable = true;
+          network = "fd97:f72e:270c::/48";
+          ipsec = {
+            organization = "test";
+            endpoints = [
+              {
+                serialNumber = "0";
+                addressFamily = "ip4";
+              }
+              {
+                serialNumber = "1";
+                addressFamily = "ip6";
+              }
+            ];
+            privateKeyPath = "${pkgs.writeText "private-key" ''
+              -----BEGIN PRIVATE KEY-----
+              MC4CAQAwBQYDK2VwBCIEIPntkfGC5R74FHJ1abA6AZSg0DrlxbahcjJAMChDR+ON
+              -----END PRIVATE KEY-----
+            ''}";
+          };
+        };
+
+        system.activationScripts.setup-registry = ''
+          mkdir -pv /var/lib/ranet
+
+          cp -v "${
+            (pkgs.formats.json { }).generate "registry.json" [
+              {
+                public_key = "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAcK433xJKBLOZTGJM1RRz7p+/8Gtw6jm8HT+Zw2OYo2c=\n-----END PUBLIC KEY-----";
+                organization = "test";
+                nodes = [
+                  {
+                    common_name = "peer1";
+                    endpoints = [
+                      {
+                        serial_number = "0";
+                        address_family = "ip4";
+                        address = "192.168.0.1";
+                        port = 14000;
+                      }
+                      {
+                        serial_number = "1";
+                        address_family = "ip6";
+                        address = "fd00::1";
+                        port = 14000;
+                      }
+                    ];
+                  }
+                  {
+                    common_name = "peer2";
+                    endpoints = [
+                      {
+                        serial_number = "0";
+                        address_family = "ip4";
+                        address = "192.168.0.2";
+                        port = 14000;
+                      }
+                      {
+                        serial_number = "1";
+                        address_family = "ip6";
+                        address = "fd00::2";
+                        port = 14000;
+                      }
+                    ];
+                  }
+                ];
+              }
+            ]
+          }" /var/lib/ranet/registry.json
+        '';
+      };
+    in
+    {
+      checks."enthalpy/basic" = pkgs.nixosTest {
+        name = "enthalpy-basic";
+
+        nodes.peer1 =
+          { ... }:
+          {
+            imports = [ common ];
+
+            services.enthalpy = {
+              prefix = "fd97:f72e:270c:1010::/60";
+            };
+
+            networking.hostName = "peer1";
+
+            networking.interfaces.eth1 = {
+              ipv4.addresses = [
+                {
+                  address = "192.168.0.1";
+                  prefixLength = 24;
+                }
+              ];
+              ipv6.addresses = [
+                {
+                  address = "fd00::1";
+                  prefixLength = 64;
+                }
+              ];
+            };
+          };
+
+        nodes.peer2 =
+          { ... }:
+          {
+            imports = [ common ];
+
+            services.enthalpy = {
+              prefix = "fd97:f72e:270c:1020::/60";
+            };
+
+            networking.hostName = "peer2";
+
+            networking.interfaces.eth1 = {
+              ipv4.addresses = [
+                {
+                  address = "192.168.0.2";
+                  prefixLength = 24;
+                }
+              ];
+              ipv6.addresses = [
+                {
+                  address = "fd00::2";
+                  prefixLength = 64;
+                }
+              ];
+            };
+          };
+
+        testScript =
+          let
+            path = "/run/current-system/sw/bin";
+          in
+          ''
+            start_all()
+
+            peer1.wait_for_unit("strongswan-swanctl.service")
+            peer2.wait_for_unit("strongswan-swanctl.service")
+
+            with subtest("Link-scope network connectivity test"):
+              peer1.wait_until_succeeds("netns-run-enthalpy ${path}/ip -6 a | grep -q enta00000003", timeout=10)
+              peer2.wait_until_succeeds("netns-run-enthalpy ${path}/ip -6 a | grep -q enta00000001", timeout=10)
+
+              print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000003"))
+              print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000004"))
+              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000001"))
+              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000002"))
+
+            peer1.wait_for_unit("netns-enthalpy-bird.service")
+            peer2.wait_for_unit("netns-enthalpy-bird.service")
+
+            with subtest("Site-scope network connectivity test"):
+              peer1.wait_until_succeeds("netns-run-enthalpy ${path}/ip -6 r | grep -q fd97:f72e:270c:1020::/60", timeout=10)
+              peer2.wait_until_succeeds("netns-run-enthalpy ${path}/ip -6 r | grep -q fd97:f72e:270c:1010::/60", timeout=10)
+
+              print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 fd97:f72e:270c:1020::1"))
+              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 fd97:f72e:270c:1010::1"))
+
+            peer1.shutdown()
+            peer2.shutdown()
+          '';
+      };
+    };
+}
