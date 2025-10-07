@@ -72,13 +72,13 @@ in
           };
         };
 
+        # drop if systemd-networkd can do this in the future
         systemd.services.enthalpy-srv6 = {
           serviceConfig = mkMerge [
             netnsCfg.serviceConfig
             {
               Type = "oneshot";
               RemainAfterExit = true;
-              NetworkNamespacePath = netnsCfg.netnsPath;
               ExecStartPre = "${config.systemd.package}/lib/systemd/systemd-networkd-wait-online --interface enthalpy";
               ExecStart = map (r: "${pkgs.iproute2}/bin/ip -6 r add ${r}") cfg.srv6.actions;
               ExecStop = map (r: "${pkgs.iproute2}/bin/ip -6 r del ${r}") cfg.srv6.actions;
