@@ -121,8 +121,8 @@ in
           ++ optionals (config.services.proxy.enable) [
             (mkProxyService true "init" {
               unitConfig = {
-                after = [ "network-online.target" ];
-                wants = [ "network-online.target" ];
+                After = [ "network-online.target" ];
+                Wants = [ "network-online.target" ];
               };
               serviceConfig = { };
               services = {
