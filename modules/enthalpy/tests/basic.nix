@@ -11,15 +11,7 @@
         ];
 
         services.resolved.enable = true;
-        systemd.network = {
-          enable = true;
-          config = {
-            networkConfig = {
-              IPv4Forwarding = true;
-              IPv6Forwarding = true;
-            };
-          };
-        };
+        systemd.network.enable = true;
         networking.useNetworkd = true;
 
         networking.firewall.enable = false;
@@ -109,9 +101,20 @@
 
             services.enthalpy = {
               prefix = "fd97:f72e:270c:1010::/60";
+              srv6.enable = true;
+              exit.enable = true;
             };
 
             networking.hostName = "peer1";
+
+            networking.interfaces.eth0 = {
+              ipv4.addresses = [
+                {
+                  address = "1.1.1.1"; # for local testing only; RFC 6052 requires a public IPv4 address here
+                  prefixLength = 32;
+                }
+              ];
+            };
 
             networking.interfaces.eth1 = {
               ipv4.addresses = [
@@ -136,6 +139,10 @@
 
             services.enthalpy = {
               prefix = "fd97:f72e:270c:1020::/60";
+              clat = {
+                enable = true;
+                segment = [ "fd97:f72e:270c:1016::2" ];
+              };
             };
 
             networking.hostName = "peer2";
@@ -173,6 +180,9 @@
               peer1.wait_until_succeeds("test $(netns-run-enthalpy ${path}/ip a | grep -c enta) -eq 2", timeout=10)
               peer2.wait_until_succeeds("test $(netns-run-enthalpy ${path}/ip a | grep -c enta) -eq 2", timeout=10)
 
+              print(peer1.succeed("swanctl --list-sas"))
+              print(peer2.succeed("swanctl --list-sas"))
+
               output       = peer1.succeed("netns-run-enthalpy ${path}/ip -j -6 addr show")
               ifaces_peer1 = [iface["ifname"] for iface in json.loads(output) if "enta" in iface["ifname"]]
               assert len(ifaces_peer1) == 2, "peer1 does not have exactly 2 enta interfaces"
@@ -196,6 +206,25 @@
 
               print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 fd97:f72e:270c:1020::1"))
               print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 fd97:f72e:270c:1010::1"))
+
+              peer1.succeed("systemctl status enthalpy-exit.service")
+              print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 fd00::1"))
+              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 fd00::1"))
+
+            with subtest("464XLAT over SRv6 connectivity test"):
+              peer1.succeed("systemctl status enthalpy-srv6.service")
+              peer1.succeed("systemctl status plat.service")
+
+              print(peer1.succeed("netns-run-enthalpy ${path}/ip -6 r show table localsid"))
+              print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 64:ff9b::1.1.1.1"))
+
+              peer2.succeed("systemctl status enthalpy-clat.service")
+
+              print(peer2.succeed("netns-run-enthalpy ${path}/ip -6 r show table main"))
+              print(peer2.succeed("netns-run-enthalpy ${path}/ip -4 r show table main"))
+
+              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 64:ff9b::1.1.1.1"))
+              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 1.1.1.1"))
 
             peer1.shutdown()
             peer2.shutdown()
