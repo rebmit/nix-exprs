@@ -57,6 +57,7 @@ in
               (mkRuntimeDirectoryConfiguration name "nscd" "/run/nscd" "0755")
               {
                 Type = "notify";
+                BindReadOnlyPaths = [ "/run/systemd/userdb" ];
                 Restart = "on-failure";
                 RestartSec = 5;
                 DynamicUser = true;

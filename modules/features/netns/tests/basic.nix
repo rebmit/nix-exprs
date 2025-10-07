@@ -195,6 +195,8 @@ in
               init     = machine.succeed("stat -Lc '%i' /run/nscd/socket")
               t.assertNotEqual(enthalpy, init, "nscd is not isolated, dns leaks")
 
+              machine.succeed("netns-run-enthalpy ${path}/getent passwd netns-enthalpy-nscd")
+
             machine.succeed("/run/current-system/specialisation/new-generation/bin/switch-to-configuration switch")
 
             # config/confext.nix
