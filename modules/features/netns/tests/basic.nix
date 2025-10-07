@@ -179,6 +179,14 @@ in
               expected = "1.1.1.1"
               t.assertIn(expected, actual, "hosts mismatch")
 
+            # config/tmpfiles.nix
+            with subtest("systemd-tmpfiles works"):
+              print(machine.succeed("systemctl status netns-enthalpy-tmpfiles.service"))
+
+              actual   = machine.succeed("netns-run-enthalpy ${path}/stat -c '%a' /tmp")
+              expected = "1777"
+              t.assertIn(expected, actual, "/tmp sticky bits mismatch")
+
             # services/nscd.nix
             with subtest("Network namespaces have isolated nscd socket"):
               machine.succeed("systemctl status netns-enthalpy-nscd.service")
