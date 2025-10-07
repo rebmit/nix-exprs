@@ -131,7 +131,7 @@ in
                       ''}";
                     }
                   ];
-                  inherit (cfg) unitConfig;
+                  unitConfig = cfg.unitConfig;
                   wantedBy = [
                     "netns-${name}.service"
                     "multi-user.target"

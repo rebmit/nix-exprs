@@ -42,13 +42,14 @@ in
             "net.netfilter.nf_hooks_lwtunnel" = 1;
           };
 
-          confext."resolv.conf" = {
-            text = ''
-              nameserver 2620:fe::fe
-              nameserver 2620:fe::9
-              nameserver 2606:4700:4700::1111
-              nameserver 2606:4700:4700::1001
-            '';
+          services.resolved = {
+            enable = true;
+            dns = [
+              "2620:fe::fe"
+              "2620:fe::9"
+              "2606:4700:4700::1111"
+              "2606:4700:4700::1001"
+            ];
           };
 
           services.networkd = {

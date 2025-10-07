@@ -36,6 +36,7 @@ in
                 enable = false;
               };
               enthalpy = {
+                services.resolved.enable = true;
                 confext."oldfile".text = "old-generation";
                 sysctl = {
                   "net.ipv6.conf.all.forwarding" = 1;
@@ -54,6 +55,7 @@ in
 
             specialisation.new-generation.configuration = {
               netns.enthalpy = {
+                services.resolved.enable = mkForce false;
                 services.nscd.enable = false;
                 confext = {
                   "oldfile".text = mkForce "new-generation";
@@ -147,13 +149,6 @@ in
               expected = "1000"
               t.assertIn(expected, actual, "passwd entries mismatch")
 
-              actual = machine.succeed("cat /etc/nsswitch.conf")
-              t.assertIn("resolve [!UNAVAIL=return]", actual)
-
-              # unless we have finally switched to running resolved in the netns
-              actual = machine.succeed("netns-run-enthalpy ${path}/cat /etc/nsswitch.conf")
-              t.assertNotIn("resolve [!UNAVAIL=return]", actual)
-
             # config/sysctl.nix
             with subtest("Network namespace specific kernel runtime parameters are set"):
               machine.succeed("systemctl status netns-enthalpy-sysctl.service")
@@ -196,6 +191,10 @@ in
               t.assertNotEqual(enthalpy, init, "nscd is not isolated, dns leaks")
 
               machine.succeed("netns-run-enthalpy ${path}/getent passwd netns-enthalpy-nscd")
+
+            # services/resolved.nix
+            with subtest("systemd-resolved is active"):
+              machine.succeed("systemctl status netns-enthalpy-resolved.service")
 
             machine.succeed("/run/current-system/specialisation/new-generation/bin/switch-to-configuration switch")
 
