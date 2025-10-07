@@ -59,6 +59,41 @@ in
                   "oldfile".text = mkForce "new-generation";
                   "newfile".text = "new-generation";
                 };
+                services.networkd = {
+                  enable = true;
+                  netdevs = {
+                    "20-enthalpy" = {
+                      netdevConfig = {
+                        Kind = "dummy";
+                        Name = "enthalpy";
+                      };
+                    };
+                  };
+                  networks = {
+                    "20-enthalpy" = {
+                      matchConfig.Name = "enthalpy";
+                      linkConfig.MTUBytes = 9000;
+                      networkConfig = {
+                        Address = [
+                          "192.168.0.1/24"
+                          "fdab:cdef::1/64"
+                        ];
+                      };
+                    };
+                  };
+                };
+                nftables = {
+                  enable = true;
+                  tables.nat = {
+                    family = "inet";
+                    content = ''
+                      chain postrouting {
+                        type nat hook postrouting priority srcnat; policy accept;
+                        oifname enthalpy counter masquerade
+                      }
+                    '';
+                  };
+                };
               };
             };
           };
@@ -96,7 +131,7 @@ in
               expected = machine.succeed("stat -Lc '%i' /run/netns/enthalpy")
               t.assertEqual(actual, expected, "Network namespace switch did not occur as expected")
 
-            # rootfs.nix
+            # confext.nix
             with subtest("Initial /etc contents are in place"):
               machine.succeed("systemctl status netns-enthalpy-confext.service")
 
@@ -106,7 +141,7 @@ in
 
               print(machine.succeed("netns-run-enthalpy ${path}/cat /etc/resolv.conf"))
 
-            # nsswitch.nix
+            # config/nsswitch.nix
             with subtest("Network namespace specific /etc/nsswitch.conf is in place"):
               actual   = machine.succeed("netns-run-enthalpy ${path}/getent passwd rebmit")
               expected = "1000"
@@ -119,7 +154,7 @@ in
               actual = machine.succeed("netns-run-enthalpy ${path}/cat /etc/nsswitch.conf")
               t.assertNotIn("resolve [!UNAVAIL=return]", actual)
 
-            # sysctl
+            # config/sysctl.nix
             with subtest("Network namespace specific kernel runtime parameters are set"):
               machine.succeed("systemctl status netns-enthalpy-sysctl.service")
 
@@ -131,7 +166,7 @@ in
               expected = "1"
               t.assertIn(expected, actual, "sysctl config mismatch")
 
-            # hosts
+            # config/hosts.nix
             with subtest("Hosts are in place"):
               print(machine.succeed("cat /etc/hosts"))
               print(machine.succeed("netns-run-enthalpy ${path}/cat /etc/hosts"))
@@ -154,7 +189,7 @@ in
 
             machine.succeed("/run/current-system/specialisation/new-generation/bin/switch-to-configuration switch")
 
-            # rootfs.nix
+            # config/confext.nix
             with subtest("Updated /etc contents are applied after switch"):
               actual   = machine.succeed("netns-run-enthalpy ${path}/cat /etc/oldfile")
               expected = "new-generation"
@@ -164,12 +199,32 @@ in
               expected = "new-generation"
               t.assertEqual(expected, actual, "/etc/newfile content mismatch after switch")
 
+            # config/nftables.nix
+            with subtest("nftables is properly configured"):
+              actual   = machine.succeed("netns-run-enthalpy ${path}/nft list ruleset")
+              expected = "masquerade"
+              t.assertIn(expected, actual, "nftables not configured as expected")
+
             # services/nscd.nix
             with subtest("Network namespaces have isolated nscd socket"):
               machine.fail("systemctl status netns-enthalpy-nscd.service")
 
               enthalpy = machine.fail("netns-run-enthalpy ${path}/test -e /run/nscd/socket")
               init     = machine.succeed("stat -Lc '%i' /run/nscd/socket")
+
+            # services/networkd.nix
+            with subtest("systemd-networkd is active"):
+              machine.succeed("systemctl status netns-enthalpy-networkd.service")
+
+            # services/networkd.nix
+            with subtest("enthalpy interface is properly configured"):
+              actual   = machine.succeed("netns-run-enthalpy ${path}/ip -4 a show dev enthalpy")
+              expected = "192.168.0.1/24"
+              t.assertIn(expected, actual, "ipv4 not configured as expected")
+
+              actual   = machine.succeed("netns-run-enthalpy ${path}/ip -6 a show dev enthalpy")
+              expected = "fdab:cdef::1/64"
+              t.assertIn(expected, actual, "ipv6 not configured as expected")
 
             machine.shutdown()
           '';

@@ -3,16 +3,56 @@ let
   inherit (lib) types;
   inherit (lib.attrsets) filterAttrs attrValues mapAttrsToList;
   inherit (lib.lists) filter;
-  inherit (lib.modules) mkIf;
-  inherit (lib.options) mkOption;
+  inherit (lib.modules) mkIf mkDefault;
+  inherit (lib.options) mkOption mkEnableOption;
   inherit (lib.strings) concatStringsSep;
+
+  bindMountOptions =
+    { name, ... }:
+    {
+      options = {
+        enable = mkEnableOption "the bind mount" // {
+          default = true;
+        };
+        mountPoint = mkOption {
+          type = types.str;
+          description = ''
+            The mount point in the auxiliary mount namespace.
+          '';
+        };
+        hostPath = mkOption {
+          type = types.str;
+          description = ''
+            The host path in the init mount namespace.
+          '';
+        };
+        isReadOnly = mkOption {
+          type = types.bool;
+          default = true;
+          description = ''
+            Whether the mounted path should be accessed in read-only mode.
+          '';
+        };
+        recursive = mkOption {
+          type = types.bool;
+          default = true;
+          description = ''
+            Whether to perform a recursive bind mount.
+          '';
+        };
+      };
+
+      config = {
+        mountPoint = mkDefault name;
+        hostPath = mkDefault name;
+      };
+    };
 in
 {
   flake.modules.nixos.netns =
     { config, ... }:
     let
       inherit (config.passthru.netns.lib) mkNetnsOption mkRuntimeDirectoryPath;
-      inherit (config.passthru.netns.options) bindMountOptions;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;
     in

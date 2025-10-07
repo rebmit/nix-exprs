@@ -7,8 +7,8 @@ let
   inherit (lib) types;
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) concatLists isList;
-  inherit (lib.modules) mkDefault mkBefore mkAfter;
-  inherit (lib.options) mkOption mkEnableOption;
+  inherit (lib.modules) mkBefore mkAfter;
+  inherit (lib.options) mkOption;
   inherit (lib.strings) concatStringsSep;
   inherit (selfLib.path) concatTwoPaths;
 in
@@ -21,47 +21,6 @@ in
     }:
     let
       inherit (utils.systemdUtils.lib) makeJobScript;
-
-      bindMountOptions =
-        { name, ... }:
-        {
-          options = {
-            enable = mkEnableOption "the bind mount" // {
-              default = true;
-            };
-            mountPoint = mkOption {
-              type = types.str;
-              description = ''
-                The mount point in the auxiliary mount namespace.
-              '';
-            };
-            hostPath = mkOption {
-              type = types.str;
-              description = ''
-                The host path in the init mount namespace.
-              '';
-            };
-            isReadOnly = mkOption {
-              type = types.bool;
-              default = true;
-              description = ''
-                Whether the mounted path should be accessed in read-only mode.
-              '';
-            };
-            recursive = mkOption {
-              type = types.bool;
-              default = true;
-              description = ''
-                Whether to perform a recursive bind mount.
-              '';
-            };
-          };
-
-          config = {
-            mountPoint = mkDefault name;
-            hostPath = mkDefault name;
-          };
-        };
 
       mkNetnsOption =
         module:
@@ -140,14 +99,11 @@ in
     in
     {
       passthru.netns = {
-        options = {
-          inherit bindMountOptions;
-        };
-
         lib = {
           inherit
             mkNetnsOption
             attrsToProperties
+            mkRuntimeDirectory
             mkRuntimeDirectoryPath
             mkNetnsRunWrapper
             mkRuntimeDirectoryConfiguration
