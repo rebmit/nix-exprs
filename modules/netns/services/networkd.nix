@@ -10,10 +10,11 @@ let
     filterAttrs
     mapAttrs'
     nameValuePair
+    mapAttrsToList
     ;
   inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) mkEnableOption mkOption;
-  inherit (lib.strings) optionalString;
+  inherit (lib.strings) optionalString concatStringsSep;
   inherit (selfLib.misc) mkHardenedService;
 in
 {
@@ -112,6 +113,13 @@ in
             confext = mkMerge [
               (mkUnitFiles cfg)
               { "systemd/networkd.conf" = renderConfig cfg.config; }
+              {
+                "iproute2/rt_tables.d/networkd.conf".text = ''
+                  ${concatStringsSep "\n" (
+                    mapAttrsToList (name: number: "${toString number} ${name}") cfg.config.routeTables
+                  )}
+                '';
+              }
             ];
           };
         }
