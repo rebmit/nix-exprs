@@ -11,7 +11,15 @@
         ];
 
         services.resolved.enable = true;
-        systemd.network.enable = true;
+        systemd.network = {
+          enable = true;
+          config = {
+            networkConfig = {
+              IPv4Forwarding = true;
+              IPv6Forwarding = true;
+            };
+          };
+        };
         networking.useNetworkd = true;
 
         networking.firewall.enable = false;
@@ -31,6 +39,7 @@
                 addressFamily = "ip6";
               }
             ];
+            interfaces = [ "eth1" ];
             privateKeyPath = "${pkgs.writeText "private-key" ''
               -----BEGIN PRIVATE KEY-----
               MC4CAQAwBQYDK2VwBCIEIPntkfGC5R74FHJ1abA6AZSg0DrlxbahcjJAMChDR+ON
@@ -151,20 +160,32 @@
           let
             path = "/run/current-system/sw/bin";
           in
+          # python
           ''
+            import json
+
             start_all()
 
             peer1.wait_for_unit("strongswan-swanctl.service")
             peer2.wait_for_unit("strongswan-swanctl.service")
 
             with subtest("Link-scope network connectivity test"):
-              peer1.wait_until_succeeds("netns-run-enthalpy ${path}/ip -6 a | grep -q enta00000003", timeout=10)
-              peer2.wait_until_succeeds("netns-run-enthalpy ${path}/ip -6 a | grep -q enta00000001", timeout=10)
+              peer1.wait_until_succeeds("test $(netns-run-enthalpy ${path}/ip a | grep -c enta) -eq 2", timeout=10)
+              peer2.wait_until_succeeds("test $(netns-run-enthalpy ${path}/ip a | grep -c enta) -eq 2", timeout=10)
 
-              print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000003"))
-              print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000004"))
-              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000001"))
-              print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%enta00000002"))
+              output       = peer1.succeed("netns-run-enthalpy ${path}/ip -j -6 addr show")
+              ifaces_peer1 = [iface["ifname"] for iface in json.loads(output) if "enta" in iface["ifname"]]
+              assert len(ifaces_peer1) == 2, "peer1 does not have exactly 2 enta interfaces"
+
+              output       = peer2.succeed("netns-run-enthalpy ${path}/ip -j -6 addr show")
+              ifaces_peer2 = [iface["ifname"] for iface in json.loads(output) if "enta" in iface["ifname"]]
+              assert len(ifaces_peer2) == 2, "peer2 does not have exactly 2 enta interfaces"
+
+              print(peer1.succeed(f"netns-run-enthalpy ${path}/ping -c 4 ff02::1%{ifaces_peer1[0]}"))
+              print(peer1.succeed(f"netns-run-enthalpy ${path}/ping -c 4 ff02::1%{ifaces_peer1[1]}"))
+
+              print(peer2.succeed(f"netns-run-enthalpy ${path}/ping -c 4 ff02::1%{ifaces_peer2[0]}"))
+              print(peer2.succeed(f"netns-run-enthalpy ${path}/ping -c 4 ff02::1%{ifaces_peer2[1]}"))
 
             peer1.wait_for_unit("netns-enthalpy-bird.service")
             peer2.wait_for_unit("netns-enthalpy-bird.service")
