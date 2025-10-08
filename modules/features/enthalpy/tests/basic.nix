@@ -16,6 +16,8 @@
 
         networking.firewall.enable = false;
 
+        boot.kernelPackages = pkgs.linuxPackages_latest;
+
         services.enthalpy = {
           enable = true;
           network = "fd97:f72e:270c::/48";
