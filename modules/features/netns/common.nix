@@ -71,6 +71,12 @@ in
                   Attribute set of derivations used to set up the network namespace.
                 '';
               };
+              passthru = mkOption {
+                visible = false;
+                description = ''
+                  You can put whatever you want here.
+                '';
+              };
             };
 
             config = mkIf config.enable {

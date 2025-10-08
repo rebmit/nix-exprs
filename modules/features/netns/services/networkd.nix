@@ -11,10 +11,11 @@ let
     mapAttrs'
     nameValuePair
     mapAttrsToList
+    attrValues
     ;
   inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) mkEnableOption mkOption;
-  inherit (lib.strings) optionalString concatStringsSep;
+  inherit (lib.strings) optionalString concatStringsSep hasSuffix;
   inherit (selfLib.misc) mkHardenedService;
 in
 {
@@ -68,6 +69,7 @@ in
         { config, ... }:
         let
           cfg = config.services.networkd;
+          unitFiles = mkUnitFiles cfg;
         in
         {
           _file = ./networkd.nix;
@@ -111,7 +113,7 @@ in
               // mapAttrs' (n: v: nameValuePair "${n}.network" (mkUnit networkToUnit v)) cfg.networks;
 
             confext = mkMerge [
-              (mkUnitFiles cfg)
+              unitFiles
               { "systemd/networkd.conf" = renderConfig cfg.config; }
               {
                 "iproute2/rt_tables.d/networkd.conf".text = ''
@@ -121,6 +123,10 @@ in
                 '';
               }
             ];
+
+            passthru.networkd = {
+              inherit unitFiles;
+            };
           };
         }
       );
@@ -128,6 +134,14 @@ in
       config = {
         systemd.services = mapAttrs' (
           name: cfg:
+          let
+            inherit (cfg.passthru.networkd) unitFiles;
+
+            isReloadableUnitFileName = unitFileName: hasSuffix ".network" unitFileName;
+            reloadableUnitFiles = filterAttrs (k: _: isReloadableUnitFileName k) unitFiles;
+            nonReloadableUnitFiles = filterAttrs (k: _: !isReloadableUnitFileName k) unitFiles;
+            unitFileSources = unitFiles: map (x: x.source) (attrValues unitFiles);
+          in
           nameValuePair "netns-${name}-networkd" (mkHardenedService {
             serviceConfig = mkMerge [
               cfg.serviceConfig
@@ -186,6 +200,11 @@ in
               "netns-${name}.service"
               "multi-user.target"
             ];
+            reloadTriggers = unitFileSources reloadableUnitFiles;
+            restartTriggers = unitFileSources nonReloadableUnitFiles ++ [
+              cfg.confext."systemd/networkd.conf".source
+            ];
+            stopIfChanged = false;
           })
         ) networkdEnabledNetns;
       };

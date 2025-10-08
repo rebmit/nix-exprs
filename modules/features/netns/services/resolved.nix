@@ -207,6 +207,8 @@ in
               "netns-${name}.service"
               "multi-user.target"
             ];
+            reloadTriggers = [ cfg.confext."systemd/resolved.conf".source ];
+            stopIfChanged = false;
           })
         ) resolvedEnabledNetns;
       };

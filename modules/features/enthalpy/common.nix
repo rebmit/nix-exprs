@@ -45,10 +45,10 @@ in
           services.resolved = {
             enable = true;
             dns = [
-              "2620:fe::fe"
-              "2620:fe::9"
-              "2606:4700:4700::1111"
-              "2606:4700:4700::1001"
+              "2620:fe::fe#dns.quad9.net"
+              "2620:fe::9#dns.quad9.net"
+              "2606:4700:4700::1111#cloudflare-dns.com"
+              "2606:4700:4700::1001#cloudflare-dns.com"
             ];
           };
 
