@@ -13,7 +13,7 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      checks."preservation/basic" = pkgs.nixosTest {
+      checks."features/preservation/basic" = pkgs.nixosTest {
         name = "preservation-basic";
 
         nodes.machine =

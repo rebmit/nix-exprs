@@ -91,7 +91,7 @@
       };
     in
     {
-      checks."enthalpy/basic" = pkgs.nixosTest {
+      checks."features/enthalpy/basic" = pkgs.nixosTest {
         name = "enthalpy-basic";
 
         nodes.peer1 =
