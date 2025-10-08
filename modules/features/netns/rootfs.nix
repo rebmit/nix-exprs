@@ -102,13 +102,28 @@ in
                 isReadOnly = false;
               };
 
-              # libsystemd
+              # nixos
+              "/run/binfmt".recursive = false;
+              "/run/keys".recursive = false;
+              "/run/lock".recursive = false;
+              "/run/wrappers".recursive = false;
+
+              # iproute2
+              "/run/netns" = { };
+
+              # systemd
+              "/run/user".isReadOnly = false;
+              "/run/systemd/ask-password".recursive = false;
               "/run/systemd/journal".recursive = false;
               "/run/systemd/machines".recursive = false;
               "/run/systemd/seats".recursive = false;
               "/run/systemd/sessions".recursive = false;
               "/run/systemd/system".recursive = false;
+              "/run/systemd/userdb".recursive = false;
               "/run/systemd/users".recursive = false;
+
+              # udev
+              "/run/udev".recursive = false;
             };
 
             serviceConfig =

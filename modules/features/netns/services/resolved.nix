@@ -196,9 +196,7 @@ in
                   "AF_INET6"
                 ];
                 SystemCallFilter = [ "@system-service" ];
-                TemporaryFileSystem = [
-                  "/run/dbus"
-                ];
+                TemporaryFileSystem = [ "/run/dbus" ];
                 Type = "notify-reload";
               }
             ];

@@ -189,9 +189,7 @@ in
                   "@system-service"
                   "bpf"
                 ];
-                TemporaryFileSystem = [
-                  "/run/dbus"
-                ];
+                TemporaryFileSystem = [ "/run/dbus" ];
                 Type = "notify-reload";
               }
             ];

@@ -62,7 +62,6 @@ in
               })
               {
                 Type = "notify";
-                BindReadOnlyPaths = [ "/run/systemd/userdb" ];
                 Restart = "on-failure";
                 RestartSec = 5;
                 DynamicUser = true;
@@ -71,6 +70,7 @@ in
             ];
             environment = {
               LD_LIBRARY_PATH = config.system.nssModules.path;
+              NSNCD_HANDOFF_TIMEOUT = "10";
             };
             after = [
               "netns-${name}.service"
