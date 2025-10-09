@@ -28,11 +28,6 @@ in
       };
 
       config = mkIf (cfg.enable && cfg.exit.enable) {
-        systemd.network.config.networkConfig = {
-          IPv4Forwarding = true;
-          IPv6Forwarding = true;
-        };
-
         # drop if systemd-networkd can do this in the future
         systemd.services.enthalpy-exit = {
           path = with pkgs; [ iproute2 ];
@@ -91,16 +86,47 @@ in
           "${cidrHost 2 cfg.srv6.prefix} encap seg6local action End.DT6 table exit dev enthalpy table localsid"
         ];
 
-        systemd.network.networks."50-enthalpy" = {
-          matchConfig.Name = "enthalpy";
-          routes = [
-            {
-              Destination = cfg.network;
-              Gateway = "fe80::ff:fe00:1";
-              GatewayOnLink = true;
-            }
-          ];
-          linkConfig.RequiredForOnline = false;
+        systemd.network = {
+          config = {
+            networkConfig = {
+              IPv4Forwarding = mkIf cfg.exit.plat.enable true;
+              IPv6Forwarding = true;
+            };
+            routeTables.enthalpy = 400;
+          };
+          networks = {
+            "20-enthalpy" = {
+              matchConfig.Name = "enthalpy";
+              routes = [
+                {
+                  Destination = cfg.network;
+                  Gateway = "fe80::ff:fe00:1";
+                  GatewayOnLink = true;
+                  Table = config.systemd.network.config.routeTables.enthalpy;
+                }
+              ];
+              routingPolicyRules = [
+                {
+                  Priority = 1000;
+                  Family = "ipv6";
+                  Table = config.systemd.network.config.routeTables.enthalpy;
+                }
+              ];
+              linkConfig.RequiredForOnline = false;
+            };
+            "20-plat" = mkIf cfg.exit.plat.enable {
+              matchConfig.Name = "plat";
+              routes = [
+                {
+                  Destination = "64:ff9b::/96";
+                  Source = cfg.network;
+                }
+                { Destination = "100.127.0.0/16"; }
+              ];
+              networkConfig.LinkLocalAddressing = false;
+              linkConfig.RequiredForOnline = false;
+            };
+          };
         };
 
         networking.nftables = mkIf cfg.exit.plat.enable {
@@ -137,19 +163,6 @@ in
           after = [ "network-pre.target" ];
           wantedBy = [ "multi-user.target" ];
         });
-
-        systemd.network.networks."70-plat" = mkIf cfg.exit.plat.enable {
-          matchConfig.Name = "plat";
-          routes = [
-            {
-              Destination = "64:ff9b::/96";
-              Source = cfg.network;
-            }
-            { Destination = "100.127.0.0/16"; }
-          ];
-          networkConfig.LinkLocalAddressing = false;
-          linkConfig.RequiredForOnline = false;
-        };
       };
     };
 }
