@@ -54,12 +54,32 @@ in
             };
 
             specialisation.new-generation.configuration = {
+              systemd.network = {
+                enable = true;
+                networks = {
+                  "20-enthalpy" = {
+                    matchConfig.Name = "enthalpy";
+                  };
+                };
+              };
+
               netns.enthalpy = {
                 services.resolved.enable = mkForce false;
                 services.nscd.enable = false;
                 confext = {
                   "oldfile".text = mkForce "new-generation";
                   "newfile".text = "new-generation";
+                };
+                netdevs.host = {
+                  kind = "veth";
+                  mtu = 1400;
+                  address = "02:00:00:00:00:01";
+                  extraArgs.peer = {
+                    name = "enthalpy";
+                    mtu = 1400;
+                    address = "02:00:00:00:00:02";
+                    netns = "/proc/1/ns/net";
+                  };
                 };
                 services.networkd = {
                   enable = true;
@@ -72,6 +92,9 @@ in
                     };
                   };
                   networks = {
+                    "20-host" = {
+                      matchConfig.Name = "host";
+                    };
                     "20-enthalpy" = {
                       matchConfig.Name = "enthalpy";
                       linkConfig.MTUBytes = 9000;
@@ -213,6 +236,12 @@ in
               actual   = machine.succeed("netns-run-enthalpy ${path}/nft list ruleset")
               expected = "masquerade"
               t.assertIn(expected, actual, "nftables not configured as expected")
+
+            # config/netdevs.nix
+            with subtest("Scripted netdevs configuration works"):
+              machine.succeed("systemctl status netns-enthalpy-netdev-host.service")
+
+              print(machine.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%host"))
 
             # services/nscd.nix
             with subtest("Network namespaces have isolated nscd socket"):
