@@ -6,9 +6,10 @@
   ...
 }:
 let
+  inherit (lib) types;
   inherit (lib.meta) getExe;
-  inherit (lib.modules) mkIf mkMerge;
-  inherit (lib.options) mkEnableOption;
+  inherit (lib.modules) mkIf;
+  inherit (lib.options) mkEnableOption mkOption;
   inherit (selfLib.network.ipv6) cidrHost;
   inherit (selfLib.misc) mkHardenedService;
 in
@@ -22,40 +23,35 @@ in
     {
       options.services.enthalpy.exit = {
         enable = mkEnableOption "exit node";
+        table = mkOption {
+          type = types.int;
+          default = 400;
+          description = ''
+            The routing table used for exit node routes in enthalpy netns.
+          '';
+        };
         plat.enable = mkEnableOption "the PLAT component of 464XLAT" // {
           default = true;
         };
       };
 
       config = mkIf (cfg.enable && cfg.exit.enable) {
-        # drop if systemd-networkd can do this in the future
-        systemd.services.enthalpy-exit = {
-          path = with pkgs; [ iproute2 ];
-          script = ''
-            ip link add host mtu 1400 address 02:00:00:00:00:01 type veth \
-              peer enthalpy mtu 1400 address 02:00:00:00:00:02 netns /proc/1/ns/net
-          '';
-          preStop = ''
-            ip link del host
-          '';
-          serviceConfig = mkMerge [
-            netnsCfg.serviceConfig
-            {
-              Type = "oneshot";
-              RemainAfterExit = true;
-            }
-          ];
-          unitConfig = netnsCfg.unitConfig;
-          wantedBy = [
-            "netns-enthalpy.service"
-            "multi-user.target"
-          ];
-        };
-
         netns.enthalpy = {
+          netdevs.host = {
+            kind = "veth";
+            mtu = 1400;
+            address = "02:00:00:00:00:01";
+            extraArgs.peer = {
+              name = "enthalpy";
+              mtu = 1400;
+              address = "02:00:00:00:00:02";
+              netns = "/proc/1/ns/net";
+            };
+          };
+
           services.networkd = {
             config = {
-              routeTables.exit = 400;
+              routeTables.exit = cfg.exit.table;
             };
             networks = {
               "20-host" = {

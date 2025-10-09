@@ -31,6 +31,13 @@ in
             List of prefixes that are routed to warp by default.
           '';
         };
+        table = mkOption {
+          type = types.int;
+          default = 401;
+          description = ''
+            The routing table used for warp routes in enthalpy netns.
+          '';
+        };
         plat.enable = mkEnableOption "the PLAT component of 464XLAT" // {
           default = true;
         };
@@ -60,6 +67,8 @@ in
               }
             '';
           };
+
+          services.nscd.enable = false;
 
           services.networkd = {
             enable = true;
@@ -106,9 +115,21 @@ in
         };
 
         netns.enthalpy = {
+          netdevs.warp = {
+            kind = "veth";
+            mtu = 1400;
+            address = "02:00:00:00:00:01";
+            extraArgs.peer = {
+              name = "enthalpy";
+              mtu = 1400;
+              address = "02:00:00:00:00:02";
+              netns = warpNetnsCfg.netnsPath;
+            };
+          };
+
           services.networkd = {
             config = {
-              routeTables.warp = 401;
+              routeTables.warp = cfg.warp.table;
             };
             networks = {
               "20-warp" = {
@@ -130,31 +151,6 @@ in
               };
             };
           };
-        };
-
-        # drop if systemd-networkd can do this in the future
-        systemd.services.enthalpy-warp = {
-          path = with pkgs; [ iproute2 ];
-          script = ''
-            ip link add warp mtu 1400 address 02:00:00:00:00:01 type veth \
-              peer enthalpy mtu 1400 address 02:00:00:00:00:02 netns ${warpNetnsCfg.netnsPath}
-          '';
-          preStop = ''
-            ip link del warp
-          '';
-          serviceConfig = mkMerge [
-            netnsCfg.serviceConfig
-            {
-              Type = "oneshot";
-              BindReadOnlyPaths = [ "/run/netns" ];
-              RemainAfterExit = true;
-            }
-          ];
-          unitConfig = netnsCfg.unitConfig;
-          wantedBy = [
-            "netns-enthalpy.service"
-            "multi-user.target"
-          ];
         };
 
         services.enthalpy.srv6.actions = [

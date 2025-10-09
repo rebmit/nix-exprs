@@ -209,7 +209,6 @@
               print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 fd97:f72e:270c:1020::1"))
               print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 fd97:f72e:270c:1010::1"))
 
-              peer1.succeed("systemctl status enthalpy-exit.service")
               print(peer1.succeed("netns-run-enthalpy ${path}/ping -c 4 fd00::1"))
               print(peer2.succeed("netns-run-enthalpy ${path}/ping -c 4 fd00::1"))
 
