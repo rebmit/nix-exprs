@@ -38,7 +38,7 @@ in
           config = mkIf config.enable {
             nssDatabases = {
               hosts = mkMerge [
-                # (mkOrder 400 [ "mymachines" ])
+                (mkOrder 400 [ "mymachines" ])
                 (mkOrder 998 [ "files" ])
                 (mkOrder 999 [ "myhostname" ])
                 (mkOrder 1499 [ "dns" ])
