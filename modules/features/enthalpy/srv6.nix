@@ -28,6 +28,20 @@ in
             Prefix used for SRv6 actions.
           '';
         };
+        table = mkOption {
+          type = types.int;
+          default = 500;
+          description = ''
+            The routing table used for local SIDs in enthalpy netns.
+          '';
+        };
+        priority = mkOption {
+          type = types.int;
+          default = 500;
+          description = ''
+            Policy routing priority for the local SIDs table.
+          '';
+        };
         actions = mkOption {
           type = types.listOf types.str;
           default = [ ];
@@ -46,7 +60,7 @@ in
         netns.enthalpy = {
           services.networkd = {
             config = {
-              routeTables.localsid = 500;
+              routeTables.localsid = cfg.srv6.table;
             };
             networks = {
               "20-lo" = {
@@ -60,7 +74,7 @@ in
                 ];
                 routingPolicyRules = [
                   {
-                    Priority = 500;
+                    Priority = cfg.srv6.priority;
                     Family = "ipv6";
                     From = cfg.network;
                     To = cfg.srv6.prefix;

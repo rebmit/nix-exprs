@@ -62,8 +62,8 @@ in
               })
               {
                 Type = "notify";
-                Restart = "on-failure";
-                RestartSec = 5;
+                Restart = "always";
+                RestartSec = 0;
                 DynamicUser = true;
                 ExecStart = "${pkgs.nsncd}/bin/nsncd";
               }
