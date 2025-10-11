@@ -154,7 +154,7 @@ in
         };
 
         services.enthalpy.srv6.actions = [
-          "${cidrHost 3 cfg.srv6.prefix} encap seg6local action End.DT6 table exit dev enthalpy table localsid"
+          "${cidrHost 3 cfg.srv6.prefix} encap seg6local action End.DT6 table warp dev enthalpy table localsid"
         ];
 
         systemd.services.cloudflare-warp-config = mkHardenedService {
