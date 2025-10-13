@@ -6,7 +6,7 @@ let
     mapAttrs'
     nameValuePair
     ;
-  inherit (lib.modules) mkIf mkMerge mkOverride;
+  inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) mkOption;
 in
 {
@@ -46,6 +46,11 @@ in
             };
 
             tmpfiles."00-netns-${name}" = {
+              "/run".d = {
+                mode = "0755";
+                user = "root";
+                group = "root";
+              };
               "/tmp".q = {
                 mode = "1777";
                 user = "root";
@@ -71,7 +76,6 @@ in
             serviceConfig = mkMerge [
               cfg.serviceConfig
               {
-                ProtectSystem = mkOverride 75 false;
                 Type = "oneshot";
                 RemainAfterExit = true;
                 ExecStart = "systemd-tmpfiles --create --remove";

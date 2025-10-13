@@ -26,7 +26,7 @@ let
             The host path in the init mount namespace.
           '';
         };
-        isReadOnly = mkOption {
+        readOnly = mkOption {
           type = types.bool;
           default = true;
           description = ''
@@ -99,7 +99,7 @@ in
 
               "/run" = {
                 hostPath = "${config.rootDirectory}/run";
-                isReadOnly = false;
+                readOnly = false;
               };
 
               # nixos
@@ -112,7 +112,7 @@ in
               "/run/netns" = { };
 
               # systemd
-              "/run/user".isReadOnly = false;
+              "/run/user".readOnly = false;
               "/run/systemd/ask-password".recursive = false;
               "/run/systemd/journal".recursive = false;
               "/run/systemd/machines".recursive = false;
@@ -131,11 +131,10 @@ in
                 toRecursiveOption = flag: if flag then "rbind" else "norbind";
 
                 enabledBindMounts = filter (d: d.enable) (attrValues config.bindMounts);
-                rwBinds = filter (d: !d.isReadOnly) enabledBindMounts;
-                roBinds = filter (d: d.isReadOnly) enabledBindMounts;
+                rwBinds = filter (d: !d.readOnly) enabledBindMounts;
+                roBinds = filter (d: d.readOnly) enabledBindMounts;
               in
               {
-                ProtectSystem = "strict";
                 RootDirectory = config.rootDirectory;
                 MountAPIVFS = "yes";
                 BindPaths = map (d: "${d.hostPath}:${d.mountPoint}:${toRecursiveOption d.recursive}") rwBinds;
