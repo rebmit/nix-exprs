@@ -96,6 +96,7 @@ in
                 service = "bird";
                 runtimeDirectory = "/run/bird";
                 runtimeDirectoryMode = "0750";
+                runtimeDirectoryPreserve = false;
               })
               {
                 Type = "forking";

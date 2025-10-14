@@ -89,7 +89,7 @@ in
           netns,
           service,
           runtimeDirectory,
-          runtimeDirectoryMode ? "0755",
+          runtimeDirectoryMode ? "0750",
           runtimeDirectoryPreserve ? false,
           runtimeDirectoryPreserveMode ? "0750",
         }:

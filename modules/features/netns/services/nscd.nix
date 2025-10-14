@@ -59,6 +59,7 @@ in
                 service = "nscd";
                 runtimeDirectory = "/run/nscd";
                 runtimeDirectoryMode = "0755";
+                runtimeDirectoryPreserve = false;
               })
               {
                 Type = "notify";
