@@ -16,6 +16,7 @@ let
     attrNames
     ;
   inherit (lib.lists) all;
+  inherit (lib.modules) mkIf;
   inherit (lib.strings) concatStringsSep optionalString escapeShellArg;
   inherit (selfLib.path) concatTwoPaths;
 
@@ -203,7 +204,7 @@ in
           }
         ) nftablesEnabledNetns;
 
-        networking.nftables.enable = nftablesEnabledNetns != { };
+        networking.nftables.enable = mkIf (nftablesEnabledNetns != { }) true;
       };
     };
 }
