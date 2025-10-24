@@ -56,6 +56,9 @@ in
             machine.switch_root()
             machine.wait_for_unit("default.target")
 
+            # with subtest("Initial boot meets ConditionFirstBoot"):
+            #   machine.require_unit_state("first-boot-complete.target","active")
+
             with subtest("User rebmit is enabled"):
               actual   = machine.succeed("getent shadow rebmit")
               expected = "${hashedPassword}"
@@ -107,6 +110,9 @@ in
               actual   = machine.succeed("getent shadow timber")
               expected = "!*"
               t.assertIn(expected, actual, "user timber should be disabled after reboot")
+
+            # with subtest("Second boot does not meet ConditionFirstBoot"):
+            #   machine.require_unit_state("first-boot-complete.target", "inactive")
 
             machine.shutdown()
           '';
