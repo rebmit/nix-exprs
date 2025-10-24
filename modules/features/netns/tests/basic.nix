@@ -44,6 +44,25 @@ in
                 };
                 hosts = {
                   "1.1.1.1" = [ "one.one.one.one" ];
+                  "2001:db8::1" = [ "test.internal" ];
+                  "192.168.0.1" = [ "test.internal" ];
+                };
+                getaddrinfo = {
+                  reload = true;
+                  label = {
+                    "::1/128" = 0;
+                    "::/0" = 1;
+                    "2002::/16" = 2;
+                    "::/96" = 3;
+                    "::ffff:0:0/96" = 4;
+                  };
+                  precedence = {
+                    "::1/128" = 50;
+                    "::/0" = 40;
+                    "2002::/16" = 30;
+                    "::/96" = 20;
+                    "::ffff:0:0/96" = 10;
+                  };
                 };
               };
             };
@@ -69,6 +88,11 @@ in
                 confext = {
                   "oldfile".text = mkForce "new-generation";
                   "newfile".text = "new-generation";
+                };
+                getaddrinfo = {
+                  precedence = {
+                    "::ffff:0:0/96" = mkForce 100;
+                  };
                 };
                 netdevs.host = {
                   kind = "veth";
@@ -197,6 +221,13 @@ in
               expected = "1.1.1.1"
               t.assertIn(expected, actual, "hosts mismatch")
 
+            # config/getaddrinfo.nix
+            with subtest("Network namespace specific /etc/gai.conf is in place"):
+              print(machine.succeed("netns-run-enthalpy ${path}/cat /etc/gai.conf"))
+              actual   = machine.succeed("netns-run-enthalpy ${path}/getent ahosts test.internal").splitlines()[0].split()[0]
+              expected = "2001:db8::1"
+              t.assertIn(expected, actual, "getaddrinfo result mismatch")
+
             # config/tmpfiles.nix
             with subtest("systemd-tmpfiles works"):
               print(machine.succeed("systemctl status netns-enthalpy-tmpfiles.service"))
@@ -242,6 +273,13 @@ in
               machine.succeed("systemctl status netns-enthalpy-netdev-host.service")
 
               print(machine.succeed("netns-run-enthalpy ${path}/ping -c 4 ff02::1%host"))
+
+            # config/getaddrinfo.nix
+            with subtest("Network namespace specific /etc/gai.conf is in place"):
+              print(machine.succeed("netns-run-enthalpy ${path}/cat /etc/gai.conf"))
+              actual   = machine.succeed("netns-run-enthalpy ${path}/getent ahosts test.internal").splitlines()[0].split()[0]
+              expected = "192.168.0.1"
+              t.assertIn(expected, actual, "getaddrinfo result mismatch")
 
             # services/nscd.nix
             with subtest("Network namespaces have isolated nscd socket"):
