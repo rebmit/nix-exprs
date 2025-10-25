@@ -12,7 +12,7 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      checks."features/immutable/nixos-init" = pkgs.nixosTest {
+      checks."profiles/immutable/nixos-init" = pkgs.nixosTest {
         name = "immutable-nixos-init";
 
         nodes.machine =
