@@ -88,5 +88,5 @@ in
 {
   imports = [ nixpkgsModule ];
 
-  flake.modules.flake.nixpkgs = nixpkgsModule;
+  flake.flakeModules.nixpkgs = nixpkgsModule;
 }

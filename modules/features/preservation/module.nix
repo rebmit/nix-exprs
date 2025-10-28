@@ -7,7 +7,7 @@ let
   inherit (lib.modules) mkIf;
 in
 {
-  flake.modules.nixos.preservation =
+  flake.nixosModules.preservation =
     {
       config,
       pkgs,

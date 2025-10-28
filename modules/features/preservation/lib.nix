@@ -81,7 +81,7 @@ let
   onlyForInitrd = forInitrd: filter (conf: conf.inInitrd == forInitrd);
 in
 {
-  flake.modules.nixos.preservation =
+  flake.nixosModules.preservation =
     { options, ... }:
     let
       mkRuleFileContent =

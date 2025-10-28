@@ -71,5 +71,5 @@ in
 {
   imports = [ nixpkgsPredicatesModule ];
 
-  flake.modules.flake.nixpkgsPredicates = nixpkgsPredicatesModule;
+  flake.flakeModules.nixpkgsPredicates = nixpkgsPredicatesModule;
 }

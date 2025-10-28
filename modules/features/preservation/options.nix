@@ -6,7 +6,7 @@ let
   inherit (lib.options) mkOption mkEnableOption;
 in
 {
-  flake.modules.nixos.preservation =
+  flake.nixosModules.preservation =
     { config, ... }:
     let
       mountOption = types.submodule {

@@ -11,7 +11,7 @@ let
   inherit (lib.strings) concatStringsSep concatMapStrings;
 in
 {
-  flake.modules.nixos.netns =
+  flake.nixosModules.netns =
     { config, ... }@host:
     let
       inherit (config.passthru.netns.lib) mkNetnsOption;

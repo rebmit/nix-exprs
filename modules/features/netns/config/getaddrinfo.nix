@@ -9,7 +9,7 @@ let
   inherit (lib.strings) concatStringsSep;
 in
 {
-  flake.modules.nixos.netns =
+  flake.nixosModules.netns =
     { config, pkgs, ... }:
     let
       inherit (config.passthru.netns.lib) mkNetnsOption;

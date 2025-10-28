@@ -13,7 +13,7 @@ let
   inherit (selfLib.network.ipv6) cidrHost;
 in
 {
-  flake.modules.nixos.enthalpy =
+  flake.nixosModules.enthalpy =
     { config, pkgs, ... }:
     let
       cfg = config.services.enthalpy;

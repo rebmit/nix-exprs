@@ -5,8 +5,8 @@
     let
       common = {
         imports = [
-          config.flake.modules.nixos.enthalpy
-          config.flake.modules.nixos.netns
+          config.flake.nixosModules.enthalpy
+          config.flake.nixosModules.netns
           config.flake.modules.nixos.immutable
         ];
 

@@ -10,7 +10,7 @@ let
   inherit (lib.options) mkEnableOption;
 in
 {
-  flake.modules.nixos.enthalpy =
+  flake.nixosModules.enthalpy =
     { config, pkgs, ... }:
     let
       cfg = config.services.enthalpy;

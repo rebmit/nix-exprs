@@ -20,7 +20,7 @@ in
           { pkgs, ... }:
           {
             imports = [
-              config.flake.modules.nixos.preservation
+              config.flake.nixosModules.preservation
               config.flake.modules.nixos.immutable
             ];
 
