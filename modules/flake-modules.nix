@@ -1,3 +1,5 @@
+# Portions of this file are sourced from
+# https://github.com/hercules-ci/flake-parts/blob/864599284fc7c0ba6357ed89ed5e2cd5040f0c04/extras/flakeModules.nix (MIT License)
 {
   lib,
   flake-parts-lib,
