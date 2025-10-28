@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.immutable = {
+  flake.modules.nixos.immutable = _: {
     users = {
       mutableUsers = false;
       users.root.createHome = true;

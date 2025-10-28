@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.immutable = {
+  flake.modules.nixos.immutable = _: {
     system.etc.overlay = {
       enable = true;
       mutable = false;
