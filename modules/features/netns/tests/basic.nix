@@ -10,7 +10,7 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      checks."features/netns/basic" = pkgs.nixosTest {
+      checks."features/netns/basic" = pkgs.testers.nixosTest {
         name = "netns-basic";
 
         nodes.machine =
