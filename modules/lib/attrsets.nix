@@ -1,5 +1,6 @@
 # Portions of this file are sourced from
-# https://github.com/linyinfeng/dotfiles/blob/b618b0fd16fb9c79ab7199ed51c4c0f98a392cea/lib/flatten-tree.nix (MIT License)
+# https://github.com/linyinfeng/dotfiles/blob/7b5cb693088c2996418d44a3f1203680762ed97d/lib/flatten-tree.nix (MIT License)
+# https://github.com/linyinfeng/dotfiles/blob/7b5cb693088c2996418d44a3f1203680762ed97d/lib/transpose-attrs.nix (MIT License)
 { lib, ... }:
 let
   inherit (lib.attrsets)
@@ -7,29 +8,51 @@ let
     mapAttrsToList
     nameValuePair
     listToAttrs
+    attrsToList
+    recursiveUpdate
     ;
-  inherit (lib.lists) flatten;
+  inherit (lib.lists) flatten fold;
 in
 {
   flake.lib =
     _:
     let
       flattenTree =
-        tree: recurseCond:
+        settings: tree:
         let
           mkNewPrefix = prefix: name: "${if prefix == "" then "" else "${prefix}/"}${name}";
           flattenTree' =
+            {
+              leafFilter ? _: true,
+              setFilter ? _: true,
+            }:
             prefix: remain:
-            if isAttrs remain && recurseCond remain then
-              flatten (mapAttrsToList (name: value: flattenTree' (mkNewPrefix prefix name) value) remain)
+            if isAttrs remain && setFilter remain then
+              flatten (mapAttrsToList (name: value: flattenTree' settings (mkNewPrefix prefix name) value) remain)
+            else if leafFilter remain then
+              [ (nameValuePair prefix remain) ]
             else
-              [ (nameValuePair prefix remain) ];
+              [ ];
         in
-        listToAttrs (flattenTree' "" tree);
+        listToAttrs (flattenTree' settings "" tree);
+
+      transposeAttrs =
+        attrs:
+        let
+          list = fold (sys: l: map (pair: pair // { system = sys.name; }) (attrsToList sys.value) ++ l) [ ] (
+            attrsToList attrs
+          );
+        in
+        fold (
+          item: transposed: recursiveUpdate transposed { ${item.name}.${item.system} = item.value; }
+        ) { } list;
     in
     {
       attrsets = {
-        inherit flattenTree;
+        inherit
+          flattenTree
+          transposeAttrs
+          ;
       };
     };
 }

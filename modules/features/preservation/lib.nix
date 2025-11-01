@@ -1,6 +1,6 @@
 # Portions of this file are sourced from
 # https://github.com/nix-community/preservation/blob/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11/lib.nix (MIT License)
-# https://github.com/linyinfeng/dotfiles/blob/e87f7de2a4c11379e874c8d372e985b1836c042a/nixos/modules/environment/global-persistence/default.nix (MIT License)
+# https://github.com/linyinfeng/dotfiles/blob/7b5cb693088c2996418d44a3f1203680762ed97d/nixos/modules/environment/global-persistence/default.nix (MIT License)
 # https://github.com/NixOS/nixpkgs/blob/0a53886700520c494906ab04a4f9b39d61bfdfb9/nixos/modules/system/boot/systemd/tmpfiles.nix (MIT License)
 {
   lib,
