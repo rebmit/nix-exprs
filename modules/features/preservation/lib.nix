@@ -34,7 +34,7 @@ let
     ;
   inherit (lib.trivial) lessThan;
   inherit (selfLib.path)
-    concatTwoPaths
+    concatPath
     concatPaths
     parentDirectory
     ;
@@ -265,14 +265,14 @@ in
                 group = homeGroup;
                 mode = homeMode;
               };
-              "${concatTwoPaths persistentStoragePath d}".d = {
+              "${concatPath persistentStoragePath d}".d = {
                 user = username;
                 group = homeGroup;
                 mode = homeMode;
               };
             }) parents
             ++ singleton {
-              "${concatTwoPaths persistentStoragePath home}".d = {
+              "${concatPath persistentStoragePath home}".d = {
                 user = username;
                 group = homeGroup;
                 mode = homeMode;
@@ -302,7 +302,7 @@ in
         unitConfig = {
           DefaultDependencies = false;
           RefuseManualStop = true;
-          RequiresMountsFor = concatTwoPaths "/sysroot" persistentStoragePath;
+          RequiresMountsFor = concatPath "/sysroot" persistentStoragePath;
         };
         serviceConfig = {
           Type = "oneshot";

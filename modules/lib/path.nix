@@ -20,7 +20,7 @@ in
   flake.lib =
     _:
     let
-      concatTwoPaths =
+      concatPath =
         parent: child:
         if hasSuffix "/" parent then
           if hasPrefix "/" child then parent + (removePrefix "/" child) else parent + child
@@ -29,7 +29,7 @@ in
         else
           parent + "/" + child;
 
-      concatPaths = foldl' concatTwoPaths "";
+      concatPaths = foldl' concatPath "";
 
       parentDirectory =
         path:
@@ -43,7 +43,7 @@ in
     {
       path = {
         inherit
-          concatTwoPaths
+          concatPath
           concatPaths
           parentDirectory
           ;

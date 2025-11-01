@@ -12,7 +12,7 @@ let
   inherit (lib.modules) mkBefore mkAfter;
   inherit (lib.options) mkOption;
   inherit (lib.strings) escapeC concatStringsSep concatStrings;
-  inherit (selfLib.path) concatTwoPaths;
+  inherit (selfLib.path) concatPath;
 
   escapeArgument = escapeC [
     "\t"
@@ -65,7 +65,7 @@ in
         );
 
       mkRuntimeDirectory = netns: service: "netns-${netns}/${service}";
-      mkRuntimeDirectoryPath = netns: service: concatTwoPaths "/run" (mkRuntimeDirectory netns service);
+      mkRuntimeDirectoryPath = netns: service: concatPath "/run" (mkRuntimeDirectory netns service);
 
       mkNetnsRunWrapper =
         name: cfg:
@@ -103,7 +103,7 @@ in
                 name = "netns-${netns}-${service}-runtime-directory-setup";
                 text = ''
                   mkdir -pv "${runtimeDirectory}"
-                  chown -Rv "$(stat -c '%u:%g' '${concatTwoPaths "/run" dummyRuntimeDirectory}')" "${runtimeDirectory}"
+                  chown -Rv "$(stat -c '%u:%g' '${concatPath "/run" dummyRuntimeDirectory}')" "${runtimeDirectory}"
                   chmod -v "${runtimeDirectoryMode}" "${runtimeDirectory}"
                 '';
                 enableStrictShellChecks = true;

@@ -18,7 +18,7 @@ let
   inherit (lib.lists) all;
   inherit (lib.modules) mkIf;
   inherit (lib.strings) concatStringsSep optionalString escapeShellArg;
-  inherit (selfLib.path) concatTwoPaths;
+  inherit (selfLib.path) concatPath;
 
   tableOptions =
     { name, ... }:
@@ -129,7 +129,7 @@ in
                     '') enabledTables
                   )}
                 '';
-                deletionsScriptVar = "${concatTwoPaths "/run" runtimeDirectory}/deletions.nft";
+                deletionsScriptVar = "${concatPath "/run" runtimeDirectory}/deletions.nft";
                 ensureDeletions = pkgs.writeShellScript "nftables-ensure-deletions" ''
                   touch ${deletionsScriptVar}
                   chmod +x ${deletionsScriptVar}
