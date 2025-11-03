@@ -117,7 +117,10 @@ in
     in
     {
       network.ipv6 = {
-        inherit cidrHost cidrSubnet;
+        inherit
+          cidrHost
+          cidrSubnet
+          ;
       };
     };
 }

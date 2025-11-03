@@ -1,5 +1,10 @@
-{ withSystem, ... }:
+{ inputs, ... }:
 {
-  flake.overlays.default =
-    _final: prev: withSystem prev.stdenv.hostPlatform.system ({ config, ... }: config.packages);
+  imports = [ inputs.flake-parts.flakeModules.easyOverlay ];
+
+  perSystem =
+    { config, ... }:
+    {
+      overlayAttrs = config.packages;
+    };
 }
