@@ -68,14 +68,14 @@ let
             '';
           };
           overlays = mkOption {
-            type = types.listOf types.raw;
+            type = types.listOf (types.functionTo (types.functionTo (types.lazyAttrsOf types.unspecified)));
             default = [ ];
             description = ''
               List of overlays layers used to extend Nixpkgs.
             '';
           };
           crossOverlays = mkOption {
-            type = types.listOf types.raw;
+            type = types.listOf (types.functionTo (types.functionTo (types.lazyAttrsOf types.unspecified)));
             default = [ ];
             description = ''
               List of overlays to apply to target packages only.
