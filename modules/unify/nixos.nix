@@ -109,6 +109,10 @@ in
             }
           )
         );
+        default = { };
+        description = ''
+          A set of NixOS configurations exposed by this flake.
+        '';
       };
 
       config = {
