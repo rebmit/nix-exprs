@@ -36,16 +36,10 @@
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
     inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      { lib, ... }:
-      {
-        imports = lib.fileset.toList (
-          lib.fileset.fileFilter (file: file.hasExt "nix" && !lib.hasPrefix "_" file.name) ./modules
-        );
-      }
-    );
+    flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }
