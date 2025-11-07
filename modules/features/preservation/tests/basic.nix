@@ -1,10 +1,6 @@
 # Portions of this file are sourced from
 # https://github.com/nix-community/preservation/blob/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11/tests/basic.nix (MIT License)
-{
-  config,
-  lib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib.lists) filter;
   inherit (lib.strings) toJSON;
@@ -20,8 +16,8 @@ in
           { pkgs, ... }:
           {
             imports = [
-              config.flake.nixosModules.preservation
-              config.flake.modules.nixos.immutable
+              self.nixosModules.preservation
+              self.modules.nixos.immutable
             ];
 
             preservation = {

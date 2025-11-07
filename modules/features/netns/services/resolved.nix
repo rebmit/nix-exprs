@@ -1,10 +1,6 @@
 # Portions of this file are sourced from
 # https://github.com/NixOS/nixpkgs/blob/0a53886700520c494906ab04a4f9b39d61bfdfb9/nixos/modules/system/boot/resolved.nix (MIT License)
-{
-  lib,
-  selfLib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib) types;
   inherit (lib.attrsets)
@@ -15,7 +11,7 @@ let
   inherit (lib.modules) mkIf mkMerge mkOrder;
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib.strings) optionalString concatStringsSep;
-  inherit (selfLib.misc) mkHardenedService;
+  inherit (self.lib.misc) mkHardenedService;
 in
 {
   flake.nixosModules.netns =

@@ -19,15 +19,20 @@
   };
 
   outputs =
-    inputs@{ nixpkgs, ... }:
+    inputs@{
+      flake-parts,
+      nixpkgs,
+      import-tree,
+      ...
+    }:
     let
       lib = nixpkgs.lib;
     in
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+    flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        inputs.flake-parts.flakeModules.partitions
+        flake-parts.flakeModules.partitions
       ]
-      ++ (inputs.import-tree.withLib inputs.nixpkgs.lib).leafs ./modules;
+      ++ (import-tree.withLib lib).leafs ./modules;
       partitionedAttrs = {
         devShells = "dev";
         formatter = "dev";
@@ -39,11 +44,11 @@
         dev = {
           extraInputsFlake = ./dev;
           module =
-            (inputs.import-tree.initFilter (p: !lib.hasSuffix "/flake.nix" p && lib.hasSuffix ".nix" p))
+            (import-tree.initFilter (p: !lib.hasSuffix "/flake.nix" p && lib.hasSuffix ".nix" p))
               ./dev;
         };
-        lib.module = inputs.import-tree ./lib;
-        pkgs.module = inputs.import-tree ./pkgs;
+        lib.module = import-tree ./lib;
+        pkgs.module = import-tree ./pkgs;
       };
     };
 }

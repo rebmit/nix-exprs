@@ -2,11 +2,7 @@
 # https://github.com/nix-community/preservation/blob/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11/lib.nix (MIT License)
 # https://github.com/linyinfeng/dotfiles/blob/7b5cb693088c2996418d44a3f1203680762ed97d/nixos/modules/environment/global-persistence/default.nix (MIT License)
 # https://github.com/NixOS/nixpkgs/blob/0a53886700520c494906ab04a4f9b39d61bfdfb9/nixos/modules/system/boot/systemd/tmpfiles.nix (MIT License)
-{
-  lib,
-  selfLib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists)
@@ -33,7 +29,7 @@ let
     optionalString
     ;
   inherit (lib.trivial) lessThan;
-  inherit (selfLib.path)
+  inherit (self.lib.path)
     concatPath
     concatPaths
     parentDirectory

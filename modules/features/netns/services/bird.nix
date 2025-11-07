@@ -1,8 +1,4 @@
-{
-  lib,
-  selfLib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib) types;
   inherit (lib.attrsets) filterAttrs mapAttrs' nameValuePair;
@@ -11,7 +7,7 @@ let
   inherit (lib.modules) mkMerge mkIf;
   inherit (lib.options) mkOption mkEnableOption mkPackageOption;
   inherit (lib.strings) optionalString;
-  inherit (selfLib.misc) mkHardenedService;
+  inherit (self.lib.misc) mkHardenedService;
 in
 {
   flake.nixosModules.netns =

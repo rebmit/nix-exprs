@@ -1,10 +1,6 @@
 # Portions of this file are sourced from
 # https://github.com/NixOS/nixpkgs/blob/0a53886700520c494906ab04a4f9b39d61bfdfb9/nixos/modules/services/networking/nftables.nix (MIT License)
-{
-  lib,
-  selfLib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib) types;
   inherit (lib.options) mkOption mkEnableOption;
@@ -18,7 +14,7 @@ let
   inherit (lib.lists) all;
   inherit (lib.modules) mkIf;
   inherit (lib.strings) concatStringsSep optionalString escapeShellArg;
-  inherit (selfLib.path) concatPath;
+  inherit (self.lib.path) concatPath;
 
   tableOptions =
     { name, ... }:

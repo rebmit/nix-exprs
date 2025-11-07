@@ -1,11 +1,7 @@
-{
-  lib,
-  selfLib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib.attrsets) isDerivation;
-  inherit (selfLib.attrsets) flattenTree;
+  inherit (self.lib.attrsets) flattenTree;
 in
 {
   perSystem =

@@ -1,11 +1,7 @@
 # Portions of this file are sourced from
 # https://github.com/NixOS/nixpkgs/blob/0a53886700520c494906ab04a4f9b39d61bfdfb9/nixos/tests/userborn-immutable-etc.nix (MIT License)
 # https://github.com/nix-community/preservation/blob/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11/tests/basic.nix (MIT License)
-{
-  config,
-  lib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib.modules) mkForce;
 in
@@ -22,7 +18,7 @@ in
         nodes.machine =
           { ... }:
           {
-            imports = [ config.flake.modules.nixos.immutable ];
+            imports = [ self.modules.nixos.immutable ];
 
             testing.initrdBackdoor = true;
 

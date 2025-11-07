@@ -1,8 +1,4 @@
-{
-  lib,
-  selfLib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib) types;
   inherit (lib.attrsets)
@@ -16,7 +12,7 @@ let
   inherit (lib.modules) mkMerge;
   inherit (lib.options) mkOption mkEnableOption;
   inherit (lib.strings) concatMapStringsSep;
-  inherit (selfLib.misc) mkHardenedService;
+  inherit (self.lib.misc) mkHardenedService;
 
   inboundOptions = _: {
     options = {

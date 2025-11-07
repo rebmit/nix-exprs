@@ -1,8 +1,8 @@
 # Portions of this file are sourced from
 # https://github.com/NickCao/flakes/blob/3b03efb676ea602575c916b2b8bc9d9cd13b0d85/modules/gravity/default.nix (MIT License)
 {
+  self,
   lib,
-  selfLib,
   getSystem,
   ...
 }:
@@ -11,7 +11,7 @@ let
   inherit (lib.options) mkOption mkEnableOption;
   inherit (lib.modules) mkIf;
   inherit (lib.strings) concatStringsSep;
-  inherit (selfLib.misc) mkHardenedService;
+  inherit (self.lib.misc) mkHardenedService;
 in
 {
   flake.nixosModules.enthalpy =

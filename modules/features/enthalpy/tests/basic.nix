@@ -1,13 +1,13 @@
-{ config, ... }:
+{ self, ... }:
 {
   perSystem =
     { pkgs, ... }:
     let
       common = {
         imports = [
-          config.flake.nixosModules.enthalpy
-          config.flake.nixosModules.netns
-          config.flake.modules.nixos.immutable
+          self.nixosModules.enthalpy
+          self.nixosModules.netns
+          self.modules.nixos.immutable
         ];
 
         services.resolved.enable = true;

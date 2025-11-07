@@ -1,17 +1,13 @@
 # Portions of this file are sourced from
 # https://github.com/NickCao/flakes/blob/3b03efb676ea602575c916b2b8bc9d9cd13b0d85/modules/gravity/default.nix (MIT License)
-{
-  lib,
-  selfLib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib) types;
   inherit (lib.options) mkOption mkEnableOption;
   inherit (lib.modules) mkIf mkMerge;
   inherit (lib.lists) singleton;
-  inherit (selfLib.network.ipv6) cidrHost;
-  inherit (selfLib.misc) mkHardenedService;
+  inherit (self.lib.network.ipv6) cidrHost;
+  inherit (self.lib.misc) mkHardenedService;
 in
 {
   flake.nixosModules.enthalpy =

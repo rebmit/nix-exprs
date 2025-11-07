@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib.modules) mkForce;
 in
@@ -17,8 +13,8 @@ in
           { ... }:
           {
             imports = [
-              config.flake.nixosModules.netns
-              config.flake.modules.nixos.immutable
+              self.nixosModules.netns
+              self.modules.nixos.immutable
             ];
 
             services.resolved.enable = true;
