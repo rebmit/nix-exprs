@@ -17,7 +17,7 @@ in
           {
             imports = [
               self.nixosModules.preservation
-              self.modules.nixos.immutable
+              self.modules.nixos."system/immutable"
             ];
 
             preservation = {

@@ -14,7 +14,7 @@ in
           {
             imports = [
               self.nixosModules.netns
-              self.modules.nixos.immutable
+              self.modules.nixos."system/immutable"
             ];
 
             services.resolved.enable = true;

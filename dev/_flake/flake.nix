@@ -27,9 +27,7 @@
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    rebmit = {
-      url = ./..;
-    };
+    rebmit.url = ./../..;
 
     # programs
 

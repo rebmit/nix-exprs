@@ -1,12 +1,12 @@
 # Portions of this file are sourced from
 # https://github.com/hercules-ci/flake-parts/blob/864599284fc7c0ba6357ed89ed5e2cd5040f0c04/extras/easyOverlay.nix (MIT License)
 {
-  inputs,
+  self,
   lib,
   flake-parts-lib,
   getSystemIgnoreWarning,
   ...
-}@toplevel:
+}:
 let
   inherit (lib) types;
   inherit (lib.modules) mkForce;
@@ -17,7 +17,7 @@ in
   options.perSystem = mkPerSystemOption (
     {
       extendModules,
-      system,
+      pkgs,
       prev,
       ...
     }:
@@ -30,8 +30,8 @@ in
 
       config = {
         _module.args = {
-          prev = inputs.nixpkgs.legacyPackages.${system};
-          final = prev.extend toplevel.config.flake.overlays.default;
+          prev = pkgs;
+          final = prev.extend self.overlays.default;
         };
       };
     }

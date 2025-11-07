@@ -1,12 +1,11 @@
-{ inputs, lib, ... }:
-let
-  inherit (lib.modules) mkOverride;
-in
+{ inputs, self, ... }:
 {
+  imports = [ self.flakeModules.nixpkgs ];
+
   perSystem = {
     nixpkgs = {
       config = {
-        allowNonSource = mkOverride 75 true;
+        allowNonSource = true;
       };
       overlays = [ inputs.nixpkgs-terraform-providers-bin.overlay ];
     };

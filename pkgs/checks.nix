@@ -5,10 +5,10 @@ let
 in
 {
   perSystem =
-    { config, ... }:
+    { self', ... }:
     {
       checks = flattenTree {
         setFilter = s: !isDerivation s;
-      } { inherit (config) packages; };
+      } { inherit (self') packages; };
     };
 }
