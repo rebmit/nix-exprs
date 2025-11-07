@@ -13,45 +13,35 @@
 
     nixpkgs.url = "github:rebmit/nixpkgs/nixos-unstable";
 
-    # flake modules
-
-    devshell = {
-      url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    git-hooks-nix = {
-      url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.gitignore.follows = "gitignore-nix";
-      inputs.flake-compat.follows = "";
-    };
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # libraries
 
-    gitignore-nix = {
-      url = "github:hercules-ci/gitignore.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     import-tree.url = "github:vic/import-tree";
   };
 
   outputs =
-    inputs:
+    inputs@{ nixpkgs, ... }:
+    let
+      lib = nixpkgs.lib;
+    in
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         inputs.flake-parts.flakeModules.partitions
       ]
       ++ (inputs.import-tree.withLib inputs.nixpkgs.lib).leafs ./modules;
       partitionedAttrs = {
+        devShells = "dev";
+        formatter = "dev";
         lib = "lib";
         overlays = "pkgs";
         packages = "pkgs";
       };
       partitions = {
+        dev = {
+          extraInputsFlake = ./dev;
+          module =
+            (inputs.import-tree.initFilter (p: !lib.hasSuffix "/flake.nix" p && lib.hasSuffix ".nix" p))
+              ./dev;
+        };
         lib.module = inputs.import-tree ./lib;
         pkgs.module = inputs.import-tree ./pkgs;
       };

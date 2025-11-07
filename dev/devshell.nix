@@ -1,8 +1,4 @@
-{
-  inputs,
-  lib,
-  ...
-}:
+{ inputs, lib, ... }:
 let
   inherit (lib.attrsets) nameValuePair;
 in
