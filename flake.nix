@@ -40,6 +40,17 @@
   };
 
   outputs =
-    inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.flake-parts.flakeModules.partitions
+      ]
+      ++ (inputs.import-tree.withLib inputs.nixpkgs.lib).leafs ./modules;
+      partitionedAttrs = {
+        lib = "lib";
+      };
+      partitions = {
+        lib.module = inputs.import-tree ./lib;
+      };
+    };
 }

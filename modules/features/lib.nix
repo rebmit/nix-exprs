@@ -8,12 +8,11 @@ let
   inherit (lib.attrsets) recursiveUpdate;
   inherit (lib.fixedPoints) makeExtensible;
   inherit (lib.lists) foldl;
-  inherit (lib.modules) mkDefault;
   inherit (lib.options) mkOption;
   inherit (flake-parts-lib) mkSubmoduleOptions;
 
   libModule =
-    { config, ... }:
+    { ... }:
     {
       options.flake = mkSubmoduleOptions {
         lib = mkOption {
@@ -32,14 +31,8 @@ let
           '';
         };
       };
-
-      config = {
-        _module.args.selfLib = mkDefault config.flake.lib;
-      };
     };
 in
 {
-  imports = [ libModule ];
-
   flake.flakeModules.lib = libModule;
 }
