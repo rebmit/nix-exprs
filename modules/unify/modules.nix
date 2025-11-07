@@ -3,7 +3,7 @@
 { self, lib, ... }:
 let
   inherit (lib.attrsets) optionalAttrs mapAttrs;
-  inherit (lib.lists) elem;
+  inherit (lib.lists) elem any;
   inherit (lib.options) mkOption;
   inherit (lib.types)
     lazyAttrsOf
@@ -12,93 +12,105 @@ let
     str
     deferredModule
     ;
+  inherit (lib.trivial) pipe warnIf;
   inherit (self.lib.attrsets) transposeAttrs;
   inherit (self.lib.types) mkStructuredType;
+
+  supportedClass =
+    class:
+    elem class [
+      "nixos"
+      "darwin"
+    ];
 in
 {
   flake.flakeModules.unify =
     { config, ... }:
     {
-      options.unify = {
-        modules = mkOption {
-          type = lazyAttrsOf (
-            lazyAttrsOf (
-              submodule (
-                { name, ... }:
-                {
-                  options = {
-                    meta = mkOption {
-                      type = submodule {
-                        freeformType = mkStructuredType { typeName = "meta"; };
-                        options =
-                          optionalAttrs
-                            (elem name [
-                              "nixos"
-                              "darwin"
-                            ])
-                            {
-                              hosts = mkOption {
-                                type = listOf str;
-                                default = [ ];
-                                description = ''
-                                  A list of host names.  If the current host name appears in this list, this
-                                  module will be automatically imported.
-                                '';
-                              };
-                              tags = mkOption {
-                                type = listOf str;
-                                default = [ ];
-                                description = ''
-                                  A list of host tags.  If any tag of the current configuration name matches
-                                  one in this list, this module will be automatically imported.
-                                '';
-                              };
-                              requires = mkOption {
-                                type = listOf str;
-                                default = [ ];
-                                description = ''
-                                  A list of module names that are required by this module.  When this module
-                                  is imported, all modules listed here will also be automatically imported.
-                                '';
-                              };
-                              conflicts = mkOption {
-                                type = listOf str;
-                                default = [ ];
-                                description = ''
-                                  A list of module names that conflict with this module.  If this module is
-                                  imported, any conflicting modules must not be imported.
-                                '';
-                              };
-                            };
+      options.unify.modules = mkOption {
+        type = lazyAttrsOf (
+          lazyAttrsOf (
+            submodule (
+              { name, ... }:
+              {
+                options = {
+                  meta = mkOption {
+                    type = submodule {
+                      freeformType = mkStructuredType { typeName = "meta"; };
+                      options = optionalAttrs (supportedClass name) {
+                        hosts = mkOption {
+                          type = listOf str;
+                          default = [ ];
+                          description = ''
+                            A list of host names.  If the current host name appears in this list, this
+                            module will be automatically imported.
+                          '';
+                        };
+                        tags = mkOption {
+                          type = listOf str;
+                          default = [ ];
+                          description = ''
+                            A list of host tags.  If any tag of the current configuration name matches
+                            one in this list, this module will be automatically imported.
+                          '';
+                        };
+                        requires = mkOption {
+                          type = listOf str;
+                          default = [ ];
+                          description = ''
+                            A list of module names that are required by this module.  When this module
+                            is imported, all modules listed here will also be automatically imported.
+                          '';
+                        };
+                        conflicts = mkOption {
+                          type = listOf str;
+                          default = [ ];
+                          description = ''
+                            A list of module names that conflict with this module.  If this module is
+                            imported, any conflicting modules must not be imported.
+                          '';
+                        };
                       };
-                      default = { };
-                      description = ''
-                        Metadata for this module class.
-                      '';
                     };
-                    module = mkOption {
-                      type = deferredModule;
-                      default = { };
-                      description = ''
-                        The deferred module for this class.
-                      '';
-                    };
+                    default = { };
+                    description = ''
+                      Metadata for this module.
+                    '';
                   };
-                }
-              )
+                  module = mkOption {
+                    type = deferredModule;
+                    default = { };
+                    description = ''
+                      The deferred module for this module.
+                    '';
+                  };
+                };
+              }
             )
-          );
-          default = { };
-          description = ''
-            Groups of modules unified under a common name.
-          '';
-        };
+          )
+        );
+        default = { };
+        description = ''
+          Groups of modules unified under a common name.
+        '';
       };
 
       config = {
-        flake.modules = transposeAttrs (
-          mapAttrs (_: classes: mapAttrs (_: config: config.module) classes) config.unify.modules
-        );
+        flake.modules = pipe config.unify.modules [
+          (mapAttrs (
+            name: classes:
+            mapAttrs (
+              class: cfg:
+              let
+                closure = config.unify.lib.collectRequiresClosure class [ name ] config.unify.modules;
+              in
+              warnIf (supportedClass class && (any (n: elem n closure) cfg.meta.conflicts))
+                "requires closure of config.unify.modules.${name}.${class} includes conflicting modules declared in meta.conflicts"
+                cfg.module
+            ) classes
+          ))
+          transposeAttrs
+        ];
       };
     };
 }
