@@ -20,27 +20,6 @@
         "type": "github"
       }
     },
-    "devshell_2": {
-      "inputs": {
-        "nixpkgs": [
-          "rebmit",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1741473158,
-        "narHash": "sha256-kWNaq6wQUbUMlPgw8Y+9/9wP0F8SHkjy24/mN3UAppg=",
-        "owner": "numtide",
-        "repo": "devshell",
-        "rev": "7c9e793ebe66bcba8292989a68c0419b737a22a0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "devshell",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -104,58 +83,9 @@
         "type": "github"
       }
     },
-    "git-hooks-nix_2": {
-      "inputs": {
-        "flake-compat": [
-          "rebmit"
-        ],
-        "gitignore": [
-          "rebmit",
-          "gitignore-nix"
-        ],
-        "nixpkgs": [
-          "rebmit",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1760663237,
-        "narHash": "sha256-BflA6U4AM1bzuRMR8QqzPXqh8sWVCNDzOdsxXEguJIc=",
-        "owner": "cachix",
-        "repo": "git-hooks.nix",
-        "rev": "ca5b894d3e3e151ffc1db040b6ce4dcc75d31c37",
-        "type": "github"
-      },
-      "original": {
-        "owner": "cachix",
-        "repo": "git-hooks.nix",
-        "type": "github"
-      }
-    },
     "gitignore-nix": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1709087332,
-        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
-        "owner": "hercules-ci",
-        "repo": "gitignore.nix",
-        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "gitignore.nix",
-        "type": "github"
-      }
-    },
-    "gitignore-nix_2": {
-      "inputs": {
-        "nixpkgs": [
-          "rebmit",
           "nixpkgs"
         ]
       },
@@ -226,13 +156,9 @@
     },
     "rebmit": {
       "inputs": {
-        "devshell": "devshell_2",
         "flake-parts": "flake-parts",
-        "git-hooks-nix": "git-hooks-nix_2",
-        "gitignore-nix": "gitignore-nix_2",
         "import-tree": "import-tree",
-        "nixpkgs": "nixpkgs",
-        "treefmt-nix": "treefmt-nix"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "path": "..",
@@ -256,31 +182,10 @@
         ],
         "nixpkgs-terraform-providers-bin": "nixpkgs-terraform-providers-bin",
         "rebmit": "rebmit",
-        "treefmt-nix": "treefmt-nix_2"
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "treefmt-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "rebmit",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1761311587,
-        "narHash": "sha256-Msq86cR5SjozQGCnC6H8C+0cD4rnx91BPltZ9KK613Y=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "2eddae033e4e74bf581c2d1dfa101f9033dbd2dc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
