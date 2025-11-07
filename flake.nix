@@ -48,9 +48,12 @@
       ++ (inputs.import-tree.withLib inputs.nixpkgs.lib).leafs ./modules;
       partitionedAttrs = {
         lib = "lib";
+        overlays = "pkgs";
+        packages = "pkgs";
       };
       partitions = {
         lib.module = inputs.import-tree ./lib;
+        pkgs.module = inputs.import-tree ./pkgs;
       };
     };
 }
