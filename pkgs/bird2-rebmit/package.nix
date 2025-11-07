@@ -1,6 +1,6 @@
 {
   perSystem =
-    { pkgs, ... }:
+    { prev, ... }:
     let
       bird2-rebmit =
         {
@@ -56,6 +56,6 @@
         };
     in
     {
-      packages.bird2-rebmit = pkgs.callPackage bird2-rebmit { };
+      packages.bird2-rebmit = prev.callPackage bird2-rebmit { };
     };
 }

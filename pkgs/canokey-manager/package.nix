@@ -1,6 +1,6 @@
 {
   perSystem =
-    { pkgs, ... }:
+    { prev, ... }:
     let
       canokey-manager =
         {
@@ -74,6 +74,6 @@
         };
     in
     {
-      packages.canokey-manager = pkgs.callPackage canokey-manager { };
+      packages.canokey-manager = prev.callPackage canokey-manager { };
     };
 }

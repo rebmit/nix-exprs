@@ -3,7 +3,7 @@
 {
   lib,
   selfLib,
-  withSystem,
+  getSystem,
   ...
 }:
 let
@@ -141,7 +141,7 @@ in
           mkHardenedService {
             path = with pkgs; [
               iproute2
-              (withSystem pkgs.stdenv.hostPlatform.system (ps: ps.config.packages.ranet))
+              (getSystem pkgs.stdenv.hostPlatform.system).allModuleArgs.self'.packages.ranet
             ];
             script = "${command} up";
             reload = "${command} up";

@@ -1,6 +1,6 @@
 {
   perSystem =
-    { pkgs, ... }:
+    { prev, ... }:
     let
       ranet =
         {
@@ -36,6 +36,6 @@
         };
     in
     {
-      packages.ranet = pkgs.callPackage ranet { };
+      packages.ranet = prev.callPackage ranet { };
     };
 }

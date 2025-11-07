@@ -1,6 +1,6 @@
 {
   perSystem =
-    { pkgs, ... }:
+    { prev, ... }:
     let
       firefox-gnome-theme =
         {
@@ -36,6 +36,6 @@
         });
     in
     {
-      packages.firefox-gnome-theme = pkgs.callPackage firefox-gnome-theme { };
+      packages.firefox-gnome-theme = prev.callPackage firefox-gnome-theme { };
     };
 }

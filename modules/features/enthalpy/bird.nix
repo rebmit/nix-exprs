@@ -2,7 +2,7 @@
 # https://github.com/NickCao/flakes/blob/3b03efb676ea602575c916b2b8bc9d9cd13b0d85/modules/gravity/default.nix (MIT License)
 {
   lib,
-  withSystem,
+  getSystem,
   ...
 }:
 let
@@ -26,7 +26,7 @@ in
         netns.enthalpy = {
           services.bird = {
             enable = true;
-            package = withSystem pkgs.stdenv.hostPlatform.system (ps: ps.config.packages.bird2-rebmit);
+            package = (getSystem pkgs.stdenv.hostPlatform.system).allModuleArgs.self'.packages.bird2-rebmit;
             config = mkBefore ''
               router id 42;
 

@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ self, lib, ... }:
 let
   inherit (lib.lists) elem;
   inherit (lib.strings) getName;
@@ -9,6 +9,7 @@ in
       config = {
         allowNonSource = false;
       };
+      overlays = [ self.overlays.default ];
       predicates = {
         allowNonSource =
           p:

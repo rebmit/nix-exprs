@@ -1,6 +1,6 @@
 {
   perSystem =
-    { pkgs, ... }:
+    { prev, ... }:
     let
       canokey-udev-rules =
         {
@@ -28,6 +28,6 @@
         };
     in
     {
-      packages.canokey-udev-rules = pkgs.callPackage canokey-udev-rules { };
+      packages.canokey-udev-rules = prev.callPackage canokey-udev-rules { };
     };
 }

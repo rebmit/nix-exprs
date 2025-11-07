@@ -1,6 +1,6 @@
 {
   perSystem =
-    { pkgs, ... }:
+    { prev, ... }:
     let
       dnsmasq-china-list =
         {
@@ -39,6 +39,6 @@
         };
     in
     {
-      packages.dnsmasq-china-list = pkgs.callPackage dnsmasq-china-list { };
+      packages.dnsmasq-china-list = prev.callPackage dnsmasq-china-list { };
     };
 }
