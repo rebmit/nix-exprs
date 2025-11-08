@@ -5,6 +5,7 @@
         requires = [
           "external/disko"
           "services/btrfs-auto-scrub"
+          "system/preservation"
         ];
         conflicts = [
           "system/disko/btrfs-common"

@@ -3,6 +3,7 @@
     nixos = {
       meta = {
         tags = [ "base" ];
+        requires = [ "external/preservation" ];
       };
 
       module = _: {
@@ -17,8 +18,7 @@
           StateDirectory = "logrotate";
         };
 
-        # TODO: fixup
-        passthru.preservation.config.logrotate.directories = [ "/var/lib/logrotate" ];
+        preservation.directories = [ "/var/lib/logrotate" ];
       };
     };
   };
