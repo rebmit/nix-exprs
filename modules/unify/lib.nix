@@ -7,6 +7,7 @@ let
     getAttr
     filterAttrs
     attrNames
+    hasAttr
     ;
   inherit (lib.lists) elem head tail;
   inherit (lib.options) mkOption;
@@ -15,6 +16,7 @@ let
   collectModulesForTag =
     class: tag: modules:
     pipe modules [
+      (filterAttrs (_: hasAttr class))
       (mapAttrs (_: getAttr class))
       (filterAttrs (_: v: elem tag v.meta.tags))
       attrNames
@@ -23,6 +25,7 @@ let
   collectModulesForHost =
     class: host: modules:
     pipe modules [
+      (filterAttrs (_: hasAttr class))
       (mapAttrs (_: getAttr class))
       (filterAttrs (_: v: elem host v.meta.hosts))
       attrNames
@@ -31,6 +34,8 @@ let
   collectRequiresClosure =
     class: names: modules:
     let
+      filteredModules = (filterAttrs (_: hasAttr class)) modules;
+
       iter =
         seen: pending:
         if pending == [ ] then
@@ -43,7 +48,7 @@ let
           if elem name seen then
             iter seen rest
           else
-            iter (seen ++ [ name ]) (modules.${name}.${class}.meta.requires ++ rest);
+            iter (seen ++ [ name ]) (filteredModules.${name}.${class}.meta.requires ++ rest);
     in
     iter [ ] names;
 in
