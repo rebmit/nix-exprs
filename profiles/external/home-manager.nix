@@ -1,8 +1,11 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  home-manager = config.partitions.hosts.extraInputs.home-manager;
+in
 {
   unify.modules."external/home-manager" = {
     nixos.module = _: {
-      imports = [ inputs.home-manager.nixosModules.home-manager ];
+      imports = [ home-manager.nixosModules.home-manager ];
 
       home-manager = {
         useGlobalPkgs = true;
@@ -19,7 +22,7 @@
     };
 
     darwin.module = _: {
-      imports = [ inputs.home-manager.darwinModules.home-manager ];
+      imports = [ home-manager.darwinModules.home-manager ];
 
       home-manager = {
         useGlobalPkgs = true;
