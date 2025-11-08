@@ -139,6 +139,10 @@ in
             ];
           in
           nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              # TODO: remove after test
+              inherit closure;
+            };
             modules = [
               module
               {

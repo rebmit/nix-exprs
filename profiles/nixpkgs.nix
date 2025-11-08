@@ -21,6 +21,7 @@ in
             "go"
             "rustc-bootstrap"
             "rustc-bootstrap-wrapper"
+            "sof-firmware"
             # keep-sorted end
           ];
       };
