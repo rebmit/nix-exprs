@@ -21,6 +21,7 @@ let
     elem class [
       "nixos"
       "darwin"
+      "homeManager"
     ];
 in
 {
