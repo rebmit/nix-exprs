@@ -2,8 +2,11 @@
   unify.hosts.nixos.marisa-7d76 = {
     meta = {
       tags = [
+        # keep-sorted start
         "base"
         "immutable"
+        "nix"
+        # keep-sorted end
       ];
     };
 
