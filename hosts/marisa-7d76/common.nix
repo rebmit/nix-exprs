@@ -1,7 +1,10 @@
 {
   unify.hosts.nixos.marisa-7d76 = {
     meta = {
-      tags = [ "base" ];
+      tags = [
+        "base"
+        "immutable"
+      ];
     };
 
     system = "x86_64-linux";
