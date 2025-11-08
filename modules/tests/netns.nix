@@ -4,17 +4,17 @@ let
 in
 {
   perSystem =
-    { pkgs, ... }:
+    { self', pkgs, ... }:
     {
-      checks."features/netns/basic" = pkgs.testers.nixosTest {
-        name = "netns-basic";
+      checks."modules/netns" = pkgs.testers.nixosTest {
+        name = "netns";
 
         nodes.machine =
           { ... }:
           {
             imports = [
               self.nixosModules.netns
-              self.modules.nixos."system/immutable"
+              self'.checks."profiles/immutable".config.passthru.immutable
             ];
 
             services.resolved.enable = true;

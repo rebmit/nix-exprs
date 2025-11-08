@@ -7,17 +7,17 @@ let
 in
 {
   perSystem =
-    { pkgs, ... }:
+    { self', pkgs, ... }:
     {
-      checks."features/preservation/basic" = pkgs.testers.nixosTest {
-        name = "preservation-basic";
+      checks."modules/preservation" = pkgs.testers.nixosTest {
+        name = "preservation";
 
         nodes.machine =
           { pkgs, ... }:
           {
             imports = [
               self.nixosModules.preservation
-              self.modules.nixos."system/immutable"
+              self'.checks."profiles/immutable".config.passthru.immutable
             ];
 
             preservation = {

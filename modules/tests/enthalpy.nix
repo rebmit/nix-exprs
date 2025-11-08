@@ -1,13 +1,13 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, ... }:
+    { self', pkgs, ... }:
     let
       common = {
         imports = [
           self.nixosModules.enthalpy
           self.nixosModules.netns
-          self.modules.nixos."system/immutable"
+          self'.checks."profiles/immutable".config.passthru.immutable
         ];
 
         services.resolved.enable = true;
@@ -93,8 +93,8 @@
       };
     in
     {
-      checks."features/enthalpy/basic" = pkgs.testers.nixosTest {
-        name = "enthalpy-basic";
+      checks."modules/enthalpy" = pkgs.testers.nixosTest {
+        name = "enthalpy";
 
         nodes.peer1 =
           { ... }:

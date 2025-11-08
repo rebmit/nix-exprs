@@ -3,6 +3,7 @@
     nixos = {
       meta = {
         tags = [ "nix" ];
+        requires = [ "programs/git" ];
       };
 
       module =

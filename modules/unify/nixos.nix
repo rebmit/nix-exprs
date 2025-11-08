@@ -3,10 +3,8 @@
 { self, lib, ... }:
 let
   inherit (lib.attrsets) mapAttrs;
-  inherit (lib.lists) fold filter elem;
   inherit (lib.modules) mkDefault;
   inherit (lib.options) mkOption;
-  inherit (lib.trivial) pipe;
   inherit (lib.types)
     raw
     lazyAttrsOf
@@ -126,17 +124,10 @@ in
               meta
               ;
 
-            names =
-              (fold (
-                tag: acc: config.unify.lib.collectModulesForTag "nixos" tag config.unify.modules ++ acc
-              ) [ ] meta.tags)
-              ++ config.unify.lib.collectModulesForHost "nixos" name config.unify.modules
-              ++ meta.includes;
-
-            closure = pipe config.unify.modules [
-              (config.unify.lib.collectRequiresClosure "nixos" names)
-              (filter (n: !elem n meta.excludes))
-            ];
+            closure = config.unify.lib.collectModulesForHost "nixos" {
+              host = name;
+              inherit (meta) tags includes excludes;
+            } config.unify.modules;
           in
           nixpkgs.lib.nixosSystem {
             specialArgs = {
