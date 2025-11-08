@@ -4,7 +4,10 @@
     nixos = {
       meta = {
         tags = [ "nix" ];
-        requires = [ "nix/common" ];
+        requires = [
+          "nix/common"
+          "nix/settings"
+        ];
       };
 
       module = _: {

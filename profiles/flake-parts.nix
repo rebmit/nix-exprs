@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   config,
   lib,
   partitionStack,
@@ -10,7 +11,11 @@ let
   inherit (lib.modules) mkForce;
 in
 {
-  imports = [ inputs.flake-parts.flakeModules.modules ];
+  imports = [
+    inputs.flake-parts.flakeModules.modules
+    self.flakeModules.meta
+    self.flakeModules.unify
+  ];
 
   partitions = {
     # keep-sorted start block=yes
@@ -28,6 +33,7 @@ in
     in
     {
       # keep-sorted start block=yes
+      meta = partitionAttr "hosts" "meta";
       nixosConfigurations = partitionAttr "hosts" "nixosConfigurations";
       # keep-sorted end
     }
