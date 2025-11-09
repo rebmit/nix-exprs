@@ -131,9 +131,12 @@ in
           in
           nixpkgs.lib.nixosSystem {
             specialArgs = {
-              inherit self inputs;
-              # TODO: remove after test
-              inherit closure;
+              inherit
+                self
+                inputs
+                meta
+                closure
+                ;
             };
             modules = [
               module
