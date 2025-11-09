@@ -6,7 +6,7 @@ in
   unify.modules."system/time" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
       };
 
       module = _: {

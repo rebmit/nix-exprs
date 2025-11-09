@@ -2,7 +2,7 @@
   unify.modules."system/boot/kernel/latest" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
       };
 
       module =

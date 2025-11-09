@@ -2,7 +2,7 @@
   unify.modules."security/sudo-rs" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
         conflicts = [ "security/sudo" ];
       };
 

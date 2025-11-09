@@ -2,7 +2,7 @@
   unify.modules."services/logrotate" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
         requires = [ "external/preservation" ];
       };
 

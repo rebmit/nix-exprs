@@ -7,7 +7,7 @@ in
   unify.modules."services/nscd" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
       };
 
       module = _: {

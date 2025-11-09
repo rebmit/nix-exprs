@@ -2,7 +2,7 @@
   unify.modules."system/i18n" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
       };
 
       module = _: {

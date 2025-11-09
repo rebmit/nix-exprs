@@ -2,7 +2,7 @@
   unify.modules."services/dbus" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
       };
 
       module = _: {

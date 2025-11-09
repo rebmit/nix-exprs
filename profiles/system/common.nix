@@ -6,7 +6,7 @@ in
   unify.modules."system/common" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
       };
 
       module =

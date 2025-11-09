@@ -2,7 +2,7 @@
   unify.modules."system/documentation" = {
     nixos = {
       meta = {
-        tags = [ "base" ];
+        tags = [ "baseline" ];
       };
 
       module = _: {
