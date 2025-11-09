@@ -1,11 +1,18 @@
 {
   unify.modules."services/zram-generator" = {
-    nixos.module = _: {
-      services.zram-generator = {
-        enable = true;
-        settings.zram0 = {
-          compression-algorithm = "zstd";
-          zram-size = "ram / 2";
+    nixos = {
+      meta = {
+        tags = [ "baseline" ];
+        requires = [ "system/boot/sysctl/zram-vm-optimization" ];
+      };
+
+      module = _: {
+        services.zram-generator = {
+          enable = true;
+          settings.zram0 = {
+            compression-algorithm = "zstd";
+            zram-size = "ram / 2";
+          };
         };
       };
     };
