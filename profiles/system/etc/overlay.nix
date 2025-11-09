@@ -1,3 +1,7 @@
+{ lib, ... }:
+let
+  inherit (lib.modules) mkOptionDefault;
+in
 {
   unify.modules."system/etc/overlay" = {
     nixos = {
@@ -22,6 +26,15 @@
             user = "root";
             group = "root";
             mode = "0444";
+          };
+        };
+
+        virtualisation.vmVariant = {
+          environment.etc."resolv.conf" = mkOptionDefault {
+            text = ''
+              nameserver 2620:fe::fe
+              nameserver 9.9.9.9
+            '';
           };
         };
       };

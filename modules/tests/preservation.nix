@@ -17,7 +17,7 @@ in
           {
             imports = [
               self.nixosModules.preservation
-              self'.checks."profiles/immutable".config.passthru.immutable
+              self'.checks."profiles/tests/immutable".config.passthru.immutable
             ];
 
             preservation = {

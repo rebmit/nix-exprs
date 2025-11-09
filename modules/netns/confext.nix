@@ -151,7 +151,7 @@ in
       );
 
       config = {
-        assertions = [
+        assertions = mkIf (enabledNetns != { }) [
           {
             assertion = config.system.etc.overlay.enable && (!config.system.etc.overlay.mutable);
             message = ''

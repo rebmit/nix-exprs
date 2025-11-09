@@ -14,7 +14,7 @@ in
           {
             imports = [
               self.nixosModules.netns
-              self'.checks."profiles/immutable".config.passthru.immutable
+              self'.checks."profiles/tests/immutable".config.passthru.immutable
             ];
 
             services.resolved.enable = true;

@@ -7,7 +7,7 @@
         imports = [
           self.nixosModules.enthalpy
           self.nixosModules.netns
-          self'.checks."profiles/immutable".config.passthru.immutable
+          self'.checks."profiles/tests/immutable".config.passthru.immutable
         ];
 
         services.resolved.enable = true;

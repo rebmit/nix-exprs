@@ -25,7 +25,7 @@ in
       hashedPassword = "$y$j9T$fWWcA1PsU7r/WTleSXFRi0$oFfktzz2S.57dHqLImfUB5eTzxCQYYsHfE.5QWUj7g6";
     in
     {
-      checks."profiles/immutable" = pkgs.testers.nixosTest {
+      checks."profiles/tests/immutable" = pkgs.testers.nixosTest {
         name = "immutable";
 
         nodes.machine =
