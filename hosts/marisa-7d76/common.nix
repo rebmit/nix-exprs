@@ -15,10 +15,6 @@
 
     module = _: {
       system.stateVersion = "25.11";
-
-      # TODO: remove after test
-      services.getty.autologinUser = "root";
-      users.allowNoPasswordLogin = true;
     };
   };
 }
