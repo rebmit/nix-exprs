@@ -36,6 +36,18 @@
               "/var/log/journal"
             ];
           };
+
+          virtualisation.vmVariant = {
+            virtualisation = {
+              emptyDiskImages = [ 23 ];
+              fileSystems."/persist" = {
+                device = "/dev/vdb";
+                fsType = "ext4";
+                neededForBoot = true;
+                autoFormat = true;
+              };
+            };
+          };
         };
     };
   };

@@ -22,6 +22,13 @@ in
         users.mutableUsers = mkDefault false;
 
         system.tools.nixos-generate-config.enable = mkDefault false;
+
+        virtualisation.vmVariant = {
+          virtualisation = {
+            cores = 4;
+            memorySize = 4096;
+          };
+        };
       };
     };
   };

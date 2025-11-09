@@ -1,4 +1,7 @@
-{ self, ... }:
+{ self, lib, ... }:
+let
+  inherit (lib.modules) mkVMOverride;
+in
 {
   unify.modules."users/root" = {
     nixos = {
@@ -21,6 +24,13 @@
           sops.secrets."users/root/password" = {
             neededForUsers = true;
             sopsFile = config.sops.secretFiles.get "common.yaml";
+          };
+
+          virtualisation.vmVariant = {
+            users.users.root = {
+              password = "password";
+              hashedPasswordFile = mkVMOverride null;
+            };
           };
         };
     };

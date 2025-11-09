@@ -1,6 +1,7 @@
 { lib, ... }:
 let
   inherit (lib) types;
+  inherit (lib.modules) mkVMOverride;
   inherit (lib.options) mkOption;
 in
 {
@@ -42,6 +43,17 @@ in
                 sshKeyPaths = [ ];
               };
               gnupg.sshKeyPaths = [ ];
+            };
+
+            virtualisation.vmVariant = {
+              system.activationScripts = {
+                setupSecrets = mkVMOverride "";
+                setupSecretsForUsers = mkVMOverride "";
+              };
+              systemd.services = {
+                sops-install-secrets.enable = mkVMOverride false;
+                sops-install-secrets-for-users.enable = mkVMOverride false;
+              };
             };
           };
         };
