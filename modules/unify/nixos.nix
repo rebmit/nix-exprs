@@ -2,7 +2,7 @@
 # https://codeberg.org/quasigod/unify/src/commit/860b5ac977988b57b4fca57e33ac0f4ef7b8af7f/modules/nixos.nix (MIT License)
 { self, lib, ... }:
 let
-  inherit (lib.attrsets) mapAttrs;
+  inherit (lib.attrsets) mapAttrs recursiveUpdate;
   inherit (lib.modules) mkDefault;
   inherit (lib.options) mkOption;
   inherit (lib.types)
@@ -128,14 +128,15 @@ in
               host = name;
               inherit (meta) tags includes excludes;
             } config.unify.modules;
+
+            unify = recursiveUpdate cfg { meta = { inherit closure; }; };
           in
           nixpkgs.lib.nixosSystem {
             specialArgs = {
               inherit
                 self
                 inputs
-                meta
-                closure
+                unify
                 ;
             };
             modules = [

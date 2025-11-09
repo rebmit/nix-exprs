@@ -10,9 +10,9 @@ in
   unify.modules."home/preservation" = {
     nixos = {
       module =
-        { config, closure, ... }:
+        { config, unify, ... }:
         optionalAttrs
-          (all (mod: elem mod closure) [
+          (all (mod: elem mod unify.meta.closure) [
             "external/home-manager"
             "external/preservation"
           ])

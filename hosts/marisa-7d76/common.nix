@@ -9,9 +9,6 @@
         "nix"
         # keep-sorted end
       ];
-
-      # TODO: remove after test
-      excludes = [ "system/preservation" ];
     };
 
     system = "x86_64-linux";
