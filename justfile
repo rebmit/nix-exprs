@@ -8,3 +8,7 @@ up *args:
     nix flake update {{args}}
     popd > /dev/null
   done
+
+[group('nix')]
+history:
+  nix profile diff-closures --profile /nix/var/nix/profiles/system
