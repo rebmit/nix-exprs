@@ -17,7 +17,6 @@
           "external/sops-nix"
           "programs/fish"
           "system/home-manager"
-          "system/sops-secrets"
         ];
       };
 

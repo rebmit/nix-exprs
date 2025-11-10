@@ -7,10 +7,7 @@ in
     nixos = {
       meta = {
         tags = [ "baseline" ];
-        requires = [
-          "external/sops-nix"
-          "system/sops-secrets"
-        ];
+        requires = [ "external/sops-nix" ];
       };
 
       module =
