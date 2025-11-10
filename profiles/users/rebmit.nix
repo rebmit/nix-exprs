@@ -13,7 +13,6 @@
     nixos = {
       meta = {
         requires = [
-          "external/home-manager"
           "external/sops-nix"
           "programs/fish"
           "system/home-manager"
