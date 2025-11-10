@@ -1,5 +1,5 @@
 {
-  unify.modules."system/preservation" = {
+  flake.unify.modules."system/preservation" = {
     nixos = {
       meta = {
         requires = [

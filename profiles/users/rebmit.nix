@@ -12,7 +12,7 @@ in
     ];
   };
 
-  unify.modules."users/rebmit" = {
+  flake.unify.modules."users/rebmit" = {
     nixos = {
       meta = {
         tags = [

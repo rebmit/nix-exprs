@@ -1,5 +1,5 @@
 {
-  unify.modules."system/disko/btrfs-common" = {
+  flake.unify.modules."system/disko/btrfs-common" = {
     nixos = {
       meta = {
         requires = [

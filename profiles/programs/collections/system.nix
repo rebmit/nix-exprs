@@ -1,5 +1,5 @@
 {
-  unify.modules."programs/collections/system" = {
+  flake.unify.modules."programs/collections/system" = {
     nixos = {
       meta = {
         tags = [

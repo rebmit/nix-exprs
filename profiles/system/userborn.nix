@@ -1,5 +1,5 @@
 {
-  unify.modules."system/userborn" = {
+  flake.unify.modules."system/userborn" = {
     nixos = {
       meta = {
         tags = [ "immutable" ];

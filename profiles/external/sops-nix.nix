@@ -5,7 +5,7 @@ let
   inherit (lib.options) mkOption mkEnableOption;
 in
 {
-  unify.modules."external/sops-nix" = {
+  flake.unify.modules."external/sops-nix" = {
     nixos.module =
       {
         inputs,

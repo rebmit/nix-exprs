@@ -1,5 +1,5 @@
 {
-  unify.modules."services/nftables" = {
+  flake.unify.modules."services/nftables" = {
     nixos = {
       meta = {
         tags = [ "network" ];

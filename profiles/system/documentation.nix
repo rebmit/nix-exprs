@@ -1,5 +1,5 @@
 {
-  unify.modules."system/documentation" = {
+  flake.unify.modules."system/documentation" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

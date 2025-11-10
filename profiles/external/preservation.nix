@@ -7,7 +7,7 @@ let
   inherit (lib.options) mkOption mkEnableOption;
 in
 {
-  unify.modules."external/preservation" = {
+  flake.unify.modules."external/preservation" = {
     nixos.module =
       { config, unify, ... }:
       {

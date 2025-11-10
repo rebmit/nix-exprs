@@ -1,5 +1,5 @@
 {
-  unify.modules."security/sudo-rs" = {
+  flake.unify.modules."security/sudo-rs" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

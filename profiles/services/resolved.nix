@@ -1,5 +1,5 @@
 {
-  unify.modules."services/resolved" = {
+  flake.unify.modules."services/resolved" = {
     nixos = {
       meta = {
         tags = [ "network" ];

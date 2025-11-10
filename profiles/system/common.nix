@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkDefault;
 in
 {
-  unify.modules."system/common" = {
+  flake.unify.modules."system/common" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

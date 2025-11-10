@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkOptionDefault;
 in
 {
-  unify.modules."system/etc/overlay" = {
+  flake.unify.modules."system/etc/overlay" = {
     nixos = {
       meta = {
         tags = [ "immutable" ];

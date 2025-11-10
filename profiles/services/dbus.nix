@@ -1,5 +1,5 @@
 {
-  unify.modules."services/dbus" = {
+  flake.unify.modules."services/dbus" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

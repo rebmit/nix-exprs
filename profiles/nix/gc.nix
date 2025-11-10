@@ -1,5 +1,5 @@
 {
-  unify.modules."nix/gc" = {
+  flake.unify.modules."nix/gc" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

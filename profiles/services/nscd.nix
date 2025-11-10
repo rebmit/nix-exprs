@@ -4,7 +4,7 @@ let
   inherit (self.lib.misc) mkHardenedService;
 in
 {
-  unify.modules."services/nscd" = {
+  flake.unify.modules."services/nscd" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

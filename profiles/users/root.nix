@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkVMOverride;
 in
 {
-  unify.modules."users/root" = {
+  flake.unify.modules."users/root" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

@@ -1,5 +1,5 @@
 {
-  unify.modules."services/pipewire" = {
+  flake.unify.modules."services/pipewire" = {
     nixos = {
       meta = {
         tags = [ "multimedia" ];

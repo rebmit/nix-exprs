@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkDefault;
 in
 {
-  unify.hosts.nixos.marisa-7d76 = {
+  flake.unify.hosts.nixos.marisa-7d76 = {
     meta = {
       includes = [ "system/disko/luks-btrfs-common" ];
     };

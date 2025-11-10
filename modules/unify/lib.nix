@@ -1,6 +1,6 @@
 # Portions of this file are sourced from
 # https://codeberg.org/quasigod/unify/src/commit/860b5ac977988b57b4fca57e33ac0f4ef7b8af7f/modules/lib.nix (MIT License)
-{ lib, ... }:
+{ lib, flake-parts-lib, ... }:
 let
   inherit (lib.attrsets)
     mapAttrs
@@ -18,6 +18,7 @@ let
     ;
   inherit (lib.options) mkOption;
   inherit (lib.trivial) pipe;
+  inherit (flake-parts-lib) mkSubmoduleOptions;
 
   collectRequiresClosure =
     class: names: modules:
@@ -73,17 +74,19 @@ let
 in
 {
   flake.flakeModules.unify = _: {
-    options.unify.lib = mkOption {
-      default = {
-        inherit
-          collectRequiresClosure
-          collectModulesForHost
-          ;
+    options.flake = mkSubmoduleOptions {
+      unify.lib = mkOption {
+        default = {
+          inherit
+            collectRequiresClosure
+            collectModulesForHost
+            ;
+        };
+        readOnly = true;
+        description = ''
+          A set of helper functions for unify.
+        '';
       };
-      readOnly = true;
-      description = ''
-        A set of helper functions for unify.
-      '';
     };
   };
 }

@@ -1,5 +1,5 @@
 {
-  unify.modules."system/boot/sysctl/zram-vm-optimization" = {
+  flake.unify.modules."system/boot/sysctl/zram-vm-optimization" = {
     nixos = {
       module = _: {
         # https://wiki.archlinux.org/title/Zram#Optimizing_swap_on_zram

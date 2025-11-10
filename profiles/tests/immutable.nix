@@ -12,8 +12,8 @@ let
   inherit (lib.trivial) pipe;
 
   immutable = {
-    imports = pipe config.unify.modules [
-      (config.unify.lib.collectModulesForHost "nixos" { tags = [ "immutable" ]; })
+    imports = pipe config.flake.unify.modules [
+      (config.flake.unify.lib.collectModulesForHost "nixos" { tags = [ "immutable" ]; })
       (map (n: self.modules.nixos.${n}))
     ];
   };

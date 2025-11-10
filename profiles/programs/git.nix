@@ -1,5 +1,5 @@
 {
-  unify.modules."programs/git" = {
+  flake.unify.modules."programs/git" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

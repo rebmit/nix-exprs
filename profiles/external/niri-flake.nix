@@ -1,5 +1,5 @@
 {
-  unify.modules."external/niri-flake" = {
+  flake.unify.modules."external/niri-flake" = {
     homeManager.module =
       { inputs, ... }:
       {

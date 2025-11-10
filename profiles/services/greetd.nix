@@ -3,7 +3,7 @@ let
   inherit (lib.meta) getExe;
 in
 {
-  unify.modules."services/greetd" = {
+  flake.unify.modules."services/greetd" = {
     nixos = {
       meta = {
         tags = [ "desktop/niri" ];

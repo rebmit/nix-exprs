@@ -1,5 +1,5 @@
 {
-  unify.modules."programs/fish" = {
+  flake.unify.modules."programs/fish" = {
     nixos.module = _: {
       programs.fish = {
         enable = true;

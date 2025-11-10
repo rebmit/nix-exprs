@@ -1,5 +1,5 @@
 {
-  unify.modules."services/logrotate" = {
+  flake.unify.modules."services/logrotate" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

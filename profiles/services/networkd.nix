@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkVMOverride;
 in
 {
-  unify.modules."services/networkd" = {
+  flake.unify.modules."services/networkd" = {
     nixos = {
       meta = {
         tags = [ "network" ];

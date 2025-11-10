@@ -8,7 +8,7 @@ in
     ssh-alt = 2222;
   };
 
-  unify.modules."services/sshd" = {
+  flake.unify.modules."services/sshd" = {
     nixos = {
       meta = {
         tags = [

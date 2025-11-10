@@ -1,5 +1,5 @@
 {
-  unify.modules."system/disko/btrfs-bios-compat" = {
+  flake.unify.modules."system/disko/btrfs-bios-compat" = {
     nixos = {
       meta = {
         requires = [

@@ -3,7 +3,7 @@ let
   inherit (self.lib.misc) mkHardenedService;
 in
 {
-  unify.modules."services/vnstat" = {
+  flake.unify.modules."services/vnstat" = {
     nixos = {
       meta = {
         tags = [ "network" ];

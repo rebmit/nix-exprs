@@ -10,7 +10,7 @@ let
     };
 in
 {
-  unify.modules."external/home-manager" = {
+  flake.unify.modules."external/home-manager" = {
     nixos.module =
       { inputs, config, ... }:
       {

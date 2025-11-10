@@ -1,5 +1,5 @@
 {
-  unify.modules."services/btrfs-auto-scrub" = {
+  flake.unify.modules."services/btrfs-auto-scrub" = {
     nixos = {
       meta = {
         requires = [ "external/preservation" ];

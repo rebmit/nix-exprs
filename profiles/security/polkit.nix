@@ -1,5 +1,5 @@
 {
-  unify.modules."security/polkit" = {
+  flake.unify.modules."security/polkit" = {
     nixos = {
       meta = {
         tags = [ "baseline" ];

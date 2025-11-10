@@ -1,5 +1,5 @@
 {
-  unify.modules."services/zram-generator" = {
+  flake.unify.modules."services/zram-generator" = {
     nixos = {
       meta = {
         tags = [
