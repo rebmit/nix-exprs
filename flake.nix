@@ -28,7 +28,7 @@
     let
       inherit (nixpkgs) lib;
       inherit (lib.attrsets) optionalAttrs;
-      inherit (lib.modules) mkForce mkMerge;
+      inherit (lib.modules) mkMerge;
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
       { config, partitionStack, ... }:
@@ -47,6 +47,10 @@
             extraInputsFlake = ./dev/_flake;
             module = import-tree ./dev;
           };
+          hosts = {
+            extraInputsFlake = ./hosts/_flake;
+            module = inputs.import-tree ./hosts;
+          };
           lib.module = import-tree ./lib;
           modules.module = import-tree ./modules;
           pkgs.module = import-tree ./pkgs;
@@ -56,8 +60,7 @@
 
         flake = optionalAttrs (partitionStack == [ ]) (
           let
-            partitionAttr =
-              partition: attrName: mkForce config.partitions.${partition}.module.flake.${attrName};
+            partitionAttr = partition: attrName: config.partitions.${partition}.module.flake.${attrName};
           in
           {
             # keep-sorted start block=yes
@@ -73,7 +76,7 @@
             lib = partitionAttr "lib" "lib";
             meta = partitionAttr "profiles" "meta";
             modules = partitionAttr "profiles" "modules";
-            nixosConfigurations = partitionAttr "profiles" "nixosConfigurations";
+            nixosConfigurations = partitionAttr "hosts" "nixosConfigurations";
             nixosModules = partitionAttr "modules" "nixosModules";
             overlays = partitionAttr "pkgs" "overlays";
             packages = partitionAttr "pkgs" "packages";
