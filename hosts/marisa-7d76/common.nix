@@ -6,7 +6,6 @@
         "baseline"
         "immutable"
         "multimedia"
-        "nix"
         # keep-sorted end
       ];
     };

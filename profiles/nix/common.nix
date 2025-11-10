@@ -2,7 +2,7 @@
   unify.modules."nix/common" = {
     nixos = {
       meta = {
-        tags = [ "nix" ];
+        tags = [ "baseline" ];
         requires = [ "programs/git" ];
       };
 

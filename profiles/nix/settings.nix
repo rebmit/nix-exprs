@@ -2,7 +2,7 @@
   unify.modules."nix/settings" = {
     nixos = {
       meta = {
-        tags = [ "nix" ];
+        tags = [ "baseline" ];
         requires = [ "nix/common" ];
       };
 
