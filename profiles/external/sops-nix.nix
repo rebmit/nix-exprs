@@ -1,8 +1,8 @@
 { lib, ... }:
 let
   inherit (lib) types;
-  inherit (lib.modules) mkVMOverride;
-  inherit (lib.options) mkOption;
+  inherit (lib.modules) mkIf mkVMOverride;
+  inherit (lib.options) mkOption mkEnableOption;
 in
 {
   unify.modules."external/sops-nix" = {
@@ -11,8 +11,9 @@ in
         inputs,
         self,
         config,
+        unify,
         ...
-      }:
+      }@nixos:
       {
         imports = [ inputs.sops-nix.nixosModules.sops ];
 
@@ -35,6 +36,29 @@ in
                 into an absolute path.
               '';
             };
+            host = mkOption {
+              type = types.path;
+              default = config.sops.secretFiles.get "hosts/${unify.name}.yaml";
+              description = ''
+                The path to per-host secret file.
+              '';
+            };
+          };
+          secrets = mkOption {
+            type = types.attrsOf (
+              types.submodule (
+                { config, ... }:
+                {
+                  options = {
+                    host.enable = mkEnableOption "use per-host secret file";
+                  };
+
+                  config = {
+                    sopsFile = mkIf config.host.enable nixos.config.sops.secretFiles.host;
+                  };
+                }
+              )
+            );
           };
         };
 
