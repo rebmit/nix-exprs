@@ -4,6 +4,7 @@
       tags = [
         # keep-sorted start
         "baseline"
+        "desktop/niri"
         "immutable"
         "multimedia"
         "workstation"
