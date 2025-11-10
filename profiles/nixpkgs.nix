@@ -4,8 +4,6 @@ let
   inherit (lib.strings) getName;
 in
 {
-  imports = [ self.flakeModules.nixpkgs ];
-
   perSystem = {
     nixpkgs = {
       config = {

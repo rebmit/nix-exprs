@@ -1,7 +1,4 @@
-{ inputs, ... }:
 {
-  imports = [ inputs.git-hooks-nix.flakeModule ];
-
   perSystem =
     { config, pkgs, ... }:
     {

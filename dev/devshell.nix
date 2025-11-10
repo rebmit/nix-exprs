@@ -1,10 +1,8 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 let
   inherit (lib.attrsets) nameValuePair;
 in
 {
-  imports = [ inputs.devshell.flakeModule ];
-
   perSystem =
     { pkgs, ... }:
     {

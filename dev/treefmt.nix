@@ -1,10 +1,8 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 let
   inherit (lib.meta) getExe;
 in
 {
-  imports = [ inputs.treefmt-nix.flakeModule ];
-
   perSystem =
     { config, ... }:
     {

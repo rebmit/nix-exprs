@@ -2,7 +2,9 @@
 {
   imports = [
     # keep-sorted start
-    inputs.flake-parts.flakeModules.modules
+    inputs.devshell.flakeModule
+    inputs.git-hooks-nix.flakeModule
+    inputs.treefmt-nix.flakeModule
     self.flakeModules.meta
     self.flakeModules.nixpkgs
     self.flakeModules.unify
