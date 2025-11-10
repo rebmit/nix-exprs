@@ -19,74 +19,78 @@ let
   inherit (lib.options) mkOption;
   inherit (lib.trivial) pipe;
   inherit (flake-parts-lib) mkSubmoduleOptions;
-
-  collectRequiresClosure =
-    class: names: modules:
-    let
-      filteredModules = (filterAttrs (_: hasAttr class)) modules;
-
-      iter =
-        seen: pending:
-        if pending == [ ] then
-          seen
-        else
-          let
-            name = head pending;
-            rest = tail pending;
-          in
-          if elem name seen then
-            iter seen rest
-          else
-            iter (seen ++ [ name ]) (filteredModules.${name}.${class}.meta.requires ++ rest);
-    in
-    iter [ ] names;
-
-  collectModulesForHost =
-    class:
-    {
-      host ? null,
-      tags ? [ ],
-      includes ? [ ],
-      excludes ? [ ],
-    }:
-    modules:
-    let
-      getModules =
-        f:
-        pipe modules [
-          (filterAttrs (_: hasAttr class))
-          (mapAttrs (_: getAttr class))
-          (filterAttrs f)
-          attrNames
-        ];
-
-      names =
-        (fold (tag: acc: getModules (_: v: elem tag v.meta.tags) ++ acc) [ ] tags)
-        ++ getModules (_: v: elem host v.meta.hosts)
-        ++ includes;
-
-      closure = pipe modules [
-        (collectRequiresClosure "nixos" names)
-        (filter (n: !elem n excludes))
-      ];
-    in
-    closure;
 in
 {
-  flake.flakeModules.unify = _: {
-    options.flake = mkSubmoduleOptions {
-      unify.lib = mkOption {
-        default = {
-          inherit
-            collectRequiresClosure
-            collectModulesForHost
-            ;
+  flake.flakeModules."unify/lib" =
+    { self, ... }:
+    let
+      modules = self.unify.modules;
+
+      collectRequiresClosure =
+        class: names:
+        let
+          filteredModules = (filterAttrs (_: hasAttr class)) modules;
+
+          iter =
+            seen: pending:
+            if pending == [ ] then
+              seen
+            else
+              let
+                name = head pending;
+                rest = tail pending;
+              in
+              if elem name seen then
+                iter seen rest
+              else
+                iter (seen ++ [ name ]) (filteredModules.${name}.${class}.meta.requires ++ rest);
+        in
+        iter [ ] names;
+
+      collectModulesForHost =
+        class:
+        {
+          host ? null,
+          tags ? [ ],
+          includes ? [ ],
+          excludes ? [ ],
+        }:
+        let
+          getModules =
+            f:
+            pipe modules [
+              (filterAttrs (_: hasAttr class))
+              (mapAttrs (_: getAttr class))
+              (filterAttrs f)
+              attrNames
+            ];
+
+          names =
+            (fold (tag: acc: getModules (_: v: elem tag v.meta.tags) ++ acc) [ ] tags)
+            ++ getModules (_: v: elem host v.meta.hosts)
+            ++ includes;
+
+          closure = pipe names [
+            (collectRequiresClosure "nixos")
+            (filter (n: !elem n excludes))
+          ];
+        in
+        closure;
+    in
+    {
+      options.flake = mkSubmoduleOptions {
+        unify.lib = mkOption {
+          default = {
+            inherit
+              collectRequiresClosure
+              collectModulesForHost
+              ;
+          };
+          readOnly = true;
+          description = ''
+            A set of helper functions for unify.
+          '';
         };
-        readOnly = true;
-        description = ''
-          A set of helper functions for unify.
-        '';
       };
     };
-  };
 }

@@ -4,10 +4,18 @@
 let
   inherit (lib.lists) filter;
   inherit (lib.strings) toJSON;
+  inherit (lib.trivial) pipe;
+
+  immutable = {
+    imports = pipe { tags = [ "immutable" ]; } [
+      (self.unify.lib.collectModulesForHost "nixos")
+      (map (n: self.modules.nixos.${n}))
+    ];
+  };
 in
 {
   perSystem =
-    { self', pkgs, ... }:
+    { pkgs, ... }:
     {
       checks."modules/preservation" = pkgs.testers.nixosTest {
         name = "preservation";
@@ -17,7 +25,7 @@ in
           {
             imports = [
               self.nixosModules.preservation
-              self'.checks."profiles/tests/immutable".config.passthru.immutable
+              immutable
             ];
 
             preservation = {

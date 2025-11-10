@@ -1,19 +1,14 @@
 # Portions of this file are sourced from
 # https://github.com/NixOS/nixpkgs/blob/0a53886700520c494906ab04a4f9b39d61bfdfb9/nixos/tests/userborn-immutable-etc.nix (MIT License)
 # https://github.com/nix-community/preservation/blob/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11/tests/basic.nix (MIT License)
-{
-  self,
-  config,
-  lib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib.modules) mkForce;
   inherit (lib.trivial) pipe;
 
   immutable = {
-    imports = pipe config.flake.unify.modules [
-      (config.flake.unify.lib.collectModulesForHost "nixos" { tags = [ "immutable" ]; })
+    imports = pipe { tags = [ "immutable" ]; } [
+      (self.unify.lib.collectModulesForHost "nixos")
       (map (n: self.modules.nixos.${n}))
     ];
   };
@@ -57,8 +52,6 @@ in
               users.users.rebmit.enable = false;
             };
           };
-
-        passthru = { inherit immutable; };
 
         testScript =
           # python

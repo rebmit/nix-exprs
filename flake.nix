@@ -84,6 +84,13 @@
             nixosModules = partitionAttr "modules" "nixosModules";
             overlays = partitionAttr "pkgs" "overlays";
             packages = partitionAttr "pkgs" "packages";
+            unify = {
+              # keep-sorted start block=yes
+              hosts = partitionAttr "hosts" "unify/hosts";
+              lib = partitionAttr "profiles" "unify/lib";
+              modules = partitionAttr "profiles" "unify/modules";
+              # keep-sorted end
+            };
             # keep-sorted end
           }
         );

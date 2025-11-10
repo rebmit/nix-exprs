@@ -1,10 +1,18 @@
 { self, lib, ... }:
 let
   inherit (lib.modules) mkForce;
+  inherit (lib.trivial) pipe;
+
+  immutable = {
+    imports = pipe { tags = [ "immutable" ]; } [
+      (self.unify.lib.collectModulesForHost "nixos")
+      (map (n: self.modules.nixos.${n}))
+    ];
+  };
 in
 {
   perSystem =
-    { self', pkgs, ... }:
+    { pkgs, ... }:
     {
       checks."modules/netns" = pkgs.testers.nixosTest {
         name = "netns";
@@ -14,7 +22,7 @@ in
           {
             imports = [
               self.nixosModules.netns
-              self'.checks."profiles/tests/immutable".config.passthru.immutable
+              immutable
             ];
 
             services.resolved.enable = true;

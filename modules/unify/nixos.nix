@@ -22,7 +22,7 @@ let
   inherit (flake-parts-lib) mkSubmoduleOptions;
 in
 {
-  flake.flakeModules.unify =
+  flake.flakeModules."unify/nixos" =
     {
       inputs,
       self,
@@ -132,10 +132,10 @@ in
               meta
               ;
 
-            closure = config.flake.unify.lib.collectModulesForHost "nixos" {
+            closure = self.unify.lib.collectModulesForHost "nixos" {
               host = name;
               inherit (meta) tags includes excludes;
-            } config.flake.unify.modules;
+            };
 
             unify = recursiveUpdate cfg { meta = { inherit closure; }; };
           in
@@ -157,7 +157,7 @@ in
                 networking.hostName = mkDefault name;
               }
             ]
-            ++ map (n: self.modules.nixos.${n}) closure;
+            ++ map (n: self.unify.modules.${n}.nixos.module) closure;
           }
         ) config.flake.unify.hosts.nixos;
       };

@@ -1,6 +1,6 @@
 { self, ... }:
 {
   imports = [
-    self.flakeModules.unify
+    self.flakeModules."unify/nixos"
   ];
 }

@@ -1,13 +1,23 @@
-{ self, ... }:
+{ self, lib, ... }:
+let
+  inherit (lib.trivial) pipe;
+
+  immutable = {
+    imports = pipe { tags = [ "immutable" ]; } [
+      (self.unify.lib.collectModulesForHost "nixos")
+      (map (n: self.modules.nixos.${n}))
+    ];
+  };
+in
 {
   perSystem =
-    { self', pkgs, ... }:
+    { pkgs, ... }:
     let
       common = {
         imports = [
           self.nixosModules.enthalpy
           self.nixosModules.netns
-          self'.checks."profiles/tests/immutable".config.passthru.immutable
+          immutable
         ];
 
         services.resolved.enable = true;
