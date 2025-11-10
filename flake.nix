@@ -27,8 +27,9 @@
     }:
     let
       inherit (nixpkgs) lib;
-      inherit (lib.attrsets) optionalAttrs;
+      inherit (lib.attrsets) optionalAttrs getAttrFromPath;
       inherit (lib.modules) mkMerge;
+      inherit (lib.strings) splitString;
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
       { config, partitionStack, ... }:
@@ -60,11 +61,14 @@
 
         flake = optionalAttrs (partitionStack == [ ]) (
           let
-            partitionAttr = partition: attrName: config.partitions.${partition}.module.flake.${attrName};
+            partitionAttr =
+              partition: attrPath:
+              (getAttrFromPath (splitString "/" attrPath) config.partitions.${partition}.module.flake);
           in
           {
             # keep-sorted start block=yes
             checks = mkMerge [
+              (partitionAttr "hosts" "checks")
               (partitionAttr "modules" "checks")
               (partitionAttr "pkgs" "checks")
               (partitionAttr "profiles" "checks")
