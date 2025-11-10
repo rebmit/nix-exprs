@@ -5,7 +5,6 @@
         requires = [
           "external/preservation"
           "system/boot/initrd/systemd"
-          "home/preservation"
         ];
       };
 

@@ -1,6 +1,10 @@
 { self, ... }:
 {
   unify.modules."external/enthalpy" = {
-    nixos.module = self.nixosModules.enthalpy;
+    nixos = {
+      meta.requires = [ "external/netns" ];
+
+      module = self.nixosModules.enthalpy;
+    };
   };
 }
