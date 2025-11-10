@@ -6,6 +6,7 @@
         "baseline"
         "immutable"
         "multimedia"
+        "workstation"
         # keep-sorted end
       ];
     };

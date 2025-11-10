@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (lib.types) submodule;
+  inherit (lib.types) submoduleWith;
   inherit (lib.options) mkOption;
   inherit (self.lib.types) mkStructuredType;
   inherit (flake-parts-lib) mkSubmoduleOptions;
@@ -13,8 +13,12 @@ let
   metaModule = _: {
     options.flake = mkSubmoduleOptions {
       meta = mkOption {
-        type = submodule {
-          freeformType = mkStructuredType { typeName = "meta"; };
+        type = submoduleWith {
+          modules = [
+            {
+              freeformType = mkStructuredType { typeName = "meta"; };
+            }
+          ];
         };
         default = { };
         description = ''

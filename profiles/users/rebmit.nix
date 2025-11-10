@@ -1,4 +1,7 @@
-{ self, ... }:
+{ self, lib, ... }:
+let
+  inherit (lib.modules) mkVMOverride;
+in
 {
   flake.meta.users.rebmit = {
     name = "Lu Wang";
@@ -12,10 +15,14 @@
   unify.modules."users/rebmit" = {
     nixos = {
       meta = {
+        tags = [
+          "server"
+          "workstation"
+        ];
         requires = [
+          "external/home-manager"
           "external/sops-nix"
           "programs/fish"
-          "system/home-manager"
         ];
       };
 
@@ -48,6 +55,13 @@
           sops.secrets."users/rebmit/password" = {
             neededForUsers = true;
             sopsFile = config.sops.secretFiles.get "common.yaml";
+          };
+
+          virtualisation.vmVariant = {
+            users.users.rebmit = {
+              password = "password";
+              hashedPasswordFile = mkVMOverride null;
+            };
           };
         };
     };

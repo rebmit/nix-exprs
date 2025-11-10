@@ -2,7 +2,10 @@
   unify.modules."services/zram-generator" = {
     nixos = {
       meta = {
-        tags = [ "baseline" ];
+        tags = [
+          "server"
+          "workstation"
+        ];
         requires = [ "system/boot/sysctl/zram-vm-optimization" ];
       };
 
