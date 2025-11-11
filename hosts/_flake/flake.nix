@@ -7,7 +7,7 @@
     # nixos modules
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:rebmit/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {

@@ -28,7 +28,10 @@ in
                     };
                   })
                   (
-                    filterAttrs (_: hmCfg: hmCfg ? preservation && hmCfg.preservation.enable) config.home-manager.users
+                    # per https://github.com/rebmit/home-manager/commit/99a71d7c312ab861f79bee767ebdfa004eba9df6
+                    filterAttrs (
+                      _: hmCfg: hmCfg.module ? preservation && hmCfg.module.preservation.enable
+                    ) config.home-manager.users
                   )
               )
             );

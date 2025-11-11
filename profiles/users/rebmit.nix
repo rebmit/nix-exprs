@@ -46,7 +46,8 @@ in
 
           nix.settings.trusted-users = [ "rebmit" ];
 
-          home-manager.users.rebmit = _: {
+          # per https://github.com/rebmit/home-manager/commit/99a71d7c312ab861f79bee767ebdfa004eba9df6
+          home-manager.users.rebmit.module = _: {
             programs.git.settings.user = {
               inherit (self.meta.users.rebmit) name email;
             };
