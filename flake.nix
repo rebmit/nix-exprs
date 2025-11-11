@@ -50,7 +50,7 @@
           };
           hosts = {
             extraInputsFlake = ./hosts/_flake;
-            module = inputs.import-tree ./hosts;
+            module = import-tree ./hosts;
           };
           lib.module = import-tree ./lib;
           modules.module = import-tree ./modules;
