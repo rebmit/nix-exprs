@@ -71,7 +71,7 @@ in
             ++ includes;
 
           closure = pipe names [
-            (collectRequiresClosure "nixos")
+            (collectRequiresClosure class)
             (filter (n: !elem n excludes))
           ];
         in
