@@ -3,7 +3,12 @@
   imports = [
     # keep-sorted start
     self.flakeModules."unify/nixos"
-    self.flakeModules.nixpkgs
     # keep-sorted end
   ];
+
+  perSystem =
+    { self', ... }:
+    {
+      _module.args.pkgs = self'.legacyPackages;
+    };
 }

@@ -16,6 +16,7 @@ in
     self.flakeModules."unify/lib"
     self.flakeModules."unify/modules"
     self.flakeModules.meta
+    self.flakeModules.nixpkgs
     # keep-sorted end
   ];
 

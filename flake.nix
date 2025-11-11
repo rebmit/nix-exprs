@@ -76,6 +76,7 @@
             devShells = partitionAttr "dev" "devShells";
             flakeModules = partitionAttr "modules" "flakeModules";
             formatter = partitionAttr "dev" "formatter";
+            legacyPackages = partitionAttr "profiles" "legacyPackages";
             lib = partitionAttr "lib" "lib";
             meta = partitionAttr "profiles" "meta";
             modules = partitionAttr "profiles" "modules";
