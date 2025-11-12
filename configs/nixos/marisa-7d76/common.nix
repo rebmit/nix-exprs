@@ -14,6 +14,8 @@
 
     system = "x86_64-linux";
 
+    submodules.home-manager.users.rebmit = { };
+
     module = _: {
       system.stateVersion = "25.11";
     };
