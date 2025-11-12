@@ -1,41 +1,14 @@
 { self, lib, ... }:
 let
   inherit (lib) types;
-  inherit (lib.attrsets) mapAttrsToList filterAttrs optionalAttrs;
-  inherit (lib.lists) all elem;
-  inherit (lib.modules) mkMerge mkIf mkDefault;
+  inherit (lib.modules) mkIf mkDefault;
   inherit (lib.options) mkOption mkEnableOption;
 in
 {
   flake.unify.modules."external/preservation" = {
-    nixos.module =
-      { config, unify, ... }:
-      {
-        imports = [ self.nixosModules.preservation ];
-
-        preservation =
-          optionalAttrs
-            (all (mod: elem mod unify.meta.closure) [
-              "external/home-manager"
-            ])
-            (
-              mkMerge (
-                mapAttrsToList
-                  (name: hmCfg: {
-                    users.${name} = {
-                      home = hmCfg.home.homeDirectory;
-                      inherit (hmCfg.preservation) directories files commonMountOptions;
-                    };
-                  })
-                  (
-                    # per https://github.com/rebmit/home-manager/commit/99a71d7c312ab861f79bee767ebdfa004eba9df6
-                    filterAttrs (
-                      _: hmCfg: hmCfg.module ? preservation && hmCfg.module.preservation.enable
-                    ) config.home-manager.users
-                  )
-              )
-            );
-      };
+    nixos.module = {
+      imports = [ self.nixosModules.preservation ];
+    };
 
     homeManager.module =
       { config, nixosConfig }:

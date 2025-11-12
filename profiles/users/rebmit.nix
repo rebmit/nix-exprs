@@ -20,7 +20,6 @@ in
           "workstation"
         ];
         requires = [
-          "external/home-manager"
           "external/sops-nix"
           "programs/fish"
         ];
@@ -46,13 +45,6 @@ in
 
           nix.settings.trusted-users = [ "rebmit" ];
 
-          # per https://github.com/rebmit/home-manager/commit/99a71d7c312ab861f79bee767ebdfa004eba9df6
-          home-manager.users.rebmit.module = _: {
-            programs.git.settings.user = {
-              inherit (self.meta.users.rebmit) name email;
-            };
-          };
-
           sops.secrets."users/rebmit/password" = {
             neededForUsers = true;
             sopsFile = config.sops.secretFiles.get "common.yaml";
@@ -65,6 +57,18 @@ in
             };
           };
         };
+    };
+
+    homeManager = {
+      meta = {
+        configs = [ "rebmit" ];
+      };
+
+      module = {
+        programs.git.settings.user = {
+          inherit (self.meta.users.rebmit) name email;
+        };
+      };
     };
   };
 }
