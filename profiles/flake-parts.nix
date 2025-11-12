@@ -12,6 +12,8 @@ in
 {
   imports = [
     # keep-sorted start
+    "${inputs.flake-parts}/modules/checks.nix"
+    "${inputs.flake-parts}/modules/legacyPackages.nix"
     inputs.flake-parts.flakeModules.modules
     self.flakeModules."unify/lib"
     self.flakeModules."unify/modules"

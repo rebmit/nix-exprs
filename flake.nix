@@ -27,9 +27,16 @@
     }:
     let
       inherit (nixpkgs) lib;
-      inherit (lib.attrsets) optionalAttrs getAttrFromPath;
-      inherit (lib.modules) mkMerge;
+      inherit (lib.attrsets)
+        optionalAttrs
+        getAttrFromPath
+        nameValuePair
+        listToAttrs
+        ;
+      inherit (lib.lists) foldl;
+      inherit (lib.modules) mkDefault;
       inherit (lib.strings) splitString;
+      inherit (lib.trivial) pipe;
     in
     flake-parts.lib.mkFlake { inherit inputs; } (
       { config, partitionStack, ... }:
@@ -40,7 +47,26 @@
           "aarch64-darwin"
         ];
 
-        imports = [ flake-parts.flakeModules.partitions ];
+        disabledModules = [ "${flake-parts}/all-modules.nix" ];
+
+        imports = [
+          # keep-sorted start block=yes
+          "${flake-parts}/modules/flake.nix"
+          "${flake-parts}/modules/moduleWithSystem.nix"
+          "${flake-parts}/modules/perSystem.nix"
+          "${flake-parts}/modules/transposition.nix"
+          "${flake-parts}/modules/withSystem.nix"
+          flake-parts.flakeModules.partitions
+          # keep-sorted end
+        ];
+
+        transposition = mkDefault { };
+
+        perSystem =
+          { system, ... }:
+          {
+            _module.args.pkgs = mkDefault nixpkgs.legacyPackages.${system};
+          };
 
         partitions = {
           # keep-sorted start block=yes
@@ -67,12 +93,21 @@
           in
           {
             # keep-sorted start block=yes
-            checks = mkMerge [
-              (partitionAttr "configs" "checks")
-              (partitionAttr "modules" "checks")
-              (partitionAttr "pkgs" "checks")
-              (partitionAttr "profiles" "checks")
-            ];
+            checks =
+              foldl
+                (
+                  acc: v:
+                  pipe config.systems [
+                    (map (system: nameValuePair system (acc.${system} or { } // v.${system} or { })))
+                    listToAttrs
+                  ]
+                )
+                { }
+                [
+                  (partitionAttr "modules" "checks")
+                  (partitionAttr "pkgs" "checks")
+                  (partitionAttr "profiles" "checks")
+                ];
             devShells = partitionAttr "dev" "devShells";
             flakeModules = partitionAttr "modules" "flakeModules";
             formatter = partitionAttr "dev" "formatter";
