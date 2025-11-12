@@ -18,7 +18,7 @@ let
         let
           funcs = map (d: d.value) defs;
         in
-        foldl (acc: f: acc ++ [ f ]) [ ] funcs;
+        p: any (f: f p) (foldl (acc: f: acc ++ [ f ]) [ ] funcs);
     };
     default = _: false;
   };
@@ -114,17 +114,16 @@ let
               inherit (cfg)
                 localSystem
                 crossSystem
-                config
                 overlays
                 crossOverlays
                 ;
-            };
 
-            nixpkgs.config = {
-              allowUnfreePredicate = p: any (f: f p) cfg.predicates.allowUnfree;
-              allowNonSourcePredicate = p: any (f: f p) cfg.predicates.allowNonSource;
-              allowBrokenPredicate = p: any (f: f p) cfg.predicates.allowBroken;
-              allowInsecurePredicate = p: any (f: f p) cfg.predicates.allowInsecure;
+              config = cfg.config // {
+                allowUnfreePredicate = cfg.predicates.allowUnfree;
+                allowNonSourcePredicate = cfg.predicates.allowNonSource;
+                allowBrokenPredicate = cfg.predicates.allowBroken;
+                allowInsecurePredicate = cfg.predicates.allowInsecure;
+              };
             };
           };
         }

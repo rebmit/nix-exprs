@@ -24,10 +24,9 @@ in
     transposeAttrs
   ];
 
-  # TODO: fixup
-  # perSystem =
-  #   { system, ... }:
-  #   {
-  #     nixpkgs = self.partitions.common.module.allSystems.${system}.nixpkgs;
-  #   };
+  perSystem =
+    { system, ... }:
+    {
+      nixpkgs = self.partitions.common.module.allSystems.${system}.nixpkgs;
+    };
 }
