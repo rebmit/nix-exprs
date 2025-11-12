@@ -14,7 +14,16 @@
 
     system = "x86_64-linux";
 
-    submodules.home-manager.users.rebmit = { };
+    submodules.home-manager.users.rebmit = {
+      meta = {
+        tags = [
+          # keep-sorted start
+          "baseline"
+          "development"
+          # keep-sorted end
+        ];
+      };
+    };
 
     module = _: {
       system.stateVersion = "25.11";

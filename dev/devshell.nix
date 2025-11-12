@@ -11,6 +11,7 @@ in
           age-plugin-yubikey
           just
           nix-update
+          nixd
           nixos-anywhere
           (opentofu.withPlugins (
             ps: with ps; [

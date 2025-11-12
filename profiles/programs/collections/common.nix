@@ -39,5 +39,25 @@
           ];
         };
     };
+
+    homeManager = {
+      meta = {
+        tags = [ "baseline" ];
+      };
+
+      module =
+        { config, pkgs, ... }:
+        {
+          home.packages = with pkgs; [
+            fastfetch
+            numbat
+          ];
+
+          home.sessionVariables = {
+            HISTFILE = "${config.xdg.stateHome}/bash_history";
+            PYTHON_HISTORY = "${config.xdg.stateHome}/python_history";
+          };
+        };
+    };
   };
 }

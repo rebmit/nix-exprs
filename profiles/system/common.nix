@@ -9,18 +9,22 @@ in
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        boot.tmp.useTmpfs = mkDefault true;
+      module =
+        { self, ... }:
+        {
+          boot.tmp.useTmpfs = mkDefault true;
 
-        environment = {
-          defaultPackages = [ ];
-          stub-ld.enable = mkDefault false;
+          environment = {
+            defaultPackages = [ ];
+            stub-ld.enable = mkDefault false;
+          };
+
+          users.mutableUsers = mkDefault false;
+
+          system.configurationRevision = self.rev or "dirty";
+
+          system.tools.nixos-generate-config.enable = mkDefault false;
         };
-
-        users.mutableUsers = mkDefault false;
-
-        system.tools.nixos-generate-config.enable = mkDefault false;
-      };
     };
   };
 }

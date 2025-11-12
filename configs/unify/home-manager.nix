@@ -196,7 +196,7 @@ let
                 inherit (cfg.${name}.meta) tags includes excludes;
               };
 
-              unify = recursiveUpdate cfg { meta = { inherit closure; }; };
+              unify = recursiveUpdate cfg.${name} { meta = { inherit closure; }; };
             in
             {
               options.home-manager = mkOption {

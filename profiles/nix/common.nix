@@ -15,5 +15,32 @@
           };
         };
     };
+
+    homeManager = {
+      meta = {
+        tags = [ "baseline" ];
+        requires = [ "external/preservation" ];
+      };
+
+      module =
+        { pkgs, ... }:
+        {
+          home.packages = with pkgs; [
+            # keep-sorted start
+            dix
+            nix-melt
+            nix-tree
+            nix-update
+            nixd
+            nixpkgs-review
+            # keep-sorted end
+          ];
+
+          preservation.directories = [
+            ".cache/nix"
+            ".local/share/nix"
+          ];
+        };
+    };
   };
 }

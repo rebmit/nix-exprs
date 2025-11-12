@@ -1,4 +1,9 @@
-{ lib, flake-parts-lib, ... }:
+{
+  self,
+  lib,
+  flake-parts-lib,
+  ...
+}:
 let
   inherit (lib) types;
   inherit (lib.asserts) assertMsg;
@@ -6,6 +11,7 @@ let
   inherit (lib.lists) length;
   inherit (lib.options) mkOption;
   inherit (lib.strings) optionalString concatMapStringsSep concatStringsSep;
+  inherit (self.lib.types) mkStructuredType;
   inherit (flake-parts-lib) mkSubmoduleOptions;
 in
 {
@@ -37,6 +43,18 @@ in
           ports;
         description = ''
           A mapping of network ports, each identified by a unique name.
+        '';
+      };
+
+      zones = mkOption {
+        type = types.attrsOf (
+          types.submodule {
+            freeformType = mkStructuredType { typeName = "zone"; };
+          }
+        );
+        default = { };
+        description = ''
+          A set of DNS zones managed by this flake.
         '';
       };
     };
