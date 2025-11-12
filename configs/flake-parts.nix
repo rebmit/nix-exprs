@@ -4,7 +4,6 @@
     # keep-sorted start
     "${inputs.flake-parts}/modules/checks.nix"
     "${inputs.flake-parts}/modules/nixosConfigurations.nix"
-    self.flakeModules."unify/nixos"
     self.flakeModules.meta
     # keep-sorted end
   ];
