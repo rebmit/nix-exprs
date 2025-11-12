@@ -14,9 +14,10 @@
     inherit (self) meta;
   };
 
-  perSystem =
-    { system, ... }:
-    {
-      nixpkgs = self.partitions.profiles.module.allSystems.${system}.nixpkgs;
-    };
+  # TODO: fixup
+  # perSystem =
+  #   { ... }:
+  #   {
+  #     nixpkgs = self.partitions.profiles.module.allSystems.${system}.nixpkgs;
+  #   };
 }
