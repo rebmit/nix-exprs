@@ -6,4 +6,10 @@
     "${inputs.flake-parts}/modules/nixosModules.nix"
     # keep-sorted end
   ];
+
+  perSystem =
+    { system, ... }:
+    {
+      _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system};
+    };
 }

@@ -5,6 +5,7 @@
     "${inputs.flake-parts}/modules/checks.nix"
     "${inputs.flake-parts}/modules/nixosConfigurations.nix"
     self.flakeModules.meta
+    self.flakeModules.nixpkgs
     # keep-sorted end
   ];
 
@@ -16,6 +17,6 @@
   perSystem =
     { system, ... }:
     {
-      _module.args.pkgs = self.legacyPackages.${system};
+      nixpkgs = self.partitions.profiles.module.allSystems.${system}.nixpkgs;
     };
 }

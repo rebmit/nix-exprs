@@ -62,14 +62,9 @@
 
         transposition = mkDefault { };
 
-        perSystem =
-          { system, ... }:
-          {
-            _module.args.pkgs = mkDefault nixpkgs.legacyPackages.${system};
-          };
-
         partitions = {
           # keep-sorted start block=yes
+          common.module = import-tree ./common;
           configs = {
             extraInputsFlake = ./configs/_flake;
             module = import-tree ./configs;
@@ -112,7 +107,7 @@
             devShells = partitionAttr "dev" "devShells";
             flakeModules = partitionAttr "modules" "flakeModules";
             formatter = partitionAttr "dev" "formatter";
-            legacyPackages = partitionAttr "profiles" "legacyPackages";
+            legacyPackages = partitionAttr "common" "legacyPackages";
             lib = partitionAttr "lib" "lib";
             meta = partitionAttr "profiles" "meta";
             modules = partitionAttr "profiles" "modules";
@@ -120,6 +115,7 @@
             nixosModules = partitionAttr "modules" "nixosModules";
             overlays = partitionAttr "pkgs" "overlays";
             packages = partitionAttr "pkgs" "packages";
+            partitions = config.partitions;
             unify = {
               # keep-sorted start block=yes
               configs = partitionAttr "configs" "unify/configs";

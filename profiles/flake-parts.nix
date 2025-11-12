@@ -13,7 +13,6 @@ in
   imports = [
     # keep-sorted start
     "${inputs.flake-parts}/modules/checks.nix"
-    "${inputs.flake-parts}/modules/legacyPackages.nix"
     inputs.flake-parts.flakeModules.modules
     self.flakeModules.meta
     self.flakeModules.nixpkgs
@@ -24,4 +23,10 @@ in
     (mapAttrs (_: classes: mapAttrs (_: cfg: cfg.module) classes))
     transposeAttrs
   ];
+
+  perSystem =
+    { system, ... }:
+    {
+      nixpkgs = self.partitions.common.module.allSystems.${system}.nixpkgs;
+    };
 }
