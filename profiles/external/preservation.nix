@@ -1,17 +1,37 @@
 { self, lib, ... }:
 let
   inherit (lib) types;
-  inherit (lib.modules) mkIf mkDefault;
+  inherit (lib.attrsets) mapAttrsToList optionalAttrs;
+  inherit (lib.modules) mkMerge mkIf mkDefault;
   inherit (lib.options) mkOption mkEnableOption;
 in
 {
   flake.unify.modules."external/preservation" = {
-    nixos.module = {
-      imports = [ self.nixosModules.preservation ];
-    };
+    nixos.module =
+      { config, unify, ... }:
+      {
+        imports = [ self.nixosModules.preservation ];
+
+        preservation = mkMerge (
+          mapAttrsToList (
+            name: _:
+            let
+              hmCfg = config.users.users.${name}.home-manager.module;
+            in
+            {
+              users.${name} = {
+                home = hmCfg.home.homeDirectory;
+              }
+              // optionalAttrs (hmCfg ? preservation && hmCfg.preservation.enable) {
+                inherit (hmCfg.preservation) directories files commonMountOptions;
+              };
+            }
+          ) unify.submodules.home-manager.users
+        );
+      };
 
     homeManager.module =
-      { config, nixosConfig }:
+      { config, nixosConfig, ... }:
       {
         options.preservation = {
           enable = mkEnableOption "the preservation module";

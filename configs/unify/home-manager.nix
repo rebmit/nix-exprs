@@ -253,7 +253,10 @@ let
                     };
 
                     module = _: {
-                      imports = map (n: self.unify.modules.${n}.homeManager.module) closure;
+                      imports = [
+                        cfg.${name}.module
+                      ]
+                      ++ map (n: self.unify.modules.${n}.homeManager.module) closure;
 
                       key = "home-manager#nixos-shared-module";
 
