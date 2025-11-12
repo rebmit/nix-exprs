@@ -104,6 +104,7 @@
                 )
                 { }
                 [
+                  (partitionAttr "configs" "checks")
                   (partitionAttr "modules" "checks")
                   (partitionAttr "pkgs" "checks")
                   (partitionAttr "profiles" "checks")
