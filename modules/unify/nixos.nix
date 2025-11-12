@@ -42,7 +42,7 @@ in
           };
         };
 
-        unify.hosts.nixos = mkOption {
+        unify.configs.nixos = mkOption {
           type = lazyAttrsOf (
             submodule (
               { name, ... }:
@@ -132,8 +132,8 @@ in
               meta
               ;
 
-            closure = self.unify.lib.collectModulesForHost "nixos" {
-              host = name;
+            closure = self.unify.lib.collectModulesForConfig "nixos" {
+              inherit name;
               inherit (meta) tags includes excludes;
             };
 
@@ -159,7 +159,7 @@ in
             ]
             ++ map (n: self.unify.modules.${n}.nixos.module) closure;
           }
-        ) config.flake.unify.hosts.nixos;
+        ) config.flake.unify.configs.nixos;
       };
     };
 }

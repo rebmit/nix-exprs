@@ -47,10 +47,10 @@ in
         in
         iter [ ] names;
 
-      collectModulesForHost =
+      collectModulesForConfig =
         class:
         {
-          host ? null,
+          name ? null,
           tags ? [ ],
           includes ? [ ],
           excludes ? [ ],
@@ -67,7 +67,7 @@ in
 
           names =
             (fold (tag: acc: getModules (_: v: elem tag v.meta.tags) ++ acc) [ ] tags)
-            ++ getModules (_: v: elem host v.meta.hosts)
+            ++ getModules (_: v: elem name v.meta.configs)
             ++ includes;
 
           closure = pipe names [
@@ -83,7 +83,7 @@ in
           default = {
             inherit
               collectRequiresClosure
-              collectModulesForHost
+              collectModulesForConfig
               ;
           };
           readOnly = true;

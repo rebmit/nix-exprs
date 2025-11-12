@@ -44,13 +44,13 @@
 
         partitions = {
           # keep-sorted start block=yes
+          configs = {
+            extraInputsFlake = ./configs/_flake;
+            module = import-tree ./configs;
+          };
           dev = {
             extraInputsFlake = ./dev/_flake;
             module = import-tree ./dev;
-          };
-          hosts = {
-            extraInputsFlake = ./hosts/_flake;
-            module = import-tree ./hosts;
           };
           lib.module = import-tree ./lib;
           modules.module = import-tree ./modules;
@@ -68,7 +68,7 @@
           {
             # keep-sorted start block=yes
             checks = mkMerge [
-              (partitionAttr "hosts" "checks")
+              (partitionAttr "configs" "checks")
               (partitionAttr "modules" "checks")
               (partitionAttr "pkgs" "checks")
               (partitionAttr "profiles" "checks")
@@ -80,13 +80,13 @@
             lib = partitionAttr "lib" "lib";
             meta = partitionAttr "profiles" "meta";
             modules = partitionAttr "profiles" "modules";
-            nixosConfigurations = partitionAttr "hosts" "nixosConfigurations";
+            nixosConfigurations = partitionAttr "configs" "nixosConfigurations";
             nixosModules = partitionAttr "modules" "nixosModules";
             overlays = partitionAttr "pkgs" "overlays";
             packages = partitionAttr "pkgs" "packages";
             unify = {
               # keep-sorted start block=yes
-              hosts = partitionAttr "hosts" "unify/hosts";
+              configs = partitionAttr "configs" "unify/configs";
               lib = partitionAttr "profiles" "unify/lib";
               modules = partitionAttr "profiles" "unify/modules";
               # keep-sorted end

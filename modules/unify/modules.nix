@@ -42,20 +42,20 @@ in
                     type = submodule {
                       freeformType = mkStructuredType { typeName = "meta"; };
                       options = optionalAttrs (supportedClass name) {
-                        hosts = mkOption {
+                        configs = mkOption {
                           type = listOf str;
                           default = [ ];
                           description = ''
-                            A list of host names.  If the current host name appears in this list, this
-                            module will be automatically imported.
+                            A list of configuration names.  If the current configuration name appears
+                            in this list, this module will be automatically imported.
                           '';
                         };
                         tags = mkOption {
                           type = listOf str;
                           default = [ ];
                           description = ''
-                            A list of host tags.  If any tag of the current configuration name matches
-                            one in this list, this module will be automatically imported.
+                            A list of tags.  If any tag of the current configuration name matches one
+                            in this list, this module will be automatically imported.
                           '';
                         };
                         requires = mkOption {

@@ -1,5 +1,5 @@
 {
-  flake.unify.hosts.nixos.marisa-7d76 = {
+  flake.unify.configs.nixos.marisa-7d76 = {
     meta = {
       tags = [
         # keep-sorted start
