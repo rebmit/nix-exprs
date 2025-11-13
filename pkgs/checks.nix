@@ -9,6 +9,7 @@ in
     {
       checks = flattenTree {
         setFilter = s: !isDerivation s;
+        leafFilter = isDerivation;
       } { inherit (self') packages; };
     };
 }
