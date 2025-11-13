@@ -5,6 +5,7 @@
         requires = [
           "external/preservation"
           "system/boot/initrd/systemd"
+          "system/etc/machine-id"
         ];
       };
 
@@ -38,7 +39,7 @@
 
           virtualisation.vmVariant = {
             virtualisation = {
-              emptyDiskImages = [ 23 ];
+              emptyDiskImages = [ 1048576 ];
               fileSystems."/persist" = {
                 device = "/dev/vdb";
                 fsType = "ext4";
