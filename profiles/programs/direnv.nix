@@ -6,14 +6,16 @@
         requires = [ "external/preservation" ];
       };
 
-      module = _: {
-        programs.direnv = {
-          enable = true;
-          nix-direnv.enable = true;
-        };
+      module =
+        { ... }:
+        {
+          programs.direnv = {
+            enable = true;
+            nix-direnv.enable = true;
+          };
 
-        preservation.directories = [ ".local/share/direnv" ];
-      };
+          preservation.directories = [ ".local/share/direnv" ];
+        };
     };
   };
 }

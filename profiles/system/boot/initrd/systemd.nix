@@ -1,7 +1,11 @@
 {
   flake.unify.modules."system/boot/initrd/systemd" = {
-    nixos.module = _: {
-      boot.initrd.systemd.enable = true;
+    nixos = {
+      module =
+        { ... }:
+        {
+          boot.initrd.systemd.enable = true;
+        };
     };
   };
 }

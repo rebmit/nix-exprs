@@ -6,11 +6,13 @@
         requires = [ "external/preservation" ];
       };
 
-      module = _: {
-        programs.zoxide.enable = true;
+      module =
+        { ... }:
+        {
+          programs.zoxide.enable = true;
 
-        preservation.directories = [ ".local/share/zoxide" ];
-      };
+          preservation.directories = [ ".local/share/zoxide" ];
+        };
     };
   };
 }

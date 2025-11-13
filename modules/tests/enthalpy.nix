@@ -103,7 +103,7 @@ in
       };
     in
     {
-      checks."modules/enthalpy" = pkgs.testers.nixosTest {
+      checks."modules/tests/enthalpy" = pkgs.testers.nixosTest {
         name = "enthalpy";
 
         nodes.peer1 =

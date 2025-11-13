@@ -17,7 +17,7 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      checks."modules/preservation" = pkgs.testers.nixosTest {
+      checks."modules/tests/preservation" = pkgs.testers.nixosTest {
         name = "preservation";
 
         nodes.machine =

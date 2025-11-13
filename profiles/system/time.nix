@@ -9,9 +9,11 @@ in
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        time.timeZone = mkDefault "Asia/Hong_Kong";
-      };
+      module =
+        { ... }:
+        {
+          time.timeZone = mkDefault "Asia/Hong_Kong";
+        };
     };
   };
 }

@@ -5,9 +5,11 @@
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        programs.man.generateCaches = false;
-      };
+      module =
+        { ... }:
+        {
+          programs.man.generateCaches = false;
+        };
     };
   };
 }

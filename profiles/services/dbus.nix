@@ -5,9 +5,11 @@
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        services.dbus.implementation = "broker";
-      };
+      module =
+        { ... }:
+        {
+          services.dbus.implementation = "broker";
+        };
     };
   };
 }

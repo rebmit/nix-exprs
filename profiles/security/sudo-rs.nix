@@ -6,15 +6,17 @@
         conflicts = [ "security/sudo" ];
       };
 
-      module = _: {
-        security.sudo.enable = false;
+      module =
+        { ... }:
+        {
+          security.sudo.enable = false;
 
-        security.sudo-rs = {
-          enable = true;
-          execWheelOnly = true;
-          wheelNeedsPassword = true;
+          security.sudo-rs = {
+            enable = true;
+            execWheelOnly = true;
+            wheelNeedsPassword = true;
+          };
         };
-      };
     };
   };
 }

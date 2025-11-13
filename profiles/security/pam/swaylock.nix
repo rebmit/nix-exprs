@@ -5,9 +5,11 @@
         tags = [ "desktop/niri" ];
       };
 
-      module = _: {
-        security.pam.services.swaylock = { };
-      };
+      module =
+        { ... }:
+        {
+          security.pam.services.swaylock = { };
+        };
     };
   };
 }

@@ -25,8 +25,10 @@
       };
     };
 
-    module = _: {
-      system.stateVersion = "25.11";
-    };
+    module =
+      { ... }:
+      {
+        system.stateVersion = "25.11";
+      };
   };
 }

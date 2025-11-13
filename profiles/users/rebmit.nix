@@ -64,11 +64,13 @@ in
         configs = [ "rebmit" ];
       };
 
-      module = {
-        programs.git.settings.user = {
-          inherit (self.meta.users.rebmit) name email;
+      module =
+        { ... }:
+        {
+          programs.git.settings.user = {
+            inherit (self.meta.users.rebmit) name email;
+          };
         };
-      };
     };
   };
 }

@@ -5,9 +5,11 @@
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        security.polkit.enable = true;
-      };
+      module =
+        { ... }:
+        {
+          security.polkit.enable = true;
+        };
     };
   };
 }

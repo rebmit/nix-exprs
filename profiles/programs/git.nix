@@ -9,12 +9,14 @@ in
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        programs.git = {
-          enable = true;
-          lfs.enable = true;
+      module =
+        { ... }:
+        {
+          programs.git = {
+            enable = true;
+            lfs.enable = true;
+          };
         };
-      };
     };
 
     homeManager = {
@@ -22,22 +24,24 @@ in
         tags = [ "development" ];
       };
 
-      module = _: {
-        programs.git = {
-          enable = true;
-          lfs.enable = true;
-          signing = {
-            format = mkDefault "ssh";
-            key = mkDefault "~/.ssh/id_ed25519";
-          };
-          settings = {
-            commit.gpgSign = true;
-            pull.rebase = true;
-            init.defaultBranch = "master";
-            fetch.prune = true;
+      module =
+        { ... }:
+        {
+          programs.git = {
+            enable = true;
+            lfs.enable = true;
+            signing = {
+              format = mkDefault "ssh";
+              key = mkDefault "~/.ssh/id_ed25519";
+            };
+            settings = {
+              commit.gpgSign = true;
+              pull.rebase = true;
+              init.defaultBranch = "master";
+              fetch.prune = true;
+            };
           };
         };
-      };
     };
   };
 }

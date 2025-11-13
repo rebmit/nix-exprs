@@ -9,21 +9,23 @@ in
         tags = [ "network" ];
       };
 
-      module = _: {
-        networking = {
-          useNetworkd = true;
-          useDHCP = false;
-        };
+      module =
+        { ... }:
+        {
+          networking = {
+            useNetworkd = true;
+            useDHCP = false;
+          };
 
-        systemd.network.enable = true;
+          systemd.network.enable = true;
 
-        virtualisation.vmVariant = {
-          systemd.network.networks."00-eth0" = mkVMOverride {
-            name = "eth0";
-            DHCP = "yes";
+          virtualisation.vmVariant = {
+            systemd.network.networks."00-eth0" = mkVMOverride {
+              name = "eth0";
+              DHCP = "yes";
+            };
           };
         };
-      };
     };
   };
 }

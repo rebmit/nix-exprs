@@ -1,10 +1,14 @@
 {
   flake.unify.modules."programs/fish" = {
-    nixos.module = _: {
-      programs.fish = {
-        enable = true;
-        useBabelfish = true;
-      };
+    nixos = {
+      module =
+        { ... }:
+        {
+          programs.fish = {
+            enable = true;
+            useBabelfish = true;
+          };
+        };
     };
 
     homeManager = {

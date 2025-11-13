@@ -5,12 +5,14 @@
         tags = [ "development" ];
       };
 
-      module = _: {
-        programs.delta = {
-          enable = true;
-          enableGitIntegration = true;
+      module =
+        { ... }:
+        {
+          programs.delta = {
+            enable = true;
+            enableGitIntegration = true;
+          };
         };
-      };
     };
   };
 }

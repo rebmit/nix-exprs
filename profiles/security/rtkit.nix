@@ -1,9 +1,11 @@
 {
   flake.unify.modules."security/rtkit" = {
     nixos = {
-      module = _: {
-        security.rtkit.enable = true;
-      };
+      module =
+        { ... }:
+        {
+          security.rtkit.enable = true;
+        };
     };
   };
 }

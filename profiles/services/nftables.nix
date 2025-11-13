@@ -5,9 +5,11 @@
         tags = [ "network" ];
       };
 
-      module = _: {
-        networking.nftables.enable = true;
-      };
+      module =
+        { ... }:
+        {
+          networking.nftables.enable = true;
+        };
     };
   };
 }

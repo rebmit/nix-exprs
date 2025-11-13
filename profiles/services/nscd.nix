@@ -10,14 +10,16 @@ in
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        services.nscd = {
-          enable = true;
-          enableNsncd = true;
-        };
+      module =
+        { ... }:
+        {
+          services.nscd = {
+            enable = true;
+            enableNsncd = true;
+          };
 
-        systemd.services.nscd = mkHardenedService { serviceConfig.ProtectHome = mkForce true; };
-      };
+          systemd.services.nscd = mkHardenedService { serviceConfig.ProtectHome = mkForce true; };
+        };
     };
   };
 }

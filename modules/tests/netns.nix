@@ -14,7 +14,7 @@ in
   perSystem =
     { pkgs, ... }:
     {
-      checks."modules/netns" = pkgs.testers.nixosTest {
+      checks."modules/tests/netns" = pkgs.testers.nixosTest {
         name = "netns";
 
         nodes.machine =

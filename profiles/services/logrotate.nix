@@ -6,20 +6,22 @@
         requires = [ "external/preservation" ];
       };
 
-      module = _: {
-        services.logrotate = {
-          extraArgs = [
-            "-s"
-            "/var/lib/logrotate/status"
-          ];
-        };
+      module =
+        { ... }:
+        {
+          services.logrotate = {
+            extraArgs = [
+              "-s"
+              "/var/lib/logrotate/status"
+            ];
+          };
 
-        systemd.services.logrotate.serviceConfig = {
-          StateDirectory = "logrotate";
-        };
+          systemd.services.logrotate.serviceConfig = {
+            StateDirectory = "logrotate";
+          };
 
-        preservation.directories = [ "/var/lib/logrotate" ];
-      };
+          preservation.directories = [ "/var/lib/logrotate" ];
+        };
     };
   };
 }

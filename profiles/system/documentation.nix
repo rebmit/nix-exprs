@@ -5,19 +5,21 @@
         tags = [ "baseline" ];
       };
 
-      module = _: {
-        documentation = {
-          enable = true;
-          doc.enable = false;
-          info.enable = false;
-          man = {
+      module =
+        { ... }:
+        {
+          documentation = {
             enable = true;
-            generateCaches = false;
-            man-db.enable = true;
+            doc.enable = false;
+            info.enable = false;
+            man = {
+              enable = true;
+              generateCaches = false;
+              man-db.enable = true;
+            };
+            nixos.enable = false;
           };
-          nixos.enable = false;
         };
-      };
     };
   };
 }

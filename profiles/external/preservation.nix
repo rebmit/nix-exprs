@@ -7,73 +7,77 @@ let
 in
 {
   flake.unify.modules."external/preservation" = {
-    nixos.module =
-      { config, unify, ... }:
-      {
-        imports = [ self.nixosModules.preservation ];
+    nixos = {
+      module =
+        { config, unify, ... }:
+        {
+          imports = [ self.nixosModules.preservation ];
 
-        preservation = mkMerge (
-          mapAttrsToList (
-            name: _:
-            let
-              hmCfg = config.users.users.${name}.home-manager.module;
-            in
-            {
-              users.${name} = {
-                home = hmCfg.home.homeDirectory;
+          preservation = mkMerge (
+            mapAttrsToList (
+              name: _:
+              let
+                hmCfg = config.users.users.${name}.home-manager.module;
+              in
+              {
+                users.${name} = {
+                  home = hmCfg.home.homeDirectory;
+                }
+                // optionalAttrs (hmCfg ? preservation && hmCfg.preservation.enable) {
+                  inherit (hmCfg.preservation) directories files commonMountOptions;
+                };
               }
-              // optionalAttrs (hmCfg ? preservation && hmCfg.preservation.enable) {
-                inherit (hmCfg.preservation) directories files commonMountOptions;
-              };
-            }
-          ) unify.submodules.home-manager.users
-        );
-      };
+            ) unify.submodules.home-manager.users
+          );
+        };
+    };
 
-    homeManager.module =
-      { config, nixosConfig, ... }:
-      {
-        options.preservation = {
-          enable = mkEnableOption "the preservation module";
-          directories = mkOption {
-            type = types.listOf (types.coercedTo types.str (d: { directory = d; }) types.anything);
-            default = [ ];
-            description = ''
-              Specify a list of directories that should be preserved for this user.
-              The paths are interpreted relative to the user's home directory.
-            '';
-          };
-          files = mkOption {
-            type = types.listOf (types.coercedTo types.str (f: { file = f; }) types.anything);
-            default = [ ];
-            description = ''
-              Specify a list of files that should be preserved for this user.
-              The paths are interpreted relative to the user's home directory.
-            '';
-          };
-          commonMountOptions = mkOption {
-            type = types.listOf (types.coercedTo types.str (n: { name = n; }) types.anything);
-            default = [ ];
-            description = ''
-              Specify a list of mount options that should be added to all files and directories
-              of this user, for which {option}`how` is set to `bindmount`.
+    homeManager = {
+      module =
+        { config, nixosConfig, ... }:
+        {
+          options.preservation = {
+            enable = mkEnableOption "the preservation module";
+            directories = mkOption {
+              type = types.listOf (types.coercedTo types.str (d: { directory = d; }) types.anything);
+              default = [ ];
+              description = ''
+                Specify a list of directories that should be preserved for this user.
+                The paths are interpreted relative to the user's home directory.
+              '';
+            };
+            files = mkOption {
+              type = types.listOf (types.coercedTo types.str (f: { file = f; }) types.anything);
+              default = [ ];
+              description = ''
+                Specify a list of files that should be preserved for this user.
+                The paths are interpreted relative to the user's home directory.
+              '';
+            };
+            commonMountOptions = mkOption {
+              type = types.listOf (types.coercedTo types.str (n: { name = n; }) types.anything);
+              default = [ ];
+              description = ''
+                Specify a list of mount options that should be added to all files and directories
+                of this user, for which {option}`how` is set to `bindmount`.
 
-              See also the top level {option}`commonMountOptions` and the invdividual
-              {option}`mountOptions` that is available per file / directory.
-            '';
+                See also the top level {option}`commonMountOptions` and the invdividual
+                {option}`mountOptions` that is available per file / directory.
+              '';
+            };
+          };
+
+          config = {
+            warnings = mkIf (config.preservation.enable && !nixosConfig.preservation.enable) [
+              ''
+                The preservation module is enabled in Home Manager but disabled system-wide.
+                As a result, the settings will not take effect.
+              ''
+            ];
+
+            preservation.enable = mkDefault (nixosConfig != null && nixosConfig.preservation.enable);
           };
         };
-
-        config = {
-          warnings = mkIf (config.preservation.enable && !nixosConfig.preservation.enable) [
-            ''
-              The preservation module is enabled in Home Manager but disabled system-wide.
-              As a result, the settings will not take effect.
-            ''
-          ];
-
-          preservation.enable = mkDefault (nixosConfig != null && nixosConfig.preservation.enable);
-        };
-      };
+    };
   };
 }
