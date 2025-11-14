@@ -11,9 +11,11 @@ in
         projectRootFile = "flake.nix";
         programs = {
           deadnix.enable = true;
+          shfmt.enable = true;
           keep-sorted.enable = true;
           nixfmt.enable = true;
           prettier.enable = true;
+          shellcheck.enable = true;
         };
       };
 

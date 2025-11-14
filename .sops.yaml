@@ -1,0 +1,10 @@
+keys:
+  age:
+    - &self0 age1yubikey1qt4k5tkk47fm58cj66s7cr8z9mete4jkyv2xjdfexcfwc0cw9c9jx7xgpwc
+    - &self1 age1wg5kd692d3m4mh83qt5smzeu48j8w2gjspxk4l5svlg92fumqefqvkp3kx
+creation_rules:
+  - path_regex: infra/.*
+    key_groups:
+      - age:
+          - *self0
+          - *self1
