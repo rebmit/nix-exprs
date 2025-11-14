@@ -13,6 +13,8 @@ let
   inherit (lib.attrsets) mapAttrs recursiveUpdate;
   inherit (lib.modules) mkDefault;
   inherit (lib.options) mkOption;
+  inherit (lib.strings) fromJSON;
+  inherit (lib.trivial) readFile;
   inherit (lib.types)
     raw
     lazyAttrsOf
@@ -20,16 +22,19 @@ let
     listOf
     str
     deferredModule
+    attrs
     ;
   inherit (self.lib.types) mkStructuredType;
   inherit (flake-parts-lib) mkSubmoduleOptions;
+
+  data = fromJSON (readFile ../../infra/data.json);
 in
 {
   options.flake = mkSubmoduleOptions {
     unify.configs.nixos = mkOption {
       type = lazyAttrsOf (
         submodule (
-          { name, ... }:
+          { name, config, ... }:
           {
             options = {
               meta = mkOption {
@@ -58,6 +63,13 @@ in
                       description = ''
                         A list of modules to exclude.  Any module listed here will be removed
                         from the dependency closure, even if it would otherwise be imported.
+                      '';
+                    };
+                    data = mkOption {
+                      type = attrs;
+                      default = data.hosts.${config.name};
+                      description = ''
+                        Attribute sets derived from OpenTofu outputs for this host.
                       '';
                     };
                   };

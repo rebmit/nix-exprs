@@ -3,6 +3,7 @@
     meta = {
       tags = [
         # keep-sorted start
+        "backup"
         "baseline"
         "desktop/niri"
         "immutable"
