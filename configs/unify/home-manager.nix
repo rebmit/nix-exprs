@@ -328,6 +328,8 @@ in
                     )
                   );
 
+                  environment.pathsToLink = [ "/etc/profile.d" ];
+
                   systemd.services = mapAttrs' (
                     n: _:
                     let
