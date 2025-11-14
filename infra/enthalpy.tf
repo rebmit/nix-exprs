@@ -16,7 +16,7 @@ output "enthalpy" {
   value = {
     for key, name in local.enthalpy_organizations : name => {
       public_key_pem = trimspace(tls_private_key.enthalpy[key].public_key_pem)
-      nodes          = [for k, v in local.hosts : k if contains(v.labels, "enthalpy/${key}")]
+      nodes          = [for k, v in local.hosts : k if v.enthalpy_node_organization == key]
     }
   }
   sensitive = false
