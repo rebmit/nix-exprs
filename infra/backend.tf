@@ -6,7 +6,7 @@ terraform {
     key_provider "external" "key_20250602" {
       command = ["sh", "-c",
         <<-EOT
-          KEY="$(sops --extract '["tofu"]["key_20250602"]' -d $PRJ_ROOT/infra/secrets.yaml | base64 -w 0)"
+          KEY="$(sops --extract '["tofu"]["key_20250602"]' -d secrets.yaml | base64 -w 0)"
           printf '{"magic": "OpenTofu-External-Key-Provider", "version": 1}\n'
           printf '{"keys": {"encryption_key": "%s", "decryption_key": "%s"}}\n' $KEY $KEY
         EOT
