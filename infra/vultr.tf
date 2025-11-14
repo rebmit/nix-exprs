@@ -25,7 +25,7 @@ locals {
 
 resource "vultr_ssh_key" "marisa-7d76" {
   name    = "rebmit@marisa-7d76"
-  ssh_key = trim(file("${path.module}/../nixos/profiles/users/root/_ssh/marisa-7d76"), "\n ")
+  ssh_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDfKG/KKgC6IaK4uu9zn+0wbF4XXK1pcCP/S37u6OAmJ"
 }
 
 module "vultr_instances" {
