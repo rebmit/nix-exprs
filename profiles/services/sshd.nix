@@ -55,7 +55,11 @@ in
           };
 
           sops.secrets."openssh/ssh-host-ed25519-key" = {
-            host.enable = true;
+            opentofu = {
+              enable = true;
+              useHostOutput = true;
+              jqPath = "ssh_host_ed25519_key";
+            };
             restartUnits = [ "sshd.service" ];
           };
 

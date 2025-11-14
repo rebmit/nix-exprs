@@ -1,8 +1,15 @@
 { lib, ... }:
 let
   inherit (lib) types;
-  inherit (lib.modules) mkIf mkVMOverride;
+  inherit (lib.attrsets)
+    filterAttrs
+    foldlAttrs
+    setAttrByPath
+    recursiveUpdate
+    ;
+  inherit (lib.modules) mkIf mkMerge mkVMOverride;
   inherit (lib.options) mkOption mkEnableOption;
+  inherit (lib.strings) splitString;
 in
 {
   flake.unify.modules."external/sops-nix" = {
@@ -15,6 +22,9 @@ in
           unify,
           ...
         }@nixos:
+        let
+          secretsFromOutputs = filterAttrs (_: c: c.opentofu.enable) config.sops.secrets;
+        in
         {
           imports = [ inputs.sops-nix.nixosModules.sops ];
 
@@ -41,9 +51,34 @@ in
                 type = types.path;
                 default = config.sops.secretFiles.get "hosts/${unify.name}.yaml";
                 description = ''
-                  The path to per-host secret file.
+                  The path to the manually maintained host secret file.
                 '';
               };
+              opentofu = mkOption {
+                type = types.path;
+                default = config.sops.secretFiles.get "hosts/opentofu/${unify.name}.yaml";
+                description = ''
+                  The path to the host secret file exported from OpenTofu.
+                '';
+              };
+            };
+            opentofuTemplate = mkOption {
+              type = types.attrs;
+              default = foldlAttrs (
+                acc: _n: v:
+                recursiveUpdate acc (
+                  setAttrByPath (splitString "/" v.key) (
+                    if v.opentofu.useHostOutput then
+                      ".hosts.value.\"${unify.name}\".${v.opentofu.jqPath}"
+                    else
+                      v.opentofu.jqPath
+                  )
+                )
+              ) { } secretsFromOutputs;
+              readOnly = true;
+              description = ''
+                The jq filter template for extracting OpenTofu secrets.
+              '';
             };
             secrets = mkOption {
               type = types.attrsOf (
@@ -52,11 +87,26 @@ in
                   {
                     options = {
                       host.enable = mkEnableOption "use per-host secret file";
+                      opentofu = {
+                        enable = mkEnableOption "use per-host opentofu secert file";
+                        useHostOutput = mkEnableOption "extract secret from host-specific output";
+                        jqPath = mkOption {
+                          type = types.str;
+                          description = ''
+                            The jq path that selects the secret value from the OpenTofu output.
+                          '';
+                        };
+                      };
                     };
 
-                    config = {
-                      sopsFile = mkIf config.host.enable nixos.config.sops.secretFiles.host;
-                    };
+                    config = mkMerge [
+                      {
+                        sopsFile = mkIf config.host.enable nixos.config.sops.secretFiles.host;
+                      }
+                      {
+                        sopsFile = mkIf config.opentofu.enable nixos.config.sops.secretFiles.opentofu;
+                      }
+                    ];
                   }
                 )
               );
