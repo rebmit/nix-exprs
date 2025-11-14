@@ -70,13 +70,6 @@ locals {
       enthalpy_node_id           = parseint("6b8", 16)
       enthalpy_node_organization = "enta0001"
     }
-    "reisen-sin0" = {
-      labels                     = ["dns/secondary", "enthalpy/enta0001", "bgp/vultr"]
-      endpoints_v4               = [module.vultr_instances["reisen-sin0"].ipv4]
-      endpoints_v6               = [module.vultr_instances["reisen-sin0"].ipv6]
-      enthalpy_node_id           = parseint("254", 16)
-      enthalpy_node_organization = "enta0001"
-    }
   }
 }
 
