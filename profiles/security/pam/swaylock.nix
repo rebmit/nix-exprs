@@ -2,7 +2,7 @@
   flake.unify.modules."security/pam/swaylock" = {
     nixos = {
       meta = {
-        tags = [ "desktop/niri" ];
+        tags = [ "desktop" ];
       };
 
       module =

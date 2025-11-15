@@ -10,6 +10,7 @@ in
         requires = [
           "system/boot/initrd/systemd"
           "system/etc/machine-id"
+          "system/userborn"
         ];
       };
 

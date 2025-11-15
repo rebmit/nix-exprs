@@ -7,7 +7,10 @@ in
     nixos = {
       meta = {
         tags = [ "backup" ];
-        requires = [ "external/preservation" ];
+        requires = [
+          "external/preservation"
+          "external/sops-nix"
+        ];
       };
 
       module =

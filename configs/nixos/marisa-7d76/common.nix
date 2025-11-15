@@ -5,7 +5,7 @@
         # keep-sorted start
         "backup"
         "baseline"
-        "desktop/niri"
+        "desktop"
         "immutable"
         "multimedia"
         "workstation"

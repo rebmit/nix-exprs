@@ -6,7 +6,7 @@ in
   flake.unify.modules."services/greetd" = {
     nixos = {
       meta = {
-        tags = [ "desktop/niri" ];
+        tags = [ "desktop" ];
       };
 
       module =
@@ -19,6 +19,8 @@ in
               default_session.command = "${getExe pkgs.tuigreet} --cmd wayland-session";
             };
           };
+
+          services.graphical-desktop.enable = false;
         };
     };
   };
