@@ -307,7 +307,7 @@ in
           SuccessExitStatus = "DATAERR CANTCREAT";
           ImportCredential = [
             "tmpfiles.*"
-            "loging.motd"
+            "login.motd"
             "login.issue"
             "network.hosts"
             "ssh.authorized_keys.root"
@@ -354,7 +354,7 @@ in
           SuccessExitStatus = "DATAERR CANTCREAT";
           ImportCredential = [
             "tmpfiles.*"
-            "loging.motd"
+            "login.motd"
             "login.issue"
             "network.hosts"
             "ssh.authorized_keys.root"
