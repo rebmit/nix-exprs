@@ -1,3 +1,7 @@
+{ lib, ... }:
+let
+  inherit (lib.modules) mkVMOverride;
+in
 {
   flake.unify.modules."services/btrfs-auto-scrub" = {
     nixos = {
@@ -18,6 +22,10 @@
               group = "root";
             }
           ];
+
+          virtualisation.vmVariant = {
+            services.btrfs.autoScrub.enable = mkVMOverride false;
+          };
         };
     };
   };

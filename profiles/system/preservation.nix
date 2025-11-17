@@ -39,7 +39,7 @@
 
           virtualisation.vmVariant = {
             virtualisation = {
-              emptyDiskImages = [ 1048576 ];
+              emptyDiskImages = [ 1024 ];
               fileSystems."/persist" = {
                 device = "/dev/vdb";
                 fsType = "ext4";

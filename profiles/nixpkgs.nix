@@ -28,7 +28,7 @@ in
           (_final: prev: {
             caddy-rebmit = prev.caddy.withPlugins {
               plugins = [ "github.com/mholt/caddy-l4@v0.0.0-20250829174953-ad3e83c51edb" ];
-              hash = "sha256-jZGQ9CgXMzaGXuLaOajvIc8tbuVdks/SMegAobIeKhQ=";
+              hash = "sha256-xkwxnJ/5uShhY9iFfPKnLHRhG/2HDUaVknnuW8RXPhU=";
             };
             fuzzel = prev.fuzzel.override {
               svgBackend = "librsvg";
