@@ -91,7 +91,8 @@ in
                         enable = mkEnableOption "use per-host opentofu secert file";
                         useHostOutput = mkEnableOption "extract secret from host-specific output";
                         jqPath = mkOption {
-                          type = types.str;
+                          type = types.nullOr types.str;
+                          default = null;
                           description = ''
                             The jq path that selects the secret value from the OpenTofu output.
                           '';

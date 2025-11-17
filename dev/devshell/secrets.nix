@@ -22,7 +22,7 @@
             name = "sops-update-keys";
             help = "Update keys for all sops file";
             command = ''
-              ${pkgs.fd}/bin/fd '.*\.yaml' $PRJ_ROOT/secrets --exec sops updatekeys
+              ${pkgs.fd}/bin/fd '.*\.yaml' $PRJ_ROOT/secrets --exec sops updatekeys --yes
             '';
           }
         ];
