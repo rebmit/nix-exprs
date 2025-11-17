@@ -1,10 +1,6 @@
 {
   flake.unify.modules."system/i18n" = {
     nixos = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { ... }:
         {

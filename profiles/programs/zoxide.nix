@@ -2,7 +2,6 @@
   flake.unify.modules."programs/zoxide" = {
     homeManager = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "external/preservation" ];
       };
 

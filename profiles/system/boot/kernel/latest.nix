@@ -1,10 +1,6 @@
 {
   flake.unify.modules."system/boot/kernel/latest" = {
     nixos = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { pkgs, ... }:
         {

@@ -1,10 +1,6 @@
 {
   flake.unify.modules."programs/collections/common" = {
     nixos = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { pkgs, ... }:
         {
@@ -41,10 +37,6 @@
     };
 
     homeManager = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { config, pkgs, ... }:
         {

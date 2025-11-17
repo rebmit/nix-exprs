@@ -15,10 +15,6 @@ in
   flake.unify.modules."users/rebmit" = {
     nixos = {
       meta = {
-        tags = [
-          "server"
-          "workstation"
-        ];
         requires = [
           "external/sops-nix"
           "programs/fish"

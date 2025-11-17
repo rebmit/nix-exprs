@@ -13,7 +13,6 @@
 
     homeManager = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "external/preservation" ];
       };
 

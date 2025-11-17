@@ -5,10 +5,6 @@ in
 {
   flake.unify.modules."services/networkd" = {
     nixos = {
-      meta = {
-        tags = [ "network" ];
-      };
-
       module =
         { ... }:
         {

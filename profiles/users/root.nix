@@ -6,7 +6,6 @@ in
   flake.unify.modules."users/root" = {
     nixos = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "external/sops-nix" ];
       };
 

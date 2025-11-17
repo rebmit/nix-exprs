@@ -6,10 +6,6 @@ in
 {
   flake.unify.modules."services/nscd" = {
     nixos = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { ... }:
         {

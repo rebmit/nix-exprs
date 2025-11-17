@@ -2,7 +2,6 @@
   flake.unify.modules."security/sudo-rs" = {
     nixos = {
       meta = {
-        tags = [ "baseline" ];
         conflicts = [ "security/sudo" ];
       };
 

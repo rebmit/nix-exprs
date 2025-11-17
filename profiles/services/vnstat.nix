@@ -6,7 +6,6 @@ in
   flake.unify.modules."services/vnstat" = {
     nixos = {
       meta = {
-        tags = [ "network" ];
         requires = [ "external/preservation" ];
       };
 

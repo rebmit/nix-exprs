@@ -5,10 +5,6 @@ in
 {
   flake.unify.modules."programs/helix" = {
     homeManager = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { ... }:
         {

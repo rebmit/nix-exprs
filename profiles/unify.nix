@@ -21,7 +21,6 @@ let
     elem
     head
     tail
-    fold
     filter
     ;
   inherit (lib.options) mkOption;
@@ -71,7 +70,6 @@ let
     class:
     {
       name ? null,
-      tags ? [ ],
       includes ? [ ],
       excludes ? [ ],
     }:
@@ -85,10 +83,7 @@ let
           attrNames
         ];
 
-      names =
-        (fold (tag: acc: getModules (_: v: elem tag v.meta.tags) ++ acc) [ ] tags)
-        ++ getModules (_: v: elem name v.meta.configs)
-        ++ includes;
+      names = getModules (_: v: elem name v.meta.configs) ++ includes;
 
       closure = pipe names [
         (collectRequiresClosure class)
@@ -128,14 +123,6 @@ in
                         default = [ ];
                         description = ''
                           A list of configuration names.  If the current configuration name appears
-                          in this list, this module will be automatically imported.
-                        '';
-                      };
-                      tags = mkOption {
-                        type = listOf str;
-                        default = [ ];
-                        description = ''
-                          A list of tags.  If any tag of the current configuration name matches one
                           in this list, this module will be automatically imported.
                         '';
                       };

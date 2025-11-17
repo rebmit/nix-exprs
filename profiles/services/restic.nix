@@ -6,7 +6,6 @@ in
   flake.unify.modules."services/restic" = {
     nixos = {
       meta = {
-        tags = [ "backup" ];
         requires = [
           "external/preservation"
           "external/sops-nix"

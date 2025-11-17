@@ -1,14 +1,14 @@
 {
   flake.unify.configs.nixos.marisa-7d76 = {
     meta = {
-      tags = [
+      includes = [
         # keep-sorted start
-        "backup"
-        "baseline"
-        "desktop"
-        "immutable"
-        "multimedia"
-        "workstation"
+        "tags/backup"
+        "tags/baseline"
+        "tags/desktop"
+        "tags/immutable"
+        "tags/multimedia"
+        "tags/workstation"
         # keep-sorted end
       ];
     };
@@ -17,10 +17,10 @@
 
     submodules.home-manager.users.rebmit = {
       meta = {
-        tags = [
+        includes = [
           # keep-sorted start
-          "baseline"
-          "development"
+          "tags/baseline"
+          "tags/development"
           # keep-sorted end
         ];
       };

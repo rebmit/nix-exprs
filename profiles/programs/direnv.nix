@@ -2,7 +2,6 @@
   flake.unify.modules."programs/direnv" = {
     homeManager = {
       meta = {
-        tags = [ "development" ];
         requires = [ "external/preservation" ];
       };
 

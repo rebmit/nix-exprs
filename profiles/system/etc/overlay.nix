@@ -6,7 +6,6 @@ in
   flake.unify.modules."system/etc/overlay" = {
     nixos = {
       meta = {
-        tags = [ "immutable" ];
         requires = [
           "system/boot/initrd/systemd"
           "system/etc/machine-id"

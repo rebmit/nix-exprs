@@ -1,10 +1,6 @@
 {
   flake.unify.modules."system/boot/sysctl/udp-buffer-size" = {
     nixos = {
-      meta = {
-        tags = [ "network" ];
-      };
-
       module =
         { ... }:
         {

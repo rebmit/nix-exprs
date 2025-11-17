@@ -11,10 +11,6 @@ in
   flake.unify.modules."services/sshd" = {
     nixos = {
       meta = {
-        tags = [
-          "server"
-          "workstation"
-        ];
         requires = [ "external/sops-nix" ];
       };
 

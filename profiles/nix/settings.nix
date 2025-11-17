@@ -2,7 +2,6 @@
   flake.unify.modules."nix/settings" = {
     nixos = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "nix/common" ];
       };
 

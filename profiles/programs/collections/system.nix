@@ -1,13 +1,6 @@
 {
   flake.unify.modules."programs/collections/system" = {
     nixos = {
-      meta = {
-        tags = [
-          "server"
-          "workstation"
-        ];
-      };
-
       module =
         { pkgs, ... }:
         {

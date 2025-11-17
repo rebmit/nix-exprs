@@ -2,7 +2,6 @@
   flake.unify.modules."nix/gc" = {
     nixos = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "nix/common" ];
       };
 

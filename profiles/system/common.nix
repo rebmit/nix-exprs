@@ -5,10 +5,6 @@ in
 {
   flake.unify.modules."system/common" = {
     nixos = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { self, ... }:
         {

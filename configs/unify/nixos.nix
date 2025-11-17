@@ -41,14 +41,6 @@ in
                 type = submodule {
                   freeformType = mkStructuredType { typeName = "meta"; };
                   options = {
-                    tags = mkOption {
-                      type = listOf str;
-                      default = [ ];
-                      description = ''
-                        A list of tags attached to this host.  Any module whose tag list shares
-                        at least one tag with this host will be automatically imported.
-                      '';
-                    };
                     includes = mkOption {
                       type = listOf str;
                       default = [ ];
@@ -130,7 +122,7 @@ in
 
         closure = self.unify.lib.collectModulesForConfig "nixos" {
           inherit name;
-          inherit (meta) tags includes excludes;
+          inherit (meta) includes excludes;
         };
 
         unify = recursiveUpdate cfg { meta = { inherit closure; }; };

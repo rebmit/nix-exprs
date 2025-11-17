@@ -2,7 +2,6 @@
   flake.unify.modules."services/pipewire" = {
     nixos = {
       meta = {
-        tags = [ "multimedia" ];
         requires = [
           "external/preservation"
           "security/rtkit"

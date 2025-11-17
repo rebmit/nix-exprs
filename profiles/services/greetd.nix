@@ -5,10 +5,6 @@ in
 {
   flake.unify.modules."services/greetd" = {
     nixos = {
-      meta = {
-        tags = [ "desktop" ];
-      };
-
       module =
         { pkgs, ... }:
         {

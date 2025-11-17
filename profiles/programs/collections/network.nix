@@ -1,10 +1,6 @@
 {
   flake.unify.modules."programs/collections/network" = {
     nixos = {
-      meta = {
-        tags = [ "network" ];
-      };
-
       module =
         { pkgs, ... }:
         {

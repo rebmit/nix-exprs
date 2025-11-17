@@ -5,10 +5,6 @@ in
 {
   flake.unify.modules."programs/git" = {
     nixos = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { ... }:
         {
@@ -20,10 +16,6 @@ in
     };
 
     homeManager = {
-      meta = {
-        tags = [ "development" ];
-      };
-
       module =
         { ... }:
         {

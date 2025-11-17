@@ -1,10 +1,6 @@
 {
   flake.unify.modules."programs/tmux" = {
     homeManager = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { pkgs, ... }:
         {

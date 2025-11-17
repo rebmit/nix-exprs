@@ -1,10 +1,6 @@
 {
   flake.unify.modules."services/resolved" = {
     nixos = {
-      meta = {
-        tags = [ "network" ];
-      };
-
       module =
         { ... }:
         {

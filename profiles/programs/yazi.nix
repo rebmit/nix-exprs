@@ -1,10 +1,6 @@
 {
   flake.unify.modules."programs/yazi" = {
     homeManager = {
-      meta = {
-        tags = [ "baseline" ];
-      };
-
       module =
         { ... }:
         {

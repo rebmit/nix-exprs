@@ -2,7 +2,6 @@
   flake.unify.modules."services/logrotate" = {
     nixos = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "external/preservation" ];
       };
 

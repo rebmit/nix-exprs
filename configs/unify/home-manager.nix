@@ -109,14 +109,6 @@ let
                 type = submodule {
                   freeformType = mkStructuredType { typeName = "meta"; };
                   options = {
-                    tags = mkOption {
-                      type = listOf str;
-                      default = [ ];
-                      description = ''
-                        A list of tags attached to this configuration.  Any module whose tag list shares
-                        at least one tag with this configuration will be automatically imported.
-                      '';
-                    };
                     includes = mkOption {
                       type = listOf str;
                       default = [ ];
@@ -193,7 +185,7 @@ let
 
               closure = self.unify.lib.collectModulesForConfig "homeManager" {
                 inherit (cfg.${name}) name;
-                inherit (cfg.${name}.meta) tags includes excludes;
+                inherit (cfg.${name}.meta) includes excludes;
               };
 
               unify = recursiveUpdate cfg.${name} { meta = { inherit closure; }; };

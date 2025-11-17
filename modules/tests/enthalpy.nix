@@ -3,7 +3,7 @@ let
   inherit (lib.trivial) pipe;
 
   immutable = {
-    imports = pipe { tags = [ "immutable" ]; } [
+    imports = pipe { includes = [ "tags/immutable" ]; } [
       (self.unify.lib.collectModulesForConfig "nixos")
       (map (n: self.modules.nixos.${n}))
     ];

@@ -2,10 +2,6 @@
   flake.unify.modules."services/zram-generator" = {
     nixos = {
       meta = {
-        tags = [
-          "server"
-          "workstation"
-        ];
         requires = [ "system/boot/sysctl/zram-vm-optimization" ];
       };
 

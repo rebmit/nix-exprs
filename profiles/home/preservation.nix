@@ -7,10 +7,6 @@ in
   flake.unify.modules."home/preservation" = {
     homeManager = {
       meta = {
-        tags = [
-          "baseline"
-          "development"
-        ];
         requires = [ "external/preservation" ];
       };
 
@@ -31,14 +27,14 @@ in
           };
 
           preservation.directories =
-            optionals (elem "baseline" unify.meta.tags) [
+            optionals (elem "tags/baseline" unify.meta.closure) [
               "Documents"
               "Downloads"
               "Music"
               "Pictures"
               "Videos"
             ]
-            ++ optionals (elem "development" unify.meta.tags) [
+            ++ optionals (elem "tags/development" unify.meta.closure) [
               "Projects"
             ];
         };

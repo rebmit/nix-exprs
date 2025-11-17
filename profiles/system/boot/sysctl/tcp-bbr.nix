@@ -1,10 +1,6 @@
 {
   flake.unify.modules."system/boot/sysctl/tcp-bbr" = {
     nixos = {
-      meta = {
-        tags = [ "network" ];
-      };
-
       module =
         { ... }:
         {

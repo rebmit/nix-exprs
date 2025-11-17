@@ -2,7 +2,6 @@
   flake.unify.modules."nix/common" = {
     nixos = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "programs/git" ];
       };
 
@@ -18,7 +17,6 @@
 
     homeManager = {
       meta = {
-        tags = [ "baseline" ];
         requires = [ "external/preservation" ];
       };
 
