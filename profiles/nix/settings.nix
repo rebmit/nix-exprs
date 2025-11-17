@@ -27,8 +27,6 @@
               auto-optimise-store = true;
             };
           };
-
-          systemd.services.nix-daemon.serviceConfig.Environment = [ "TMPDIR=/var/tmp" ];
         };
     };
   };
