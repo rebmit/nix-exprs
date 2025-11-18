@@ -1,17 +1,16 @@
 { lib, ... }:
 let
-  inherit (lib.lists) optionals elem;
   inherit (lib.modules) mkDefault;
 in
 {
-  flake.unify.modules."home/preservation" = {
+  flake.unify.modules."home/xdg-user-dirs" = {
     homeManager = {
       meta = {
         requires = [ "external/preservation" ];
       };
 
       module =
-        { unify, ... }:
+        { ... }:
         {
           xdg.userDirs = {
             enable = true;
@@ -24,19 +23,19 @@ in
             publicShare = mkDefault "/var/empty";
             templates = mkDefault "/var/empty";
             videos = mkDefault "$HOME/Videos";
+            extraConfig = {
+              XDG_PROJECTS_DIR = mkDefault "$HOME/Projects";
+            };
           };
 
-          preservation.directories =
-            optionals (elem "tags/baseline" unify.meta.closure) [
-              "Documents"
-              "Downloads"
-              "Music"
-              "Pictures"
-              "Videos"
-            ]
-            ++ optionals (elem "tags/development" unify.meta.closure) [
-              "Projects"
-            ];
+          preservation.directories = [
+            "Documents"
+            "Downloads"
+            "Music"
+            "Pictures"
+            "Videos"
+            "Projects"
+          ];
         };
     };
   };

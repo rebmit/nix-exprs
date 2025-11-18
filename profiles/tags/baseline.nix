@@ -31,7 +31,7 @@
         requires = [
           # keep-sorted start
           "home/documentation"
-          "home/preservation"
+          "home/xdg-user-dirs"
           "nix/common"
           "programs/collections/common"
           "programs/helix"

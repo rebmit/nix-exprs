@@ -10,7 +10,7 @@
       meta = {
         requires = [
           # keep-sorted start
-          "home/preservation"
+          "home/xdg-user-dirs"
           "programs/delta"
           "programs/direnv"
           "programs/git"
