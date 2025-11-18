@@ -34,7 +34,6 @@
           "home/preservation"
           "nix/common"
           "programs/collections/common"
-          "programs/fish"
           "programs/helix"
           "programs/tmux"
           "programs/yazi"

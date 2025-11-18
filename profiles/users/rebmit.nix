@@ -58,6 +58,7 @@ in
     homeManager = {
       meta = {
         configs = [ "rebmit" ];
+        requires = [ "programs/fish" ];
       };
 
       module =
