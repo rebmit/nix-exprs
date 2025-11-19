@@ -143,6 +143,7 @@ in
               inherit ((getSystem system).allModuleArgs) pkgs;
             };
             networking.hostName = mkDefault name;
+            networking.domain = mkDefault "rebmit.link";
           }
         ]
         ++ map (n: self.unify.modules.${n}.nixos.module) closure;
