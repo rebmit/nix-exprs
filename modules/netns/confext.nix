@@ -161,7 +161,7 @@ in
           }
         ];
 
-        system.extraSystemBuilderCmds = ''
+        system.systemBuilderCommands = ''
           ${concatStringsSep "\n" (
             mapAttrsToList (name: cfg: ''
               mkdir -p $out/netns/${name}
