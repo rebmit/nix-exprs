@@ -11,7 +11,6 @@
         requires = [
           # keep-sorted start
           "home/xdg-user-dirs"
-          "programs/delta"
           "programs/direnv"
           "programs/git"
           # keep-sorted end

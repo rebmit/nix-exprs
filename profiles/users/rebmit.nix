@@ -1,6 +1,6 @@
 { self, lib, ... }:
 let
-  inherit (lib.modules) mkVMOverride;
+  inherit (lib.modules) mkVMOverride mkDefault;
 in
 {
   flake.meta.users.rebmit = {
@@ -64,8 +64,17 @@ in
       module =
         { ... }:
         {
-          programs.git.settings.user = {
-            inherit (self.meta.users.rebmit) name email;
+          programs.git = {
+            settings = {
+              commit.gpgSign = true;
+              user = {
+                inherit (self.meta.users.rebmit) name email;
+              };
+            };
+            signing = {
+              format = mkDefault "ssh";
+              key = mkDefault "~/.ssh/id_ed25519";
+            };
           };
         };
     };
