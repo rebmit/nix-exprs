@@ -17,7 +17,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns.lib)
+      inherit (config.lib.netns)
         mkNetnsOption
         mkRuntimeDirectoryConfiguration
         ;

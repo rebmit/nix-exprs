@@ -22,7 +22,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption;
+      inherit (config.lib.netns) mkNetnsOption;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;
     in

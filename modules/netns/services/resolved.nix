@@ -17,7 +17,7 @@ in
   flake.nixosModules.netns =
     { config, ... }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption mkRuntimeDirectoryConfiguration;
+      inherit (config.lib.netns) mkNetnsOption mkRuntimeDirectoryConfiguration;
 
       resolvedEnabledNetns = filterAttrs (
         _: cfg: cfg.enable && cfg.services.resolved.enable

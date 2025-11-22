@@ -11,7 +11,7 @@ in
   flake.nixosModules.netns =
     { config, ... }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption;
+      inherit (config.lib.netns) mkNetnsOption;
 
       globalNssDatabases = config.system.nssDatabases;
     in

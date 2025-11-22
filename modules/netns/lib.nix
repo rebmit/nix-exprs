@@ -128,18 +128,16 @@ in
         };
     in
     {
-      passthru.netns = {
-        lib = {
-          inherit
-            mkNetnsOption
-            attrsToProperties
-            mkRuntimeDirectory
-            mkRuntimeDirectoryPath
-            mkNetnsRunWrapper
-            mkTmpfilesRuleFileContent
-            mkRuntimeDirectoryConfiguration
-            ;
-        };
+      lib.netns = {
+        inherit
+          mkNetnsOption
+          attrsToProperties
+          mkRuntimeDirectory
+          mkRuntimeDirectoryPath
+          mkNetnsRunWrapper
+          mkTmpfilesRuleFileContent
+          mkRuntimeDirectoryConfiguration
+          ;
       };
     };
 }

@@ -31,7 +31,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption mkRuntimeDirectoryPath;
+      inherit (config.lib.netns) mkNetnsOption mkRuntimeDirectoryPath;
       inherit (config.environment) etc;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;

@@ -52,7 +52,7 @@ in
   flake.nixosModules.netns =
     { config, ... }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption mkRuntimeDirectoryPath;
+      inherit (config.lib.netns) mkNetnsOption mkRuntimeDirectoryPath;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;
     in

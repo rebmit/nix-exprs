@@ -18,7 +18,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption mkTmpfilesRuleFileContent;
+      inherit (config.lib.netns) mkNetnsOption mkTmpfilesRuleFileContent;
 
       enabledNetns = filterAttrs (_: cfg: cfg.enable) config.netns;
     in

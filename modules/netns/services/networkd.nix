@@ -23,7 +23,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption mkRuntimeDirectoryConfiguration;
+      inherit (config.lib.netns) mkNetnsOption mkRuntimeDirectoryConfiguration;
       inherit (utils.systemdUtils.lib) attrsToSection;
       inherit (utils.systemdUtils.network.units) netdevToUnit networkToUnit;
 

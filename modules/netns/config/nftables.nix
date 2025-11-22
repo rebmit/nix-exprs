@@ -60,7 +60,7 @@ in
   flake.nixosModules.netns =
     { config, pkgs, ... }@host:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption mkRuntimeDirectory;
+      inherit (config.lib.netns) mkNetnsOption mkRuntimeDirectory;
 
       nftablesEnabledNetns = filterAttrs (_: cfg: cfg.enable && cfg.nftables.enable) config.netns;
     in

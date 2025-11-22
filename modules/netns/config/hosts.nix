@@ -14,7 +14,7 @@ in
   flake.nixosModules.netns =
     { config, ... }@host:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption;
+      inherit (config.lib.netns) mkNetnsOption;
     in
     {
       options.netns = mkNetnsOption (

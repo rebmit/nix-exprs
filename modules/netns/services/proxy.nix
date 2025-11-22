@@ -57,7 +57,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.netns.lib) mkNetnsOption;
+      inherit (config.lib.netns) mkNetnsOption;
 
       mkProxyService =
         initNetns: name: cfg:
