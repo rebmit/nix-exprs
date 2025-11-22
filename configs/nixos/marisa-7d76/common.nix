@@ -21,6 +21,7 @@
         includes = [
           # keep-sorted start
           "tags/features/baseline"
+          "tags/features/desktop"
           "tags/features/development"
           # keep-sorted end
         ];

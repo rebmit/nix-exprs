@@ -4,6 +4,7 @@
       meta = {
         requires = [
           # keep-sorted start
+          "misc/fontconfig"
           "misc/xdg/portal"
           "security/pam/swaylock"
           "services/greetd"
@@ -14,7 +15,11 @@
 
     homeManager = {
       meta = {
-        requires = [ ];
+        requires = [
+          # keep-sorted start
+          "misc/fontconfig"
+          # keep-sorted end
+        ];
       };
     };
   };
