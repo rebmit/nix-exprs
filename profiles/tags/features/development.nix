@@ -14,7 +14,7 @@
       meta = {
         requires = [
           # keep-sorted start
-          "home/xdg/user-dirs"
+          "misc/xdg/user-dirs"
           "programs/direnv"
           "programs/gdb"
           "programs/git"

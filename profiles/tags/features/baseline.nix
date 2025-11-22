@@ -4,6 +4,8 @@
       meta = {
         requires = [
           # keep-sorted start
+          "misc/documentation"
+          "misc/i18n"
           "nix/common"
           "nix/gc"
           "nix/registry"
@@ -17,8 +19,6 @@
           "services/nscd"
           "system/boot/kernel/latest"
           "system/common"
-          "system/documentation"
-          "system/i18n"
           "system/time"
           "users/root"
           # keep-sorted end
@@ -30,8 +30,8 @@
       meta = {
         requires = [
           # keep-sorted start
-          "home/documentation"
-          "home/xdg/user-dirs"
+          "misc/documentation"
+          "misc/xdg/user-dirs"
           "nix/common"
           "programs/collections/common"
           "programs/helix"

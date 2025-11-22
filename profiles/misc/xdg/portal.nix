@@ -1,5 +1,5 @@
 {
-  flake.unify.modules."system/xdg/portal" = {
+  flake.unify.modules."misc/xdg/portal" = {
     nixos = {
       module =
         { ... }:

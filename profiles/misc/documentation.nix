@@ -1,5 +1,5 @@
 {
-  flake.unify.modules."system/documentation" = {
+  flake.unify.modules."misc/documentation" = {
     nixos = {
       module =
         { ... }:
@@ -15,6 +15,14 @@
             };
             nixos.enable = false;
           };
+        };
+    };
+
+    homeManager = {
+      module =
+        { ... }:
+        {
+          programs.man.generateCaches = false;
         };
     };
   };

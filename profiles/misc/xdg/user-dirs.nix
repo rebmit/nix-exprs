@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkDefault;
 in
 {
-  flake.unify.modules."home/xdg/user-dirs" = {
+  flake.unify.modules."misc/xdg/user-dirs" = {
     homeManager = {
       meta = {
         requires = [ "external/preservation" ];

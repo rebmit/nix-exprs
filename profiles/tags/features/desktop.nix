@@ -4,9 +4,9 @@
       meta = {
         requires = [
           # keep-sorted start
+          "misc/xdg/portal"
           "security/pam/swaylock"
           "services/greetd"
-          "system/xdg/portal"
           # keep-sorted end
         ];
       };

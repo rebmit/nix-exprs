@@ -1,5 +1,5 @@
 {
-  flake.unify.modules."system/i18n" = {
+  flake.unify.modules."misc/i18n" = {
     nixos = {
       module =
         { ... }:
