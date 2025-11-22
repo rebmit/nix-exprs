@@ -2,7 +2,11 @@
   flake.unify.modules."tags/features/development" = {
     nixos = {
       meta = {
-        requires = [ ];
+        requires = [
+          # keep-sorted start
+          "services/nixseparatedebuginfod2"
+          # keep-sorted end
+        ];
       };
     };
 

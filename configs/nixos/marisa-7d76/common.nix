@@ -6,6 +6,7 @@
         "tags/features/backup"
         "tags/features/baseline"
         "tags/features/desktop"
+        "tags/features/development"
         "tags/features/immutable"
         "tags/features/multimedia"
         "tags/roles/workstation"

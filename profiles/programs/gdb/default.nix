@@ -1,3 +1,7 @@
+{ lib, ... }:
+let
+  inherit (lib.lists) optionals;
+in
 {
   flake.unify.modules."programs/gdb" = {
     homeManager = {
@@ -6,7 +10,12 @@
       };
 
       module =
-        { config, pkgs, ... }:
+        {
+          config,
+          pkgs,
+          nixosConfig,
+          ...
+        }:
         {
           home.packages = with pkgs; [
             gdb
@@ -21,7 +30,12 @@
             GDBHISTFILE = "${config.xdg.stateHome}/gdb/gdb_history";
           };
 
-          preservation.directories = [ ".local/state/gdb" ];
+          preservation.directories = [
+            ".local/state/gdb"
+          ]
+          ++ optionals (nixosConfig != null && nixosConfig.environment.debuginfodServers != [ ]) [
+            ".cache/debuginfod_client"
+          ];
         };
     };
   };
