@@ -1,10 +1,10 @@
 {
-  flake.unify.modules."tags/backup" = {
+  flake.unify.modules."tags/features/multimedia" = {
     nixos = {
       meta = {
         requires = [
           # keep-sorted start
-          "services/restic"
+          "services/pipewire"
           # keep-sorted end
         ];
       };

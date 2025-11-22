@@ -1,11 +1,13 @@
 {
-  flake.unify.modules."tags/immutable" = {
+  flake.unify.modules."tags/roles/workstation" = {
     nixos = {
       meta = {
         requires = [
           # keep-sorted start
-          "system/etc/overlay"
-          "system/userborn"
+          "programs/collections/system"
+          "services/sshd"
+          "services/zram-generator"
+          "users/rebmit"
           # keep-sorted end
         ];
       };

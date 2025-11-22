@@ -1,13 +1,11 @@
 {
-  flake.unify.modules."tags/server" = {
+  flake.unify.modules."tags/features/desktop" = {
     nixos = {
       meta = {
         requires = [
           # keep-sorted start
-          "programs/collections/system"
-          "services/sshd"
-          "services/zram-generator"
-          "users/rebmit"
+          "security/pam/swaylock"
+          "services/greetd"
           # keep-sorted end
         ];
       };

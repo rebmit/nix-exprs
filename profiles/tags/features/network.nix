@@ -1,5 +1,5 @@
 {
-  flake.unify.modules."tags/network" = {
+  flake.unify.modules."tags/features/network" = {
     nixos = {
       meta = {
         requires = [

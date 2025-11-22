@@ -1,5 +1,5 @@
 {
-  flake.unify.modules."tags/workstation" = {
+  flake.unify.modules."tags/roles/server" = {
     nixos = {
       meta = {
         requires = [

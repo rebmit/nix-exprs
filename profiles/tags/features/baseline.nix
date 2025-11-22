@@ -1,5 +1,5 @@
 {
-  flake.unify.modules."tags/baseline" = {
+  flake.unify.modules."tags/features/baseline" = {
     nixos = {
       meta = {
         requires = [

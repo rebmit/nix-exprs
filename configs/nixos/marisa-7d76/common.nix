@@ -3,12 +3,12 @@
     meta = {
       includes = [
         # keep-sorted start
-        "tags/backup"
-        "tags/baseline"
-        "tags/desktop"
-        "tags/immutable"
-        "tags/multimedia"
-        "tags/workstation"
+        "tags/features/backup"
+        "tags/features/baseline"
+        "tags/features/desktop"
+        "tags/features/immutable"
+        "tags/features/multimedia"
+        "tags/roles/workstation"
         # keep-sorted end
       ];
     };
@@ -19,8 +19,8 @@
       meta = {
         includes = [
           # keep-sorted start
-          "tags/baseline"
-          "tags/development"
+          "tags/features/baseline"
+          "tags/features/development"
           # keep-sorted end
         ];
       };

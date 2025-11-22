@@ -1,11 +1,11 @@
 {
-  flake.unify.modules."tags/desktop" = {
+  flake.unify.modules."tags/features/immutable" = {
     nixos = {
       meta = {
         requires = [
           # keep-sorted start
-          "security/pam/swaylock"
-          "services/greetd"
+          "system/etc/overlay"
+          "system/userborn"
           # keep-sorted end
         ];
       };
