@@ -363,7 +363,7 @@ in
       };
     in
     {
-      passthru.preservation = {
+      lib.preservation = {
         inherit
           getAllDirectories
           getAllFiles

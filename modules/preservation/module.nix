@@ -14,7 +14,7 @@ in
       ...
     }:
     let
-      inherit (config.passthru.preservation)
+      inherit (config.lib.preservation)
         mkRuleFileContent
         mkRegularMountUnits
         mkInitrdMountUnits

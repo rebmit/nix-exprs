@@ -96,7 +96,7 @@ in
         testScript =
           { nodes, ... }:
           let
-            inherit (nodes.machine.passthru.preservation) getAllDirectories getAllFiles;
+            inherit (nodes.machine.lib.preservation) getAllDirectories getAllFiles;
 
             rebmitHome = nodes.machine.users.users.rebmit.home;
 
