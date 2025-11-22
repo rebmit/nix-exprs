@@ -1,0 +1,7 @@
+set history save on
+
+set print pretty on
+set print object on
+set print vtbl on
+
+add-auto-load-safe-path /nix/store
