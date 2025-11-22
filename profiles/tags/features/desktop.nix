@@ -6,6 +6,7 @@
           # keep-sorted start
           "security/pam/swaylock"
           "services/greetd"
+          "system/xdg/portal"
           # keep-sorted end
         ];
       };
