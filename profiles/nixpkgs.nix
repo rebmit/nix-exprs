@@ -18,7 +18,7 @@ in
           }
           {
             profiles.packages = {
-              inherit (pkgs) caddy-rebmit fuzzel mautrix-telegram;
+              inherit (pkgs) fuzzel mautrix-telegram;
               qt6Packages = { inherit (pkgs.qt6Packages) fcitx5-with-addons; };
             };
           };
@@ -26,10 +26,6 @@ in
       nixpkgs = {
         overlays = mkOrder 700 [
           (_final: prev: {
-            caddy-rebmit = prev.caddy.withPlugins {
-              plugins = [ "github.com/mholt/caddy-l4@v0.0.0-20250829174953-ad3e83c51edb" ];
-              hash = "sha256-xkwxnJ/5uShhY9iFfPKnLHRhG/2HDUaVknnuW8RXPhU=";
-            };
             fuzzel = prev.fuzzel.override {
               svgBackend = "librsvg";
             };
