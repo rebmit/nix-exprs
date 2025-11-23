@@ -1,5 +1,6 @@
 { self, lib, ... }:
 let
+  inherit (lib) sourceTypes;
   inherit (lib.lists) elem;
   inherit (lib.modules) mkOrder;
   inherit (lib.strings) getName;
@@ -19,13 +20,14 @@ in
           elem (getName p) [
             # keep-sorted start
             "cargo-bootstrap"
+            "ghc-binary"
             "go"
             "rustc-bootstrap"
             "rustc-bootstrap-wrapper"
-            "sof-firmware"
             "temurin-bin"
             # keep-sorted end
-          ];
+          ]
+          || elem sourceTypes.binaryFirmware p.meta.sourceProvenance;
       };
     };
   };
