@@ -3,11 +3,6 @@ let
   inherit (lib.modules) mkVMOverride;
 in
 {
-  flake.meta.ports = {
-    ssh = 22;
-    ssh-alt = 2222;
-  };
-
   flake.unify.modules."services/sshd" = {
     nixos = {
       meta = {

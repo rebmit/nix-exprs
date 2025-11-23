@@ -3,11 +3,6 @@ let
   inherit (lib.lists) singleton;
 in
 {
-  flake.meta.ports = {
-    http = 80;
-    https = 443;
-  };
-
   flake.unify.modules."services/envoy/listeners/https" = {
     nixos = {
       meta = {

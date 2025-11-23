@@ -59,4 +59,19 @@ in
       };
     };
   };
+
+  config = {
+    flake.meta.ports = {
+      # keep-sorted start by_regex=(\d+) numeric=yes
+      ssh = 22;
+      smtp = 25;
+      domain = 53;
+      http = 80;
+      https = 443;
+      submissions = 465;
+      imaps = 993;
+      ssh-alt = 2222;
+      # keep-sorted end
+    };
+  };
 }
