@@ -20,6 +20,7 @@ in
           elem (getName p) [
             # keep-sorted start
             "cargo-bootstrap"
+            "dart"
             "ghc-binary"
             "go"
             "rustc-bootstrap"
