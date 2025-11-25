@@ -5,7 +5,7 @@ let
   immutable = {
     imports = pipe { includes = [ "tags/features/immutable" ]; } [
       (self.unify.lib.collectModulesForConfig "nixos")
-      (map (n: self.modules.nixos.${n}))
+      (map (n: self.unify.modules.${n}.nixos.module))
     ];
   };
 in

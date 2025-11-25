@@ -112,7 +112,6 @@
             legacyPackages = partitionAttr "common" "legacyPackages";
             lib = partitionAttr "lib" "lib";
             meta = partitionAttr "profiles" "meta";
-            modules = partitionAttr "profiles" "modules";
             nixosConfigurations = partitionAttr "configs" "nixosConfigurations";
             nixosModules = partitionAttr "modules" "nixosModules";
             overlays = partitionAttr "pkgs" "overlays";
