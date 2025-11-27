@@ -17,7 +17,7 @@
             owner = "rebmit";
             repo = "ranet";
             rev = "68142d2da05fbb1510a1445f09c0a9f6f9f62d38";
-            sha256 = "sha256-b2LMR6WiV87+TW4wPZVgTQzhHBEdxte4HGt/v5LVbzo=";
+            hash = "sha256-b2LMR6WiV87+TW4wPZVgTQzhHBEdxte4HGt/v5LVbzo=";
           };
 
           cargoHash = "sha256-Qd7Hy/Mq2XihTB7RHQYjRKjaM5eigLxL+MpVyUmBozk=";

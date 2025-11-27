@@ -18,7 +18,7 @@
             repo = "firefox-gnome-theme";
             rev = "v${finalAttrs.version}";
             fetchSubmodules = false;
-            sha256 = "sha256-0E3TqvXAy81qeM/jZXWWOTZ14Hs1RT7o78UyZM+Jbr4=";
+            hash = "sha256-0E3TqvXAy81qeM/jZXWWOTZ14Hs1RT7o78UyZM+Jbr4=";
           };
 
           installPhase = ''

@@ -18,7 +18,7 @@
             repo = "dnsmasq-china-list";
             rev = "ec8b5cb63e2e06e988e2522624cc73fefdb150f7";
             fetchSubmodules = false;
-            sha256 = "sha256-swc6E6QQ9JIhQXNl1WKnmr1g42HzNyHW9vzyPjDnVqY=";
+            hash = "sha256-swc6E6QQ9JIhQXNl1WKnmr1g42HzNyHW9vzyPjDnVqY=";
           };
 
           makeFlags = [ "raw" ];

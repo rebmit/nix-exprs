@@ -23,7 +23,7 @@
             repo = "bird";
             rev = "d4a738200d05248f29450da13eca632805d5eff3";
             fetchSubmodules = false;
-            sha256 = "sha256-tZqsoOwSC/dpt0augQf6qLS6CuL2CIIvrtzrmmxcSg4=";
+            hash = "sha256-tZqsoOwSC/dpt0augQf6qLS6CuL2CIIvrtzrmmxcSg4=";
           };
 
           nativeBuildInputs = [
