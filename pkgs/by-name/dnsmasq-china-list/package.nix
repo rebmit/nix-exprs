@@ -11,14 +11,14 @@
 
         stdenvNoCC.mkDerivation {
           pname = "dnsmasq-china-list";
-          version = "0-unstable-2025-11-15";
+          version = "0-unstable-2025-11-23";
 
           src = fetchFromGitHub {
             owner = "felixonmars";
             repo = "dnsmasq-china-list";
-            rev = "ec8b5cb63e2e06e988e2522624cc73fefdb150f7";
+            rev = "a4036bc84ab76850b8bb8a53742899b24bb6c0de";
             fetchSubmodules = false;
-            hash = "sha256-swc6E6QQ9JIhQXNl1WKnmr1g42HzNyHW9vzyPjDnVqY=";
+            hash = "sha256-j6KqpDpcpY2pK907KeGEA7REt9/ZmwgmISqIWlMu9iY=";
           };
 
           makeFlags = [ "raw" ];
