@@ -6,6 +6,7 @@
         "tags/features/backup"
         "tags/features/baseline"
         "tags/features/immutable"
+        "tags/features/network"
         "tags/roles/server"
         # keep-sorted end
       ];

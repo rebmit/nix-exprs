@@ -5,10 +5,7 @@ in
 {
   flake.unify.configs.nixos.flandre-t1 = {
     meta = {
-      includes = [
-        "tags/features/network"
-        "services/enthalpy/common"
-      ];
+      includes = [ "services/enthalpy/common" ];
     };
 
     module =

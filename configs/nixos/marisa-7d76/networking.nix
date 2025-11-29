@@ -1,9 +1,5 @@
 {
   flake.unify.configs.nixos.marisa-7d76 = {
-    meta = {
-      includes = [ "tags/features/network" ];
-    };
-
     module =
       { ... }:
       {

@@ -9,6 +9,7 @@
         "tags/features/development"
         "tags/features/immutable"
         "tags/features/multimedia"
+        "tags/features/network"
         "tags/roles/workstation"
         # keep-sorted end
       ];
