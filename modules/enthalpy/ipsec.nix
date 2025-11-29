@@ -78,6 +78,8 @@ in
       config = mkIf (cfg.enable && cfg.ipsec.enable) {
         environment.systemPackages = [ config.services.strongswan-swanctl.package ];
 
+        networking.firewall.allowedUDPPorts = [ cfg.ipsec.port ];
+
         services.strongswan-swanctl = {
           enable = true;
           strongswan.extraConfig = ''
