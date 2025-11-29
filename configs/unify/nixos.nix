@@ -59,6 +59,13 @@ in
                     };
                     data = mkOption {
                       type = attrs;
+                      default = data;
+                      description = ''
+                        Attribute sets derived from OpenTofu outputs.
+                      '';
+                    };
+                    host = mkOption {
+                      type = attrs;
                       default = data.hosts.${config.name} or { };
                       description = ''
                         Attribute sets derived from OpenTofu outputs for this host.
