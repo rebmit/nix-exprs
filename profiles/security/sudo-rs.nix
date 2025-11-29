@@ -1,10 +1,6 @@
 {
   flake.unify.modules."security/sudo-rs" = {
     nixos = {
-      meta = {
-        conflicts = [ "security/sudo" ];
-      };
-
       module =
         { ... }:
         {
