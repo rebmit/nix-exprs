@@ -22,7 +22,7 @@ in
             restartTriggers = [ config.environment.etc."vnstat.conf".text ];
           };
 
-          preservation.directories = [ "/var/lib/vnstat" ];
+          preservation.preserveAt.state.directories = [ "/var/lib/vnstat" ];
         };
     };
   };

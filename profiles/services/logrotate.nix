@@ -19,7 +19,7 @@
             StateDirectory = "logrotate";
           };
 
-          preservation.directories = [ "/var/lib/logrotate" ];
+          preservation.preserveAt.state.directories = [ "/var/lib/logrotate" ];
         };
     };
   };

@@ -14,7 +14,7 @@ in
         {
           services.btrfs.autoScrub.enable = true;
 
-          preservation.directories = [
+          preservation.preserveAt.state.directories = [
             {
               directory = "/var/lib/btrfs";
               mode = "0700";

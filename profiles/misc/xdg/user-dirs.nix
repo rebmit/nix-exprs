@@ -28,7 +28,7 @@ in
             };
           };
 
-          preservation.directories = [
+          preservation.preserveAt.state.directories = [
             "Documents"
             "Downloads"
             "Music"

@@ -13,7 +13,7 @@
             nix-direnv.enable = true;
           };
 
-          preservation.directories = [ ".local/share/direnv" ];
+          preservation.preserveAt.state.directories = [ ".local/share/direnv" ];
         };
     };
   };

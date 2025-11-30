@@ -10,7 +10,7 @@
         {
           programs.zoxide.enable = true;
 
-          preservation.directories = [ ".local/share/zoxide" ];
+          preservation.preserveAt.state.directories = [ ".local/share/zoxide" ];
         };
     };
   };

@@ -19,7 +19,7 @@
             systemWide = true;
           };
 
-          preservation.directories = [ "/var/lib/pipewire" ];
+          preservation.preserveAt.state.directories = [ "/var/lib/pipewire" ];
         };
     };
   };

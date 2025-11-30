@@ -23,18 +23,25 @@
 
           preservation = {
             enable = true;
-            persistentStoragePath = "/persist";
-            directories = [
-              {
-                directory = "/var/lib/nixos";
-                inInitrd = true;
-                mode = "0755";
-                user = "root";
-                group = "root";
-              }
-              "/var/lib/systemd"
-              "/var/log/journal"
-            ];
+            preserveAt = {
+              cache = {
+                persistentStoragePath = "/persist/cache";
+              };
+              state = {
+                persistentStoragePath = "/persist/state";
+                directories = [
+                  {
+                    directory = "/var/lib/nixos";
+                    inInitrd = true;
+                    mode = "0755";
+                    user = "root";
+                    group = "root";
+                  }
+                  "/var/lib/systemd"
+                  "/var/log/journal"
+                ];
+              };
+            };
           };
 
           virtualisation.vmVariant = {

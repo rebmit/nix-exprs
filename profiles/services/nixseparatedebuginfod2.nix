@@ -23,7 +23,7 @@
             cacheExpirationDelay = "1d";
           };
 
-          preservation.directories = [ "/var/cache/private/nixseparatedebuginfod2" ];
+          preservation.preserveAt.cache.directories = [ "/var/cache/private/nixseparatedebuginfod2" ];
         };
     };
   };

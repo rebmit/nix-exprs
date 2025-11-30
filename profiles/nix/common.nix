@@ -34,10 +34,9 @@
             # keep-sorted end
           ];
 
-          preservation.directories = [
-            ".cache/nix"
-            ".local/share/nix"
-          ];
+          preservation.preserveAt.cache.directories = [ ".cache/nix" ];
+
+          preservation.preserveAt.state.directories = [ ".local/share/nix" ];
         };
     };
   };

@@ -30,12 +30,13 @@ in
             GDBHISTFILE = "${config.xdg.stateHome}/gdb/gdb_history";
           };
 
-          preservation.directories = [
-            ".local/state/gdb"
-          ]
-          ++ optionals (nixosConfig != null && nixosConfig.environment.debuginfodServers != [ ]) [
-            ".cache/debuginfod_client"
-          ];
+          preservation.preserveAt.state.directories = [ ".local/state/gdb" ];
+
+          preservation.preserveAt.cache.directories =
+            optionals (nixosConfig != null && nixosConfig.environment.debuginfodServers != [ ])
+              [
+                ".cache/debuginfod_client"
+              ];
         };
     };
   };

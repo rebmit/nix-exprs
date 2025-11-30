@@ -20,7 +20,7 @@ in
             environmentFile = config.sops.templates."restic/b2/envs".path;
             passwordFile = config.sops.secrets."restic/password".path;
             initialize = true;
-            paths = [ "/persist" ];
+            paths = [ "/persist/state" ];
             extraBackupArgs = [
               "--one-file-system"
               "--exclude-caches"
@@ -73,7 +73,7 @@ in
             B2_ACCOUNT_KEY="${config.sops.placeholder."restic/b2/application-key"}"
           '';
 
-          preservation.directories = [ "/var/cache/restic-backups-b2" ];
+          preservation.preserveAt.cache.directories = [ "/var/cache/restic-backups-b2" ];
 
           virtualisation.vmVariant = {
             services.restic.backups = mkVMOverride { };

@@ -40,7 +40,7 @@
             restartUnits = [ "ranet.service" ];
           };
 
-          preservation.directories = [ "/var/lib/ranet" ];
+          preservation.preserveAt.state.directories = [ "/var/lib/ranet" ];
         };
     };
   };

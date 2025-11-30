@@ -1,7 +1,7 @@
 { self, lib, ... }:
 let
   inherit (lib) types;
-  inherit (lib.attrsets) mapAttrsToList optionalAttrs;
+  inherit (lib.attrsets) mapAttrsToList optionalAttrs mapAttrs;
   inherit (lib.modules) mkMerge mkIf mkDefault;
   inherit (lib.options) mkOption mkEnableOption;
 in
@@ -13,20 +13,20 @@ in
         {
           imports = [ self.nixosModules.preservation ];
 
-          preservation = mkMerge (
+          preservation.preserveAt = mkMerge (
             mapAttrsToList (
               name: _:
               let
                 hmCfg = config.users.users.${name}.home-manager.module;
               in
-              {
-                users.${name} = {
-                  home = hmCfg.home.homeDirectory;
-                }
-                // optionalAttrs (hmCfg ? preservation && hmCfg.preservation.enable) {
-                  inherit (hmCfg.preservation) directories files commonMountOptions;
-                };
-              }
+              optionalAttrs (hmCfg ? preservation && hmCfg.preservation.enable) (
+                mapAttrs (_: preserve: {
+                  users.${name} = {
+                    home = hmCfg.home.homeDirectory;
+                    inherit (preserve) directories files commonMountOptions;
+                  };
+                }) hmCfg.preservation.preserveAt
+              )
             ) unify.submodules.home-manager.users
           );
         };
@@ -38,32 +38,44 @@ in
         {
           options.preservation = {
             enable = mkEnableOption "the preservation module";
-            directories = mkOption {
-              type = types.listOf (types.coercedTo types.str (d: { directory = d; }) types.anything);
-              default = [ ];
-              description = ''
-                Specify a list of directories that should be preserved for this user.
-                The paths are interpreted relative to the user's home directory.
-              '';
-            };
-            files = mkOption {
-              type = types.listOf (types.coercedTo types.str (f: { file = f; }) types.anything);
-              default = [ ];
-              description = ''
-                Specify a list of files that should be preserved for this user.
-                The paths are interpreted relative to the user's home directory.
-              '';
-            };
-            commonMountOptions = mkOption {
-              type = types.listOf (types.coercedTo types.str (n: { name = n; }) types.anything);
-              default = [ ];
-              description = ''
-                Specify a list of mount options that should be added to all files and directories
-                of this user, for which {option}`how` is set to `bindmount`.
 
-                See also the top level {option}`commonMountOptions` and the invdividual
-                {option}`mountOptions` that is available per file / directory.
-              '';
+            preserveAt = mkOption {
+              type = types.attrsOf (
+                types.submodule (
+                  { ... }:
+                  {
+                    options = {
+                      directories = mkOption {
+                        type = types.listOf (types.coercedTo types.str (d: { directory = d; }) types.anything);
+                        default = [ ];
+                        description = ''
+                          Specify a list of directories that should be preserved for this user.
+                          The paths are interpreted relative to the user's home directory.
+                        '';
+                      };
+                      files = mkOption {
+                        type = types.listOf (types.coercedTo types.str (f: { file = f; }) types.anything);
+                        default = [ ];
+                        description = ''
+                          Specify a list of files that should be preserved for this user.
+                          The paths are interpreted relative to the user's home directory.
+                        '';
+                      };
+                      commonMountOptions = mkOption {
+                        type = types.listOf (types.coercedTo types.str (n: { name = n; }) types.anything);
+                        default = [ ];
+                        description = ''
+                          Specify a list of mount options that should be added to all files and directories
+                          of this user, for which {option}`how` is set to `bindmount`.
+
+                          See also the top level {option}`commonMountOptions` and the invdividual
+                          {option}`mountOptions` that is available per file / directory.
+                        '';
+                      };
+                    };
+                  }
+                )
+              );
             };
           };
 

@@ -45,7 +45,7 @@
             '';
           };
 
-          preservation.directories = [ ".local/share/fish" ];
+          preservation.preserveAt.state.directories = [ ".local/share/fish" ];
         };
     };
   };
