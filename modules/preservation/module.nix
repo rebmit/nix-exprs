@@ -5,6 +5,7 @@ let
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) flatten;
   inherit (lib.modules) mkIf;
+  inherit (lib.trivial) pipe;
 in
 {
   flake.nixosModules.preservation =
@@ -29,6 +30,7 @@ in
       configPath = "/etc/${configPathSuffix}";
 
       cfg = config.preservation;
+      persistentStoragePaths = mapAttrsToList (_: pcfg: pcfg.persistentStoragePath) cfg.preserveAt;
     in
     {
       config = mkIf cfg.enable {
@@ -47,11 +49,17 @@ in
             before = [ "initrd.target" ];
             wantedBy = [ "initrd.target" ];
           };
-          contents."${configPath}".source = pkgs.writeText "preservation.conf" (
-            mkRuleFileContent (mkInitrdTmpfilesRules cfg)
-          );
-          mounts = mkInitrdMountUnits cfg;
-          services.systemd-tmpfiles-setup-preservation = mkInitrdTmpfilesService configPath cfg.persistentStoragePath;
+          contents."${configPath}".source = pipe cfg.preserveAt [
+            (mapAttrsToList mkInitrdTmpfilesRules)
+            flatten
+            mkRuleFileContent
+            (pkgs.writeText "preservation.conf")
+          ];
+          mounts = pipe cfg.preserveAt [
+            (mapAttrsToList mkInitrdMountUnits)
+            flatten
+          ];
+          services.systemd-tmpfiles-setup-preservation = mkInitrdTmpfilesService configPath persistentStoragePaths;
         };
 
         systemd = {
@@ -60,25 +68,32 @@ in
             before = [ "sysinit.target" ];
             wantedBy = [ "sysinit.target" ];
           };
-          mounts = mkRegularMountUnits cfg;
+          mounts = pipe cfg.preserveAt [
+            (mapAttrsToList mkRegularMountUnits)
+            flatten
+          ];
           services = {
             systemd-tmpfiles-setup-preservation =
-              mkRegularTmpfilesService true configPath cfg.persistentStoragePath
+              mkRegularTmpfilesService true configPath persistentStoragePaths
                 "";
             systemd-tmpfiles-resetup-preservation =
-              mkRegularTmpfilesService false configPath cfg.persistentStoragePath
+              mkRegularTmpfilesService false configPath persistentStoragePaths
                 config.environment.etc."${configPathSuffix}".source;
           };
         };
 
-        environment.etc."${configPathSuffix}".source = pkgs.writeText "preservation.conf" (
-          mkRuleFileContent (
-            flatten (
-              mkRegularTmpfilesRules cfg
-              ++ mapAttrsToList (mkUserParentClosureTmpfilesRule cfg.persistentStoragePath) cfg.users
-            )
+        environment.etc."${configPathSuffix}".source = pipe cfg.preserveAt [
+          (
+            pcfgs:
+            mapAttrsToList mkRegularTmpfilesRules pcfgs
+            ++ mapAttrsToList (
+              _: scfg: mapAttrsToList (mkUserParentClosureTmpfilesRule scfg.persistentStoragePath) scfg.users
+            ) pcfgs
           )
-        );
+          flatten
+          mkRuleFileContent
+          (pkgs.writeText "preservation.conf")
+        ];
       };
     };
 }

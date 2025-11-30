@@ -100,7 +100,7 @@ in
         concatStrings (pathsToRules (evalPaths paths));
 
       mkTmpfilesRules =
-        forInitrd: stateConfig:
+        forInitrd: _: stateConfig:
         let
           allDirectories = onlyForInitrd forInitrd (getAllDirectories stateConfig);
           allFiles = onlyForInitrd forInitrd (getAllFiles stateConfig);
@@ -144,7 +144,7 @@ in
         rules;
 
       mkMountUnits =
-        forInitrd: stateConfig:
+        forInitrd: _: stateConfig:
         let
           allDirectories = onlyForInitrd forInitrd (getAllDirectories stateConfig);
           allFiles = onlyForInitrd forInitrd (getAllFiles stateConfig);
@@ -282,7 +282,7 @@ in
       mkRegularTmpfilesRules = mkTmpfilesRules false;
       mkInitrdTmpfilesRules = mkTmpfilesRules true;
 
-      mkInitrdTmpfilesService = configPath: persistentStoragePath: {
+      mkInitrdTmpfilesService = configPath: persistentStoragePaths: {
         wantedBy = [ "initrd-preservation.target" ];
         before = [
           "initrd.target"
@@ -298,7 +298,7 @@ in
         unitConfig = {
           DefaultDependencies = false;
           RefuseManualStop = true;
-          RequiresMountsFor = concatPath "/sysroot" persistentStoragePath;
+          RequiresMountsFor = map (concatPath "/sysroot") persistentStoragePaths;
         };
         serviceConfig = {
           Type = "oneshot";
@@ -315,7 +315,7 @@ in
         };
       };
 
-      mkRegularTmpfilesService = onBoot: configPath: persistentStoragePath: restartTrigger: {
+      mkRegularTmpfilesService = onBoot: configPath: persistentStoragePaths: restartTrigger: {
         wantedBy = optionals onBoot [ "preservation.target" ];
         requiredBy = optionals (!onBoot) [ "sysinit-reactivation.target" ];
         after = [
@@ -345,7 +345,7 @@ in
         unitConfig = {
           DefaultDependencies = false;
           RefuseManualStop = onBoot;
-          RequiresMountsFor = persistentStoragePath;
+          RequiresMountsFor = persistentStoragePaths;
         };
         serviceConfig = {
           Type = "oneshot";

@@ -2,7 +2,8 @@
 # https://github.com/nix-community/preservation/blob/93416f4614ad2dfed5b0dcf12f27e57d27a5ab11/tests/basic.nix (MIT License)
 { self, lib, ... }:
 let
-  inherit (lib.lists) filter;
+  inherit (lib.attrsets) mapAttrsToList;
+  inherit (lib.lists) filter flatten;
   inherit (lib.strings) toJSON;
   inherit (lib.trivial) pipe;
 
@@ -30,42 +31,44 @@ in
 
             preservation = {
               enable = true;
-              persistentStoragePath = "/persist";
-              directories = [
-                {
-                  directory = "/var/lib/nixos";
-                  inInitrd = true;
-                  user = "root";
-                  group = "root";
-                  mode = "0755";
-                }
-                {
-                  directory = "/var/lib/service";
-                  user = "rebmit";
-                  group = "users";
-                  mode = "0750";
-                }
-                "/var/log/journal"
-              ];
-              files = [
-                {
-                  file = "/var/lib/file";
-                  inInitrd = true;
-                }
-              ];
-              users = {
-                rebmit = {
-                  commonMountOptions = [ "x-bar" ];
-                  directories = [
-                    {
-                      directory = "foo/bar/baz";
-                      mountOptions = [ "x-baz" ];
-                    }
-                  ];
-                  files = [ ".config/config" ];
+
+              preserveAt."/persist/state" = {
+                directories = [
+                  {
+                    directory = "/var/lib/nixos";
+                    inInitrd = true;
+                    user = "root";
+                    group = "root";
+                    mode = "0755";
+                  }
+                  {
+                    directory = "/var/lib/service";
+                    user = "rebmit";
+                    group = "users";
+                    mode = "0750";
+                  }
+                  "/var/log/journal"
+                ];
+                files = [
+                  {
+                    file = "/var/lib/file";
+                    inInitrd = true;
+                  }
+                ];
+                users = {
+                  rebmit = {
+                    commonMountOptions = [ "x-bar" ];
+                    directories = [
+                      {
+                        directory = "foo/bar/baz";
+                        mountOptions = [ "x-baz" ];
+                      }
+                    ];
+                    files = [ ".config/config" ];
+                  };
                 };
+                commonMountOptions = [ "x-foo" ];
               };
-              commonMountOptions = [ "x-foo" ];
             };
 
             testing.initrdBackdoor = true;
@@ -100,8 +103,10 @@ in
 
             rebmitHome = nodes.machine.users.users.rebmit.home;
 
-            allFiles = getAllFiles nodes.machine.preservation;
-            allDirectories = getAllDirectories nodes.machine.preservation;
+            allFiles = flatten (mapAttrsToList (_: getAllFiles) nodes.machine.preservation.preserveAt);
+            allDirectories = flatten (
+              mapAttrsToList (_: getAllDirectories) nodes.machine.preservation.preserveAt
+            );
 
             initrdFiles = filter (conf: conf.inInitrd) allFiles;
             initrdDirectories = filter (conf: conf.inInitrd) allDirectories;
@@ -156,7 +161,7 @@ in
                   t.assertEqual(actual, expected, "unexpected file attributes")
 
             with subtest("Unpreserved user home has same permissions and ownership on persistent prefix as actual user home"):
-                actual = machine.succeed("stat -c '0%a %U %G' /persist${rebmitHome} | tee /dev/stderr").strip()
+                actual = machine.succeed("stat -c '0%a %U %G' /persist/state${rebmitHome} | tee /dev/stderr").strip()
                 expected = machine.succeed("stat -c '0%a %U %G' ${rebmitHome} | tee /dev/stderr").strip()
                 t.assertEqual(actual, expected, "unexpected file attributes")
 
@@ -174,7 +179,7 @@ in
               machine.wait_for_unit("default.target")
 
               # preserved machine-id resides on /persist
-              initrd_machine_id = machine.succeed("cat /sysroot/persist/var/lib/nixos/systemd/machine-id")
+              initrd_machine_id = machine.succeed("cat /sysroot/persist/state/var/lib/nixos/systemd/machine-id")
               t.assertEqual(initrd_machine_id, machine_id, "machine id changed")
 
               # check type, permissions and ownership before switch root

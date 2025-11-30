@@ -253,88 +253,108 @@ in
           };
         };
 
-      cfg = config.preservation;
+      preserveAtSubmodule =
+        attrs@{ name, ... }:
+        {
+          options = {
+            persistentStoragePath = mkOption {
+              type = types.path;
+              default = name;
+              description = ''
+                Specify the location at which the {option}`directories`, {option}`files`,
+                {option}`users.directories` and {option}`users.files` should be preserved.
+                Defaults to the name of the parent attribute set.
+              '';
+            };
+            directories = mkOption {
+              type =
+                with types;
+                listOf (
+                  coercedTo str (d: { directory = d; }) (submodule [
+                    {
+                      _module.args = {
+                        defaultOwner = "-";
+                        defaultGroup = "-";
+                        defaultMode = "-";
+                      };
+                      mountOptions = attrs.config.commonMountOptions;
+                    }
+                    directoryPath
+                  ])
+                );
+              default = [ ];
+              description = ''
+                Specify a list of directories that should be preserved.
+                The paths are interpreted as absolute paths.
+              '';
+            };
+            files = mkOption {
+              type =
+                with types;
+                listOf (
+                  coercedTo str (f: { file = f; }) (submodule [
+                    {
+                      _module.args = {
+                        defaultOwner = "-";
+                        defaultGroup = "-";
+                        defaultMode = "-";
+                      };
+                      mountOptions = attrs.config.commonMountOptions;
+                    }
+                    filePath
+                  ])
+                );
+              default = [ ];
+              description = ''
+                Specify a list of files that should be preserved.
+                The paths are interpreted as absolute paths.
+              '';
+            };
+            users = mkOption {
+              type =
+                with types;
+                attrsWith {
+                  placeholder = "user";
+                  elemType = submodule [
+                    { inherit (attrs.config) commonMountOptions; }
+                    userModule
+                  ];
+                };
+              default = { };
+              description = ''
+                Specify a set of users with corresponding files and directories that
+                should be preserved.
+              '';
+            };
+            commonMountOptions = mkOption {
+              type = with types; listOf (coercedTo str (n: { name = n; }) mountOption);
+              default = [ ];
+              description = ''
+                Specify a list of mount options that should be added to all files and directories
+                under this preservation prefix, for which {option}`how` is set to `bindmount`.
+
+                See also {option}`commonMountOptions` under {option}`users` and the invdividual
+                {option}`mountOptions` that is available per file / directory.
+              '';
+            };
+          };
+        };
     in
     {
       options.preservation = {
         enable = mkEnableOption "the preservation module";
-        persistentStoragePath = mkOption {
-          type = types.path;
-          description = ''
-            Specify the location at which the {option}`directories`, {option}`files`,
-            {option}`users.directories` and {option}`users.files` should be preserved.
-            Defaults to the name of the parent attribute set.
-          '';
-        };
-        directories = mkOption {
-          type =
-            with types;
-            listOf (
-              coercedTo str (d: { directory = d; }) (submodule [
-                {
-                  _module.args = {
-                    defaultOwner = "-";
-                    defaultGroup = "-";
-                    defaultMode = "-";
-                  };
-                  mountOptions = cfg.commonMountOptions;
-                }
-                directoryPath
-              ])
-            );
-          default = [ ];
-          description = ''
-            Specify a list of directories that should be preserved.
-            The paths are interpreted as absolute paths.
-          '';
-        };
-        files = mkOption {
-          type =
-            with types;
-            listOf (
-              coercedTo str (f: { file = f; }) (submodule [
-                {
-                  _module.args = {
-                    defaultOwner = "-";
-                    defaultGroup = "-";
-                    defaultMode = "-";
-                  };
-                  mountOptions = cfg.commonMountOptions;
-                }
-                filePath
-              ])
-            );
-          default = [ ];
-          description = ''
-            Specify a list of files that should be preserved.
-            The paths are interpreted as absolute paths.
-          '';
-        };
-        users = mkOption {
+
+        preserveAt = mkOption {
           type =
             with types;
             attrsWith {
-              placeholder = "user";
-              elemType = submodule [
-                { inherit (cfg) commonMountOptions; }
-                userModule
-              ];
+              placeholder = "path";
+              elemType = submodule preserveAtSubmodule;
             };
           default = { };
           description = ''
-            Specify a set of users with corresponding files and directories that
-            should be preserved.
-          '';
-        };
-        commonMountOptions = mkOption {
-          type = with types; listOf (coercedTo str (n: { name = n; }) mountOption);
-          default = [ ];
-          description = ''
-            Specify a list of mount options that should be added to all files and directories
-            under this preservation prefix, for which {option}`how` is set to `bindmount`.
-
-            See also {option}`commonMountOptions` under {option}`users` and the invdividual
-            {option}`mountOptions` that is available per file / directory.
+            Specify a set of locations and the corresponding state that
+            should be preserved there.
           '';
         };
       };
