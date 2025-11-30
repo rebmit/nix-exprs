@@ -45,6 +45,14 @@ let
               Name of this provider.
             '';
           };
+          path = mkOption {
+            type = types.listOf types.str;
+            readOnly = true;
+            default = splitString "/" config.name;
+            description = ''
+              Path of this provider.
+            '';
+          };
           contexts = mkOption {
             type = types.listOf types.str;
             readOnly = !contextAware;
@@ -96,6 +104,7 @@ let
                   "contexts"
                   "name"
                   "passthru"
+                  "path"
                   "provides"
                   "requires"
                   # keep-sorted end
