@@ -26,6 +26,9 @@
             preserveAt = {
               cache = {
                 persistentStoragePath = "/persist/cache";
+                directories = [
+                  "/var/tmp"
+                ];
               };
               state = {
                 persistentStoragePath = "/persist/state";
