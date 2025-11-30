@@ -111,6 +111,7 @@
               formatter = partitionAttr "dev" "formatter";
               legacyPackages = partitionAttr "pkgs" "legacyPackages";
               lib = partitionAttr "lib" "lib";
+              nixosModules = partitionAttr "modules" "nixosModules";
               overlays = partitionAttr "pkgs" "overlays";
               partitions = config.partitions;
               # keep-sorted end
