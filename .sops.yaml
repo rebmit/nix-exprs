@@ -10,6 +10,7 @@ keys:
     - &reisen-nrt0 age1yn8a3m66ccsgdgp9fnguavnx3hz9e0wwz594jk0v8hhq84rs8utq4ggtww
     - &reisen-sea0 age1cy0r5j5m4r98srahv0g6tr4xxhc543sc577y3f49vya7sxs5es4sldp0vt
     - &kogasa-iad0 age1q5rv9w3e33xhkjyacnwjrxe4asm4t6wkpqlstq6ryxherx4f04hsz99t07
+    - &kogasa-iad1 age1kss8zxj4mu207xjf2twjgn2gu83uv9pxzmvrplszayl9nld7dqqsdnk9j9
     - &kogasa-nue0 age13hzt6sw6v6329cut266h3vcxjwq7f82ydl7y08eajzeghkqrw5uqvmhu86
     - &kanako-ham0 age1qdunuzv0wwn2xqgt54s64v28488gsz4ky7u5zcv4yt26n7wn8gesx3x3za
 creation_rules:
@@ -31,6 +32,7 @@ creation_rules:
           - *reisen-nrt0
           - *reisen-sea0
           - *kogasa-iad0
+          - *kogasa-iad1
           - *kogasa-nue0
           - *kanako-ham0
   - path_regex: secrets/local.*
@@ -90,6 +92,12 @@ creation_rules:
           - *self0
           - *self1
           - *kogasa-iad0
+  - path_regex: secrets/hosts/(opentofu/)?kogasa-iad1
+    key_groups:
+      - age:
+          - *self0
+          - *self1
+          - *kogasa-iad1
   - path_regex: secrets/hosts/(opentofu/)?kogasa-nue0
     key_groups:
       - age:
