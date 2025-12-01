@@ -120,11 +120,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1764323138,
-        "narHash": "sha256-avfnSIRFQJ0xKMKDKsCRqbxDukkC4qbrsciU2ZNHpvg=",
+        "lastModified": 1764606307,
+        "narHash": "sha256-zoOCbyrdY38yutfuVlLa26l3MCV4UTVTjo5mmQYBNJI=",
         "owner": "rebmit",
         "repo": "nixpkgs",
-        "rev": "a2a04fa4bb726288f4e6e8853138045f89cc899f",
+        "rev": "54f11dd8d3485377233b4ecbe5f7085863ae92c9",
         "type": "github"
       },
       "original": {
@@ -141,11 +141,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764291468,
-        "narHash": "sha256-nFZixPC+efvWQ/OKDWVufp0aEVkkdQJgRDjPgyPBC98=",
+        "lastModified": 1764551617,
+        "narHash": "sha256-zg3Vget2QDqhkj2SgoMaLG2YNaQwy4UdpzBzPD/mSSk=",
         "owner": "nix-community",
         "repo": "nixpkgs-terraform-providers-bin",
-        "rev": "73f254fea5bfd0eea9fa56b8356afcfcbfc030b2",
+        "rev": "2aad4f7e5b76d507c70e0910e2cc672641bb6a14",
         "type": "github"
       },
       "original": {
