@@ -1,16 +1,17 @@
 {
   flake.unify.configs.nixos.kogasa-iad1 = {
     meta = {
-      includes = [ "system/disko/btrfs-common" ];
+      includes = [
+        # keep-sorted start
+        "system/disko/btrfs-common"
+        "virtualisation/qemu-guest"
+        # keep-sorted end
+      ];
     };
 
     module =
-      { modulesPath, ... }:
+      { ... }:
       {
-        imports = [
-          (modulesPath + "/profiles/qemu-guest.nix")
-        ];
-
         disko.devices = {
           nodev."/".mountOptions = [ "size=2G" ];
           disk.main.device = "/dev/vda";
