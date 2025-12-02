@@ -12,6 +12,7 @@
           "nix/settings"
           "programs/collections/common"
           "programs/git"
+          "programs/neovim"
           "security/polkit"
           "security/sudo-rs"
           "services/dbus"
