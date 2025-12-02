@@ -19,7 +19,10 @@ in
 
           system.configurationRevision = self.rev or "dirty";
 
-          system.tools.nixos-generate-config.enable = mkDefault false;
+          system.tools = {
+            nixos-generate-config.enable = mkDefault false;
+            nixos-option.enable = mkDefault false;
+          };
         };
     };
   };
