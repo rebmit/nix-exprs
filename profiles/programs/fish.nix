@@ -7,6 +7,7 @@
           programs.fish = {
             enable = true;
             useBabelfish = true;
+            generateCompletions = false;
           };
         };
     };
@@ -21,6 +22,7 @@
         {
           programs.fish = {
             enable = true;
+            generateCompletions = false;
             plugins = [
               {
                 name = "tide";
