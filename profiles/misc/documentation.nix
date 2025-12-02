@@ -13,7 +13,7 @@
               generateCaches = false;
               man-db.enable = true;
             };
-            nixos.enable = false;
+            nixos.enable = true;
           };
         };
     };
