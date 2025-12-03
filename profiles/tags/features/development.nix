@@ -4,6 +4,7 @@
       meta = {
         requires = [
           # keep-sorted start
+          "programs/git"
           "services/nixseparatedebuginfod2"
           # keep-sorted end
         ];
