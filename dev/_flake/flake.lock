@@ -3,6 +3,7 @@
     "devshell": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -66,6 +67,7 @@
           "gitignore-nix"
         ],
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -86,6 +88,7 @@
     "gitignore-nix": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -137,6 +140,7 @@
     "nixpkgs-terraform-providers-bin": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -176,10 +180,6 @@
         "flake-compat": "flake-compat",
         "git-hooks-nix": "git-hooks-nix",
         "gitignore-nix": "gitignore-nix",
-        "nixpkgs": [
-          "rebmit",
-          "nixpkgs"
-        ],
         "nixpkgs-terraform-providers-bin": "nixpkgs-terraform-providers-bin",
         "rebmit": "rebmit",
         "treefmt-nix": "treefmt-nix"
@@ -188,6 +188,7 @@
     "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },

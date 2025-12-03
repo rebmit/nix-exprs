@@ -3,6 +3,7 @@
     "disko": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -26,6 +27,7 @@
           "flake-utils"
         ],
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -85,6 +87,7 @@
     "home-manager": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -122,9 +125,11 @@
         "niri-stable": "niri-stable",
         "niri-unstable": "niri-unstable",
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ],
         "nixpkgs-stable": [
+          "rebmit",
           "nixpkgs"
         ],
         "xwayland-satellite-stable": "xwayland-satellite-stable",
@@ -180,6 +185,7 @@
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
@@ -237,10 +243,6 @@
         "home-manager": "home-manager",
         "niri-flake": "niri-flake",
         "nix-darwin": "nix-darwin",
-        "nixpkgs": [
-          "rebmit",
-          "nixpkgs"
-        ],
         "rebmit": "rebmit",
         "sops-nix": "sops-nix"
       }
@@ -248,6 +250,7 @@
     "sops-nix": {
       "inputs": {
         "nixpkgs": [
+          "rebmit",
           "nixpkgs"
         ]
       },
