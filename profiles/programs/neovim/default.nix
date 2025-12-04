@@ -13,6 +13,8 @@
             withPython3 = true;
             withNodeJs = false;
           };
+
+          environment.variables.MANPAGER = "nvim +Man!";
         };
     };
   };
