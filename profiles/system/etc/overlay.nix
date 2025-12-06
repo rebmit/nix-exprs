@@ -21,6 +21,8 @@ in
             mutable = false;
           };
 
+          environment.etc."NIXOS".text = "";
+
           virtualisation.vmVariant = {
             environment.etc."resolv.conf" = mkOptionDefault {
               text = ''
