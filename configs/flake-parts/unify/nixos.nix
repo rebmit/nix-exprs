@@ -27,7 +27,7 @@ let
   inherit (self.lib.types) mkStructuredType;
   inherit (flake-parts-lib) mkSubmoduleOptions;
 
-  data = fromJSON (readFile ../../infra/data.json);
+  data = fromJSON (readFile ../../../infra/data.json);
 in
 {
   options.flake = mkSubmoduleOptions {
