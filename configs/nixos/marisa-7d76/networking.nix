@@ -7,7 +7,7 @@
           enable = true;
           wait-online.anyInterface = true;
           networks = {
-            "30-enp14s0" = {
+            "20-enp14s0" = {
               matchConfig.Name = "enp14s0";
               networkConfig = {
                 DHCP = "ipv4";
