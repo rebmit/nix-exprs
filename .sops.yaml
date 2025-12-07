@@ -10,6 +10,7 @@ keys:
     - &kogasa-nue0 age13hzt6sw6v6329cut266h3vcxjwq7f82ydl7y08eajzeghkqrw5uqvmhu86
     - &marisa-7d76 age1zufm5x7xk8xt3pfzfkdj60z9sd7vnmq739udpwwp4h8qd7nujqesusm4vq
     - &marisa-j715 age1mc0nfucl68cswqd9xkcmv4l003wan84yked7tspsjtl4ya40p99q6sx9l3
+    - &momiji-nrt0 age1m9rvv5ggwc0g883klnhxngptxq3sq6mjwkj0pukgu3pnl2kxrsgs0j8qud
     - &reisen-fra0 age1ufkr0v8pqhpd06tpnpfwr7lphdwke0uagtahp5h5avu82fckzd9qtwpx2e
     - &reisen-nrt0 age1yn8a3m66ccsgdgp9fnguavnx3hz9e0wwz594jk0v8hhq84rs8utq4ggtww
     - &reisen-sea0 age1cy0r5j5m4r98srahv0g6tr4xxhc543sc577y3f49vya7sxs5es4sldp0vt
@@ -32,6 +33,7 @@ creation_rules:
           - *kogasa-nue0
           - *marisa-7d76
           - *marisa-j715
+          - *momiji-nrt0
           - *reisen-fra0
           - *reisen-nrt0
           - *reisen-sea0
@@ -56,36 +58,12 @@ creation_rules:
           - *self0
           - *self1
           - *flandre-t1
-  - path_regex: secrets/hosts/(opentofu/)?marisa-7d76
+  - path_regex: secrets/hosts/(opentofu/)?kanako-ham0
     key_groups:
       - age:
           - *self0
           - *self1
-          - *marisa-7d76
-  - path_regex: secrets/hosts/(opentofu/)?marisa-j715
-    key_groups:
-      - age:
-          - *self0
-          - *self1
-          - *marisa-j715
-  - path_regex: secrets/hosts/(opentofu/)?reisen-fra0
-    key_groups:
-      - age:
-          - *self0
-          - *self1
-          - *reisen-fra0
-  - path_regex: secrets/hosts/(opentofu/)?reisen-nrt0
-    key_groups:
-      - age:
-          - *self0
-          - *self1
-          - *reisen-nrt0
-  - path_regex: secrets/hosts/(opentofu/)?reisen-sea0
-    key_groups:
-      - age:
-          - *self0
-          - *self1
-          - *reisen-sea0
+          - *kanako-ham0
   - path_regex: secrets/hosts/(opentofu/)?kogasa-iad0
     key_groups:
       - age:
@@ -104,9 +82,39 @@ creation_rules:
           - *self0
           - *self1
           - *kogasa-nue0
-  - path_regex: secrets/hosts/(opentofu/)?kanako-ham0
+  - path_regex: secrets/hosts/(opentofu/)?marisa-7d76
     key_groups:
       - age:
           - *self0
           - *self1
-          - *kanako-ham0
+          - *marisa-7d76
+  - path_regex: secrets/hosts/(opentofu/)?marisa-j715
+    key_groups:
+      - age:
+          - *self0
+          - *self1
+          - *marisa-j715
+  - path_regex: secrets/hosts/(opentofu/)?momiji-nrt0
+    key_groups:
+      - age:
+          - *self0
+          - *self1
+          - *momiji-nrt0
+  - path_regex: secrets/hosts/(opentofu/)?reisen-fra0
+    key_groups:
+      - age:
+          - *self0
+          - *self1
+          - *reisen-fra0
+  - path_regex: secrets/hosts/(opentofu/)?reisen-nrt0
+    key_groups:
+      - age:
+          - *self0
+          - *self1
+          - *reisen-nrt0
+  - path_regex: secrets/hosts/(opentofu/)?reisen-sea0
+    key_groups:
+      - age:
+          - *self0
+          - *self1
+          - *reisen-sea0
