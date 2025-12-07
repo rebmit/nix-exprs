@@ -1,17 +1,6 @@
 locals {
   hosts = {
-    "marisa-7d76" = {
-      endpoints_v4               = []
-      endpoints_v6               = []
-      enthalpy_node_id           = parseint("d79", 16)
-      enthalpy_node_organization = "enta0004"
-    }
-    "marisa-j715" = {
-      endpoints_v4               = []
-      endpoints_v6               = []
-      enthalpy_node_id           = parseint("572", 16)
-      enthalpy_node_organization = "enta0004"
-    }
+    # keep-sorted start block=yes
     "flandre-m5p" = {
       endpoints_v4               = []
       endpoints_v6               = []
@@ -23,6 +12,12 @@ locals {
       endpoints_v6               = []
       enthalpy_node_id           = parseint("397", 16)
       enthalpy_node_organization = "enta0003"
+    }
+    "kanako-ham0" = {
+      endpoints_v4               = ["91.108.80.168"]
+      endpoints_v6               = ["2a05:901:6:1015::1"]
+      enthalpy_node_id           = parseint("2d8", 16)
+      enthalpy_node_organization = "enta0002"
     }
     "kogasa-iad0" = {
       endpoints_v4               = ["152.53.167.21"]
@@ -42,11 +37,17 @@ locals {
       enthalpy_node_id           = parseint("bf7", 16)
       enthalpy_node_organization = "enta0002"
     }
-    "kanako-ham0" = {
-      endpoints_v4               = ["91.108.80.168"]
-      endpoints_v6               = ["2a05:901:6:1015::1"]
-      enthalpy_node_id           = parseint("2d8", 16)
-      enthalpy_node_organization = "enta0002"
+    "marisa-7d76" = {
+      endpoints_v4               = []
+      endpoints_v6               = []
+      enthalpy_node_id           = parseint("d79", 16)
+      enthalpy_node_organization = "enta0004"
+    }
+    "marisa-j715" = {
+      endpoints_v4               = []
+      endpoints_v6               = []
+      enthalpy_node_id           = parseint("572", 16)
+      enthalpy_node_organization = "enta0004"
     }
     "reisen-fra0" = {
       endpoints_v4               = [module.vultr_instances["reisen-fra0"].ipv4]
@@ -66,6 +67,7 @@ locals {
       enthalpy_node_id           = parseint("6b8", 16)
       enthalpy_node_organization = "enta0001"
     }
+    # keep-sorted end
   }
 }
 

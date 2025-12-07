@@ -14,7 +14,7 @@ in
             mode = "direct-symlink";
           };
 
-          boot.initrd.systemd.tmpfiles.settings.immutable = mkIf config.boot.initrd.systemd.enable {
+          boot.initrd.systemd.tmpfiles.settings.machine-id = mkIf config.boot.initrd.systemd.enable {
             "/sysroot/var/lib/nixos/systemd/machine-id".f = {
               user = "root";
               group = "root";

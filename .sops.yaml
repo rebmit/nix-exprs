@@ -4,15 +4,15 @@ keys:
     - &self1 age1wg5kd692d3m4mh83qt5smzeu48j8w2gjspxk4l5svlg92fumqefqvkp3kx
     - &flandre-m5p age18ktzczpaufkp34j42plxlyl94yu3tusvpad6mfperpw7stypdfxqdn4au8
     - &flandre-t1 age1f3z3ueswax09l84nv7rswcm8c7hgtexx3347ey8r3twtc0j6x38s0hqrr0
+    - &kanako-ham0 age1qdunuzv0wwn2xqgt54s64v28488gsz4ky7u5zcv4yt26n7wn8gesx3x3za
+    - &kogasa-iad0 age1q5rv9w3e33xhkjyacnwjrxe4asm4t6wkpqlstq6ryxherx4f04hsz99t07
+    - &kogasa-iad1 age1kss8zxj4mu207xjf2twjgn2gu83uv9pxzmvrplszayl9nld7dqqsdnk9j9
+    - &kogasa-nue0 age13hzt6sw6v6329cut266h3vcxjwq7f82ydl7y08eajzeghkqrw5uqvmhu86
     - &marisa-7d76 age1zufm5x7xk8xt3pfzfkdj60z9sd7vnmq739udpwwp4h8qd7nujqesusm4vq
     - &marisa-j715 age1mc0nfucl68cswqd9xkcmv4l003wan84yked7tspsjtl4ya40p99q6sx9l3
     - &reisen-fra0 age1ufkr0v8pqhpd06tpnpfwr7lphdwke0uagtahp5h5avu82fckzd9qtwpx2e
     - &reisen-nrt0 age1yn8a3m66ccsgdgp9fnguavnx3hz9e0wwz594jk0v8hhq84rs8utq4ggtww
     - &reisen-sea0 age1cy0r5j5m4r98srahv0g6tr4xxhc543sc577y3f49vya7sxs5es4sldp0vt
-    - &kogasa-iad0 age1q5rv9w3e33xhkjyacnwjrxe4asm4t6wkpqlstq6ryxherx4f04hsz99t07
-    - &kogasa-iad1 age1kss8zxj4mu207xjf2twjgn2gu83uv9pxzmvrplszayl9nld7dqqsdnk9j9
-    - &kogasa-nue0 age13hzt6sw6v6329cut266h3vcxjwq7f82ydl7y08eajzeghkqrw5uqvmhu86
-    - &kanako-ham0 age1qdunuzv0wwn2xqgt54s64v28488gsz4ky7u5zcv4yt26n7wn8gesx3x3za
 creation_rules:
   - path_regex: infra/.*
     key_groups:
@@ -26,15 +26,15 @@ creation_rules:
           - *self1
           - *flandre-m5p
           - *flandre-t1
+          - *kanako-ham0
+          - *kogasa-iad0
+          - *kogasa-iad1
+          - *kogasa-nue0
           - *marisa-7d76
           - *marisa-j715
           - *reisen-fra0
           - *reisen-nrt0
           - *reisen-sea0
-          - *kogasa-iad0
-          - *kogasa-iad1
-          - *kogasa-nue0
-          - *kanako-ham0
   - path_regex: secrets/local.*
     key_groups:
       - age:
