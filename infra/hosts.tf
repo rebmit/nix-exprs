@@ -49,6 +49,12 @@ locals {
       enthalpy_node_id           = parseint("572", 16)
       enthalpy_node_organization = "enta0004"
     }
+    "momiji-nrt0" = {
+      endpoints_v4               = ["167.148.6.213"]
+      endpoints_v6               = ["2406:ef80:4:fa47:0220:3cff:fec7:df88"]
+      enthalpy_node_id           = parseint("167", 16)
+      enthalpy_node_organization = null
+    }
     "reisen-fra0" = {
       endpoints_v4               = [module.vultr_instances["reisen-fra0"].ipv4]
       endpoints_v6               = [module.vultr_instances["reisen-fra0"].ipv6]

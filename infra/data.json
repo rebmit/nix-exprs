@@ -98,6 +98,16 @@
       "enthalpy_node_prefix": "2a0e:aa07:e21c:5720::/60",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG6aUERU0Suxg3ycqs1dCfcnvLkOipQN0NBeUKmqProl"
     },
+    "momiji-nrt0": {
+      "b2_backup_bucket_name": "rebmit-backup-momiji-nrt0",
+      "endpoints": ["167.148.6.213", "2406:ef80:4:fa47:0220:3cff:fec7:df88"],
+      "endpoints_v4": ["167.148.6.213"],
+      "endpoints_v6": ["2406:ef80:4:fa47:0220:3cff:fec7:df88"],
+      "enthalpy_node_id": 359,
+      "enthalpy_node_organization": null,
+      "enthalpy_node_prefix": null,
+      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGxRvFwd0iAQGXvfwnnAWYjVvUbfPbDHMMe/hDeBj4ia"
+    },
     "reisen-fra0": {
       "b2_backup_bucket_name": "rebmit-backup-reisen-fra0",
       "endpoints": ["45.76.85.223", "2001:19f0:6c00:10c5:5400:05ff:fe86:3f43"],
