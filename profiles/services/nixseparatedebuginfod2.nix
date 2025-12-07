@@ -1,6 +1,6 @@
-{ self, ... }:
+{ meta, ... }:
 {
-  flake.meta.ports = {
+  meta.ports = {
     nixseparatedebuginfod2 = 1949;
   };
 
@@ -15,7 +15,7 @@
         {
           services.nixseparatedebuginfod2 = {
             enable = true;
-            port = self.meta.ports.nixseparatedebuginfod2;
+            port = meta.ports.nixseparatedebuginfod2;
             substituters = [
               "local:"
               "https://cache.nixos.org"

@@ -10,58 +10,64 @@ let
   inherit (lib.attrsets) foldlAttrs filterAttrs attrNames;
   inherit (lib.lists) length;
   inherit (lib.options) mkOption;
-  inherit (lib.strings) optionalString concatMapStringsSep concatStringsSep;
+  inherit (lib.strings)
+    optionalString
+    concatMapStringsSep
+    concatStringsSep
+    fromJSON
+    ;
+  inherit (lib.trivial) readFile;
   inherit (self.lib.types) mkStructuredType;
   inherit (flake-parts-lib) mkSubmoduleOptions;
 in
 {
-  options.flake = mkSubmoduleOptions {
-    meta = mkSubmoduleOptions {
-      ports = mkOption {
-        type = types.attrsOf types.port;
-        default = { };
-        apply =
-          ports:
-          let
-            reverse = foldlAttrs (
-              acc: name: value:
-              acc
-              // {
-                ${toString value} = (acc.${toString value} or [ ] ++ [ name ]);
-              }
-            ) { } ports;
+  options.meta = mkSubmoduleOptions {
+    ports = mkOption {
+      type = types.attrsOf types.port;
+      default = { };
+      apply =
+        ports:
+        let
+          reverse = foldlAttrs (
+            acc: name: value:
+            acc
+            // {
+              ${toString value} = (acc.${toString value} or [ ] ++ [ name ]);
+            }
+          ) { } ports;
 
-            duplicates = filterAttrs (_name: value: length value > 1) reverse;
+          duplicates = filterAttrs (_name: value: length value > 1) reverse;
 
-            collisionMsg =
-              optionalString (duplicates != { }) "Port collision detected:\n"
-              + concatMapStringsSep "\n" (port: "  ${port}: ${concatStringsSep ", " duplicates.${port}}") (
-                attrNames duplicates
-              );
-          in
-          assert assertMsg (duplicates == { }) collisionMsg;
-          ports;
-        description = ''
-          A mapping of network ports, each identified by a unique name.
-        '';
-      };
+          collisionMsg =
+            optionalString (duplicates != { }) "Port collision detected:\n"
+            + concatMapStringsSep "\n" (port: "  ${port}: ${concatStringsSep ", " duplicates.${port}}") (
+              attrNames duplicates
+            );
+        in
+        assert assertMsg (duplicates == { }) collisionMsg;
+        ports;
+      description = ''
+        A mapping of network ports, each identified by a unique name.
+      '';
+    };
 
-      zones = mkOption {
-        type = types.attrsOf (
-          types.submodule {
-            freeformType = mkStructuredType { typeName = "zone"; };
-          }
-        );
-        default = { };
-        description = ''
-          A set of DNS zones managed by this flake.
-        '';
-      };
+    zones = mkOption {
+      type = types.attrsOf (
+        types.submodule {
+          freeformType = mkStructuredType { typeName = "zone"; };
+        }
+      );
+      default = { };
+      description = ''
+        A set of DNS zones managed by this flake.
+      '';
     };
   };
 
   config = {
-    flake.meta.ports = {
+    meta.data = fromJSON (readFile ../../infra/data.json);
+
+    meta.ports = {
       # keep-sorted start by_regex=(\d+) numeric=yes
       ssh = 22;
       smtp = 25;

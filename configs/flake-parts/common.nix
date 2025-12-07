@@ -9,10 +9,7 @@
     # keep-sorted end
   ];
 
-  # inherit from parent
-  flake = {
-    inherit (self) meta;
-  };
+  meta = self.partitions.profiles.module.meta;
 
   perSystem =
     { system, ... }:

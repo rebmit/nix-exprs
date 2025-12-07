@@ -1,4 +1,4 @@
-{ self, lib, ... }:
+{ lib, meta, ... }:
 let
   inherit (lib.modules) mkVMOverride;
 in
@@ -14,7 +14,7 @@ in
         {
           services.openssh = {
             enable = true;
-            ports = with self.meta.ports; [
+            ports = with meta.ports; [
               ssh
               ssh-alt
             ];

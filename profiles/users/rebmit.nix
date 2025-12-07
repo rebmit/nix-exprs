@@ -1,9 +1,9 @@
-{ self, lib, ... }:
+{ lib, meta, ... }:
 let
   inherit (lib.modules) mkVMOverride mkDefault;
 in
 {
-  flake.meta.users.rebmit = {
+  meta.users.rebmit = {
     name = "Lu Wang";
     email = "rebmit@rebmit.moe";
     authorizedKeys = [
@@ -32,7 +32,7 @@ in
             home = "/home/rebmit";
             isNormalUser = true;
             hashedPasswordFile = config.sops.secrets."users/rebmit/password".path;
-            openssh.authorizedKeys.keys = self.meta.users.rebmit.authorizedKeys;
+            openssh.authorizedKeys.keys = meta.users.rebmit.authorizedKeys;
             extraGroups = [
               "wheel"
               "pipewire"
@@ -68,7 +68,7 @@ in
             settings = {
               commit.gpgSign = true;
               user = {
-                inherit (self.meta.users.rebmit) name email;
+                inherit (meta.users.rebmit) name email;
               };
             };
             signing = {

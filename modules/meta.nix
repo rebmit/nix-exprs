@@ -1,18 +1,13 @@
-{
-  self,
-  lib,
-  flake-parts-lib,
-  ...
-}:
+{ self, lib, ... }:
 let
   inherit (lib.types) submoduleWith;
   inherit (lib.options) mkOption;
   inherit (self.lib.types) mkStructuredType;
-  inherit (flake-parts-lib) mkSubmoduleOptions;
 
-  metaModule = _: {
-    options.flake = mkSubmoduleOptions {
-      meta = mkOption {
+  metaModule =
+    { config, ... }:
+    {
+      options.meta = mkOption {
         type = submoduleWith {
           modules = [
             {
@@ -25,8 +20,11 @@ let
           A set of freeform attributes for flake internal usage.
         '';
       };
+
+      config = {
+        _module.args.meta = config.meta;
+      };
     };
-  };
 in
 {
   flake.flakeModules.meta = metaModule;

@@ -1,4 +1,4 @@
-{ self, lib, ... }:
+{ lib, meta, ... }:
 let
   inherit (lib.modules) mkVMOverride;
 in
@@ -13,7 +13,7 @@ in
         { config, ... }:
         {
           users.users.root = {
-            openssh.authorizedKeys.keys = self.meta.users.rebmit.authorizedKeys;
+            openssh.authorizedKeys.keys = meta.users.rebmit.authorizedKeys;
             hashedPasswordFile = config.sops.secrets."users/root/password".path;
           };
 
