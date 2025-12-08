@@ -144,14 +144,20 @@ in
         };
         modules = [
           module
-          {
-            imports = [ nixpkgs.nixosModules.readOnlyPkgs ];
-            nixpkgs = {
-              inherit ((getSystem system).allModuleArgs) pkgs;
-            };
-            networking.hostName = mkDefault name;
-            networking.domain = mkDefault "rebmit.link";
-          }
+          (
+            { modulesPath, ... }:
+            {
+              imports = [
+                nixpkgs.nixosModules.readOnlyPkgs
+                (modulesPath + "/profiles/minimal.nix")
+              ];
+              nixpkgs = {
+                inherit ((getSystem system).allModuleArgs) pkgs;
+              };
+              networking.hostName = mkDefault name;
+              networking.domain = mkDefault "rebmit.link";
+            }
+          )
         ]
         ++ map (n: self.unify.modules.${n}.nixos.module) closure;
       }
