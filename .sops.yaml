@@ -7,6 +7,7 @@ keys:
     - &kanako-ham0 age1qdunuzv0wwn2xqgt54s64v28488gsz4ky7u5zcv4yt26n7wn8gesx3x3za
     - &kogasa-iad0 age1q5rv9w3e33xhkjyacnwjrxe4asm4t6wkpqlstq6ryxherx4f04hsz99t07
     - &kogasa-iad1 age1kss8zxj4mu207xjf2twjgn2gu83uv9pxzmvrplszayl9nld7dqqsdnk9j9
+    - &kogasa-iad2 age1m3c5m8wgztumkztr7gvt8ejfg65779v2cg2u4nl80658ag90uuasnxfjxf
     - &kogasa-nue0 age13hzt6sw6v6329cut266h3vcxjwq7f82ydl7y08eajzeghkqrw5uqvmhu86
     - &marisa-7d76 age1zufm5x7xk8xt3pfzfkdj60z9sd7vnmq739udpwwp4h8qd7nujqesusm4vq
     - &marisa-j715 age1mc0nfucl68cswqd9xkcmv4l003wan84yked7tspsjtl4ya40p99q6sx9l3
@@ -30,6 +31,7 @@ creation_rules:
           - *kanako-ham0
           - *kogasa-iad0
           - *kogasa-iad1
+          - *kogasa-iad2
           - *kogasa-nue0
           - *marisa-7d76
           - *marisa-j715
@@ -76,6 +78,12 @@ creation_rules:
           - *self0
           - *self1
           - *kogasa-iad1
+  - path_regex: secrets/hosts/(opentofu/)?kogasa-iad2
+    key_groups:
+      - age:
+          - *self0
+          - *self1
+          - *kogasa-iad2
   - path_regex: secrets/hosts/(opentofu/)?kogasa-nue0
     key_groups:
       - age:
