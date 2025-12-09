@@ -31,6 +31,12 @@ locals {
       enthalpy_node_id           = parseint("910", 16)
       enthalpy_node_organization = "enta0002"
     }
+    "kogasa-iad2" = {
+      endpoints_v4               = ["152.53.91.137"]
+      endpoints_v6               = ["2a0a:4cc0:2000:7f93:4417:48ff:fe12:ba0e"]
+      enthalpy_node_id           = parseint("728", 16)
+      enthalpy_node_organization = "enta0002"
+    }
     "kogasa-nue0" = {
       endpoints_v4               = ["152.53.188.16"]
       endpoints_v6               = ["2a00:11c0:5f:2a13:28d1:f7ff:fe54:a589"]
