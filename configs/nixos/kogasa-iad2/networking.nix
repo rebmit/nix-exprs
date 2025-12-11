@@ -1,3 +1,4 @@
+{ meta, ... }:
 {
   flake.unify.configs.nixos.kogasa-iad2 = {
     module =
@@ -17,7 +18,7 @@
               addresses = map (addr: {
                 Address = "${addr}/64";
                 RouteMetric = 1024;
-              }) unify.meta.host.endpoints_v6;
+              }) meta.data.hosts.${unify.name}.endpoints_v6;
               routes = [
                 {
                   Gateway = "fe80::1";

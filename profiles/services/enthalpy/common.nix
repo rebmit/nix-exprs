@@ -1,3 +1,4 @@
+{ meta, ... }:
 {
   flake.unify.modules."services/enthalpy/common" = {
     nixos = {
@@ -11,10 +12,10 @@
           services.enthalpy = {
             enable = true;
             network = "2a0e:aa07:e21c::/47";
-            prefix = unify.meta.host.enthalpy_node_prefix;
+            prefix = meta.data.hosts.${unify.name}.enthalpy_node_prefix;
 
             ipsec = {
-              organization = unify.meta.host.enthalpy_node_organization;
+              organization = meta.data.hosts.${unify.name}.enthalpy_node_organization;
               endpoints = [
                 {
                   serialNumber = "0";

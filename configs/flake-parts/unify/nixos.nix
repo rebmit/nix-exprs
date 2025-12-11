@@ -10,11 +10,9 @@
   ...
 }:
 let
-  inherit (lib.attrsets) mapAttrs recursiveUpdate;
+  inherit (lib.attrsets) mapAttrs;
   inherit (lib.modules) mkDefault;
   inherit (lib.options) mkOption;
-  inherit (lib.strings) fromJSON;
-  inherit (lib.trivial) readFile;
   inherit (lib.types)
     raw
     lazyAttrsOf
@@ -22,19 +20,16 @@ let
     listOf
     str
     deferredModule
-    attrs
     ;
   inherit (self.lib.types) mkStructuredType;
   inherit (flake-parts-lib) mkSubmoduleOptions;
-
-  data = fromJSON (readFile ../../../infra/data.json);
 in
 {
   options.flake = mkSubmoduleOptions {
     unify.configs.nixos = mkOption {
       type = lazyAttrsOf (
         submodule (
-          { name, config, ... }:
+          { name, ... }:
           {
             options = {
               meta = mkOption {
@@ -55,20 +50,6 @@ in
                       description = ''
                         A list of modules to exclude.  Any module listed here will be removed
                         from the dependency closure, even if it would otherwise be imported.
-                      '';
-                    };
-                    data = mkOption {
-                      type = attrs;
-                      default = data;
-                      description = ''
-                        Attribute sets derived from OpenTofu outputs.
-                      '';
-                    };
-                    host = mkOption {
-                      type = attrs;
-                      default = data.hosts.${config.name} or { };
-                      description = ''
-                        Attribute sets derived from OpenTofu outputs for this host.
                       '';
                     };
                   };
@@ -118,21 +99,20 @@ in
 
   config = {
     flake.nixosConfigurations = mapAttrs (
-      name: cfg:
+      _: unify:
       let
-        inherit (cfg)
-          nixpkgs
+        inherit (unify)
+          meta
+          name
           module
           system
-          meta
+          nixpkgs
           ;
 
         closure = self.unify.lib.collectModulesForConfig "nixos" {
           inherit name;
           inherit (meta) includes excludes;
         };
-
-        unify = recursiveUpdate cfg { meta = { inherit closure; }; };
       in
       nixpkgs.lib.nixosSystem {
         specialArgs = {

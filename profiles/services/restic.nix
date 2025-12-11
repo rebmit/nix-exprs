@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, meta, ... }:
 let
   inherit (lib.modules) mkVMOverride;
 in
@@ -16,7 +16,7 @@ in
         { config, unify, ... }:
         {
           services.restic.backups.b2 = {
-            repository = "b2:${unify.meta.host.b2_backup_bucket_name}";
+            repository = "b2:${meta.data.hosts.${unify.name}.b2_backup_bucket_name}";
             environmentFile = config.sops.templates."restic/b2/envs".path;
             passwordFile = config.sops.secrets."restic/password".path;
             initialize = true;

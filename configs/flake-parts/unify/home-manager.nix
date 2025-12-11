@@ -14,7 +14,6 @@ let
     attrNames
     mapAttrs'
     nameValuePair
-    recursiveUpdate
     ;
   inherit (lib.modules) mkIf mkDefault;
   inherit (lib.lists) flatten;
@@ -188,7 +187,7 @@ let
                 inherit (cfg.${name}.meta) includes excludes;
               };
 
-              unify = recursiveUpdate cfg.${name} { meta = { inherit closure; }; };
+              unify = cfg.${name};
             in
             {
               options.home-manager = mkOption {
