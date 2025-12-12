@@ -5,6 +5,7 @@
         requires = [
           # keep-sorted start
           "programs/git"
+          "programs/ssh"
           "services/nixseparatedebuginfod2"
           # keep-sorted end
         ];
@@ -19,6 +20,8 @@
           "programs/direnv"
           "programs/gdb"
           "programs/git"
+          "programs/ssh"
+          "services/user/ssh-agent"
           # keep-sorted end
         ];
       };

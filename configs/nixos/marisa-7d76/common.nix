@@ -27,6 +27,25 @@
           # keep-sorted end
         ];
       };
+
+      module =
+        { ... }:
+        {
+          programs.niri.settings = {
+            outputs = {
+              "HDMI-A-1" = {
+                scale = 1.75;
+              };
+              "DP-1" = {
+                scale = 1.75;
+                position = {
+                  x = 0;
+                  y = 0;
+                };
+              };
+            };
+          };
+        };
     };
 
     module =

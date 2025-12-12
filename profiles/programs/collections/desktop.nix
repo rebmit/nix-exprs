@@ -65,6 +65,7 @@ in
             ".config/evolution"
             ".config/nheko"
             ".local/share/evolution"
+            ".local/share/keyrings"
             ".local/share/org.gnome.Evolution"
             ".local/share/nheko"
             ".local/share/TelegramDesktop"
