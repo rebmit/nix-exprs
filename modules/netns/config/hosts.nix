@@ -28,7 +28,7 @@ in
               default = host.config.networking.hostName;
               readOnly = true;
               description = ''
-                The machine’s hostname.  Must match `networking.hostName` exactly
+                The machine's hostname.  Must match `networking.hostName` exactly
                 because we share the UTS namespace.
               '';
             };

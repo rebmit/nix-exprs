@@ -19,10 +19,13 @@ in
           p:
           elem (getName p) [
             # keep-sorted start
+            "ant"
             "cargo-bootstrap"
             "dart"
             "ghc-binary"
             "go"
+            "gradle"
+            "librusty_v8"
             "rustc-bootstrap"
             "rustc-bootstrap-wrapper"
             "temurin-bin"

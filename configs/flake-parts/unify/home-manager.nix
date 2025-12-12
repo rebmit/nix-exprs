@@ -54,7 +54,12 @@ let
       class = "homeManager";
       specialArgs = {
         lib = extendedLib;
-        osConfig = config;
+        osConfig = config // {
+          # TODO: remove workaround
+          home-manager = {
+            useUserPackages = true;
+          };
+        };
         osClass = _class;
         modulesPath = toString "${home-manager}/modules";
       }
