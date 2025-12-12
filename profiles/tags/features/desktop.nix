@@ -7,6 +7,7 @@
           "misc/fontconfig"
           "misc/xdg/autostart"
           "misc/xdg/icons"
+          "misc/xdg/mime"
           "misc/xdg/portal"
           "security/pam/swaylock"
           "services/gnome-keyring"
