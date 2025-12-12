@@ -5,6 +5,8 @@
         requires = [
           # keep-sorted start
           "misc/fontconfig"
+          "misc/xdg/autostart"
+          "misc/xdg/icons"
           "misc/xdg/portal"
           "security/pam/swaylock"
           "services/greetd"
@@ -18,6 +20,20 @@
         requires = [
           # keep-sorted start
           "misc/fontconfig"
+          "misc/gtk"
+          "misc/qt"
+          "misc/theme/adwaita"
+          "programs/collections/desktop"
+          "programs/dconf"
+          "programs/fcitx5"
+          "programs/firefox"
+          "programs/fuzzel"
+          "programs/ghostty"
+          "programs/niri"
+          "programs/swaylock"
+          "services/user/darkman"
+          "services/user/polkit-gnome"
+          "services/user/swww"
           # keep-sorted end
         ];
       };
