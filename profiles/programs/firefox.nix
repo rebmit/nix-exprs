@@ -106,14 +106,14 @@ in
               };
             };
             userChrome = ''
-              @import "${pkgs.firefox-gnome-theme}/lib/firefox-gnome-theme/userChrome.css";
+              @import "${pkgs.firefox-gnome-theme}/share/firefox-gnome-theme/userChrome.css";
 
               #TabsToolbar {
                 display: none;
               }
             '';
             userContent = ''
-              @import "${pkgs.firefox-gnome-theme}/lib/firefox-gnome-theme/userContent.css";
+              @import "${pkgs.firefox-gnome-theme}/share/firefox-gnome-theme/userContent.css";
             '';
           };
 
