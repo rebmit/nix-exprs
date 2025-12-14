@@ -4,7 +4,7 @@
     {
       pre-commit = {
         check.enable = false;
-        settings.package = pkgs.prek;
+        settings.package = pkgs.pre-commit;
       };
 
       devshells.default.devshell.startup.pre-commit-hook.text = config.pre-commit.installationScript;
