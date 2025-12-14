@@ -116,6 +116,7 @@ in
               "/run/systemd/ask-password".recursive = false;
               "/run/systemd/journal".recursive = false;
               "/run/systemd/machines".recursive = false;
+              "/run/systemd/mount-rootfs".recursive = false;
               "/run/systemd/seats".recursive = false;
               "/run/systemd/sessions".recursive = false;
               "/run/systemd/system".recursive = false;
