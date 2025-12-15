@@ -131,6 +131,7 @@ in
               esac
             '';
           }) cfg.ipsec.endpoints;
+          experimental.iptfs = true;
         };
 
         systemd.tmpfiles.rules = [ "d /var/lib/ranet 0750 root root - -" ];

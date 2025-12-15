@@ -6,18 +6,18 @@ let
       fetchFromGitHub,
     }:
 
-    rustPlatform.buildRustPackage {
+    rustPlatform.buildRustPackage (finalAttrs: {
       pname = "ranet";
-      version = "0.12.0-unstable-2025-10-08";
+      version = "0.13.0";
 
       src = fetchFromGitHub {
-        owner = "rebmit";
+        owner = "NickCao";
         repo = "ranet";
-        rev = "68142d2da05fbb1510a1445f09c0a9f6f9f62d38";
-        hash = "sha256-b2LMR6WiV87+TW4wPZVgTQzhHBEdxte4HGt/v5LVbzo=";
+        rev = "v${finalAttrs.version}";
+        hash = "sha256-XuB6nHOEkzZl/V48pGHvgmoPineEBFa8dI1yuXB9pTM=";
       };
 
-      cargoHash = "sha256-Qd7Hy/Mq2XihTB7RHQYjRKjaM5eigLxL+MpVyUmBozk=";
+      cargoHash = "sha256-qSjJaMpYKRZMkhjw0/8BVCjxgnTjBBhTtPPbhv38Ia4=";
 
       checkFlags = [
         "--skip=address::test::remote"
@@ -30,7 +30,7 @@ let
         maintainers = with lib.maintainers; [ rebmit ];
         platforms = lib.platforms.linux;
       };
-    };
+    });
 in
 {
   perSystem =
