@@ -3,6 +3,7 @@ let
   inherit (lib) sourceTypes;
   inherit (lib.attrsets) isDerivation;
   inherit (lib.lists) elem;
+  inherit (lib.meta) getExe';
   inherit (lib.modules) mkOrder;
   inherit (lib.strings) getName;
   inherit (self.lib.attrsets) flattenTree;
@@ -19,7 +20,12 @@ in
           }
           {
             packages = {
-              inherit (pkgs) fuzzel mautrix-telegram;
+              inherit (pkgs)
+                fuzzel
+                mautrix-telegram
+                qemu
+                qemu_kvm
+                ;
               qt6Packages = { inherit (pkgs.qt6Packages) fcitx5-with-addons; };
             };
           };
@@ -44,6 +50,24 @@ in
                 })
               ];
             });
+            qemu = prev.qemu.overrideAttrs {
+              version = "10.1.2-unstable-2025-12-13";
+              src = prev.fetchFromGitHub {
+                owner = "rebmit";
+                repo = "qemu";
+                rev = "747bb69f67c4aa30e89f6523fe932960c62a31c5";
+                fetchSubmodules = true;
+                hash = "sha256-wrd+3GXpZ8VxuVjkPHZubTJRhexKRvors3uZ1L7cNVk=";
+                postFetch = ''
+                  cd $out
+                  subprojects="keycodemapdb libvfio-user berkeley-softfloat-3 berkeley-testfloat-3"
+                  for sp in $subprojects; do
+                    ${getExe' prev.meson "meson"} subprojects download $sp
+                  done
+                  rm -r subprojects/*/.git
+                '';
+              };
+            };
             qt6Packages = prev.qt6Packages.overrideScope (
               _final': prev': {
                 fcitx5-with-addons = prev'.fcitx5-with-addons.override { libsForQt5.fcitx5-qt = null; };
