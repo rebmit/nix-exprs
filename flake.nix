@@ -100,6 +100,7 @@
                 { }
                 [
                   # keep-sorted start
+                  (partitionAttr "common" "checks")
                   (partitionAttr "configs" "checks")
                   (partitionAttr "modules" "checks")
                   (partitionAttr "pkgs" "checks")
