@@ -25,10 +25,7 @@
             settings = {
               commit.verbose = true;
               diff.algorithm = "patience";
-              fetch = {
-                prune = true;
-                pruneTags = true;
-              };
+              fetch.prune = true;
               init.defaultBranch = "master";
               merge.conflictStyle = "zdiff3";
               pull.rebase = true;
