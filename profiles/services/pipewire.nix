@@ -3,7 +3,7 @@
     nixos = {
       meta = {
         requires = [
-          "external/preservation"
+          "imports/preservation"
           "security/rtkit"
         ];
       };

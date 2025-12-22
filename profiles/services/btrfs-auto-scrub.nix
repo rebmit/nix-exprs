@@ -6,7 +6,7 @@ in
   flake.unify.modules."services/btrfs-auto-scrub" = {
     nixos = {
       meta = {
-        requires = [ "external/preservation" ];
+        requires = [ "imports/preservation" ];
       };
 
       module =

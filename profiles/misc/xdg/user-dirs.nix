@@ -6,7 +6,7 @@ in
   flake.unify.modules."misc/xdg/user-dirs" = {
     homeManager = {
       meta = {
-        requires = [ "external/preservation" ];
+        requires = [ "imports/preservation" ];
       };
 
       module =

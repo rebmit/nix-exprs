@@ -2,7 +2,7 @@
   flake.unify.modules."services/user/darkman" = {
     homeManager = {
       meta = {
-        requires = [ "external/preservation" ];
+        requires = [ "imports/preservation" ];
       };
 
       module =

@@ -7,8 +7,8 @@ in
     nixos = {
       meta = {
         requires = [
-          "external/preservation"
-          "external/sops-nix"
+          "imports/preservation"
+          "imports/sops-nix"
         ];
       };
 

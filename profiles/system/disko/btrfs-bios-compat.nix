@@ -3,7 +3,7 @@
     nixos = {
       meta = {
         requires = [
-          "external/disko"
+          "imports/disko"
           "services/btrfs-auto-scrub"
           "system/preservation"
         ];

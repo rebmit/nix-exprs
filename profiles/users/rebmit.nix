@@ -16,7 +16,7 @@ in
     nixos = {
       meta = {
         requires = [
-          "external/sops-nix"
+          "imports/sops-nix"
           "programs/fish"
         ];
       };

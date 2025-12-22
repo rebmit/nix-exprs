@@ -15,7 +15,7 @@ in
       meta = {
         tags = [ "desktop" ];
         requires = [
-          "external/niri-flake"
+          "imports/niri-flake"
           "programs/firefox"
           "programs/fuzzel"
           "programs/ghostty"

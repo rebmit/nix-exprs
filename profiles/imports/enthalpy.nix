@@ -1,9 +1,9 @@
 { self, ... }:
 {
-  flake.unify.modules."external/enthalpy" = {
+  flake.unify.modules."imports/enthalpy" = {
     nixos = {
       meta = {
-        requires = [ "external/netns" ];
+        requires = [ "imports/netns" ];
       };
 
       module = self.nixosModules.enthalpy;

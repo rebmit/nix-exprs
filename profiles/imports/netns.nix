@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.unify.modules."external/netns" = {
+  flake.unify.modules."imports/netns" = {
     nixos = {
       module = self.nixosModules.netns;
     };

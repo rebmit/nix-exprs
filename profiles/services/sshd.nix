@@ -6,7 +6,7 @@ in
   flake.unify.modules."services/sshd" = {
     nixos = {
       meta = {
-        requires = [ "external/sops-nix" ];
+        requires = [ "imports/sops-nix" ];
       };
 
       module =

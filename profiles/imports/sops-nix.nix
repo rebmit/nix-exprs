@@ -12,7 +12,7 @@ let
   inherit (lib.strings) splitString;
 in
 {
-  flake.unify.modules."external/sops-nix" = {
+  flake.unify.modules."imports/sops-nix" = {
     nixos = {
       module =
         {

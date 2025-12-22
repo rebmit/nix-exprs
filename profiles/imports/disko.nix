@@ -1,5 +1,5 @@
 {
-  flake.unify.modules."external/disko" = {
+  flake.unify.modules."imports/disko" = {
     nixos = {
       module =
         { inputs, ... }:

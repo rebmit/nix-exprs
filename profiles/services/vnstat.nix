@@ -6,7 +6,7 @@ in
   flake.unify.modules."services/vnstat" = {
     nixos = {
       meta = {
-        requires = [ "external/preservation" ];
+        requires = [ "imports/preservation" ];
       };
 
       module =

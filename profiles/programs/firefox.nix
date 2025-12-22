@@ -10,7 +10,7 @@ in
   flake.unify.modules."programs/firefox" = {
     homeManager = {
       meta = {
-        requires = [ "external/preservation" ];
+        requires = [ "imports/preservation" ];
       };
 
       module =
