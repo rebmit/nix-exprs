@@ -59,7 +59,7 @@ locals {
       endpoints_v4               = ["167.148.6.213"]
       endpoints_v6               = ["2406:ef80:4:fa47:0220:3cff:fec7:df88"]
       enthalpy_node_id           = parseint("167", 16)
-      enthalpy_node_organization = null
+      enthalpy_node_organization = "enta0002"
     }
     "reisen-fra0" = {
       endpoints_v4               = [module.vultr_instances["reisen-fra0"].ipv4]
