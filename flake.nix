@@ -60,7 +60,7 @@
           let
             partitionAttr =
               partition: attrPath:
-              (getAttrFromPath (splitString "/" attrPath) config.partitions.${partition}.module);
+              (getAttrFromPath (splitString "/" attrPath) config.partitions.${partition}.module.flake);
           in
           optionalAttrs (partitionStack == [ ]) {
             partitions = {
@@ -69,13 +69,20 @@
                 extraInputsFlake = ./dev/_flake;
                 module = import-tree ./dev;
               };
+              lib.module = import-tree ./lib;
+              modules = {
+                extraInputsFlake = ./modules/_flake;
+                module = import-tree ./modules;
+              };
               # keep-sorted end
             };
 
             flake = {
               # keep-sorted start block=yes
-              devShells = partitionAttr "dev" "flake/devShells";
-              formatter = partitionAttr "dev" "flake/formatter";
+              devShells = partitionAttr "dev" "devShells";
+              flakeModules = partitionAttr "modules" "flakeModules";
+              formatter = partitionAttr "dev" "formatter";
+              lib = partitionAttr "lib" "lib";
               partitions = config.partitions;
               # keep-sorted end
             };
