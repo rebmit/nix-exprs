@@ -15,11 +15,14 @@
       self,
       flake-parts,
       nixpkgs,
+      import-tree,
       ...
     }:
     let
       inherit (nixpkgs) lib;
+      inherit (lib.attrsets) getAttrFromPath optionalAttrs;
       inherit (lib.modules) evalModules mkOptionDefault;
+      inherit (lib.strings) splitString;
     in
     (evalModules {
       specialArgs = {
@@ -51,6 +54,33 @@
             "aarch64-darwin"
           ];
         }
+
+        (
+          { config, partitionStack, ... }:
+          let
+            partitionAttr =
+              partition: attrPath:
+              (getAttrFromPath (splitString "/" attrPath) config.partitions.${partition}.module);
+          in
+          optionalAttrs (partitionStack == [ ]) {
+            partitions = {
+              # keep-sorted start block=yes
+              dev = {
+                extraInputsFlake = ./dev/_flake;
+                module = import-tree ./dev;
+              };
+              # keep-sorted end
+            };
+
+            flake = {
+              # keep-sorted start block=yes
+              devShells = partitionAttr "dev" "flake/devShells";
+              formatter = partitionAttr "dev" "flake/formatter";
+              partitions = config.partitions;
+              # keep-sorted end
+            };
+          }
+        )
       ];
     }).config.flake;
 }
