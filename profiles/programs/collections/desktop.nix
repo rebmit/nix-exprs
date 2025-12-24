@@ -20,7 +20,7 @@ in
   flake.unify.modules."programs/collections/desktop" = {
     homeManager = {
       meta = {
-        requires = [ "imports/preservation" ];
+        requires = [ "imports/self/preservation" ];
       };
 
       module =

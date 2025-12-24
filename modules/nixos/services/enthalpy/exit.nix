@@ -10,7 +10,7 @@ let
   inherit (self.lib.misc) mkHardenedService;
 in
 {
-  flake.nixosModules.enthalpy =
+  flake.modules.nixos."services/enthalpy" =
     { config, pkgs, ... }:
     let
       cfg = config.services.enthalpy;

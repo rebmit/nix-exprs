@@ -7,7 +7,7 @@ in
     nixos = {
       meta = {
         requires = [
-          "imports/preservation"
+          "imports/self/preservation"
           "imports/sops-nix"
         ];
       };

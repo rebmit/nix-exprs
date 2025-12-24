@@ -3,7 +3,7 @@
   flake.unify.modules."services/enthalpy/common" = {
     nixos = {
       meta = {
-        requires = [ "imports/enthalpy" ];
+        requires = [ "imports/self/default" ];
       };
 
       module =

@@ -2,7 +2,7 @@
   flake.unify.modules."services/logrotate" = {
     nixos = {
       meta = {
-        requires = [ "imports/preservation" ];
+        requires = [ "imports/self/preservation" ];
       };
 
       module =

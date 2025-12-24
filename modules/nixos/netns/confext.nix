@@ -23,7 +23,7 @@ let
     ;
 in
 {
-  flake.nixosModules.netns =
+  flake.modules.nixos.netns =
     {
       options,
       config,

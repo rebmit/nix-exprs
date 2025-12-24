@@ -2,7 +2,7 @@
   flake.unify.modules."programs/direnv" = {
     homeManager = {
       meta = {
-        requires = [ "imports/preservation" ];
+        requires = [ "imports/self/preservation" ];
       };
 
       module =

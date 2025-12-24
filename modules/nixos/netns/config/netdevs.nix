@@ -89,7 +89,7 @@ let
     );
 in
 {
-  flake.nixosModules.netns =
+  flake.modules.nixos.netns =
     {
       config,
       pkgs,

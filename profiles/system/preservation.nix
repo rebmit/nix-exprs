@@ -3,7 +3,7 @@
     nixos = {
       meta = {
         requires = [
-          "imports/preservation"
+          "imports/self/preservation"
           "system/boot/initrd/systemd"
           "system/etc/machine-id"
         ];

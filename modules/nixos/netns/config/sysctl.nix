@@ -15,7 +15,7 @@ let
   inherit (lib.trivial) isBool;
 in
 {
-  flake.nixosModules.netns =
+  flake.modules.nixos.netns =
     {
       options,
       config,

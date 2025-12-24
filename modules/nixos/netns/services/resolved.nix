@@ -14,7 +14,7 @@ let
   inherit (self.lib.misc) mkHardenedService;
 in
 {
-  flake.nixosModules.netns =
+  flake.modules.nixos.netns =
     { config, ... }:
     let
       inherit (config.lib.netns) mkNetnsOption mkRuntimeDirectoryConfiguration;

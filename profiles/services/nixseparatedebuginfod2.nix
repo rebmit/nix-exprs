@@ -7,7 +7,7 @@
   flake.unify.modules."services/nixseparatedebuginfod2" = {
     nixos = {
       meta = {
-        requires = [ "imports/preservation" ];
+        requires = [ "imports/self/preservation" ];
       };
 
       module =

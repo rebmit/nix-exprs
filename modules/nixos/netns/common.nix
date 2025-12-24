@@ -12,7 +12,7 @@ let
   inherit (lib.options) mkOption mkEnableOption;
 in
 {
-  flake.nixosModules.netns =
+  flake.modules.nixos.netns =
     {
       config,
       pkgs,

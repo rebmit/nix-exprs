@@ -8,7 +8,7 @@ let
   inherit (lib.trivial) pipe;
 in
 {
-  flake.nixosModules.preservation =
+  flake.modules.nixos.preservation =
     {
       config,
       pkgs,

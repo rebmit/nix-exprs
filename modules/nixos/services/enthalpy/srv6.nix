@@ -8,7 +8,7 @@ let
   inherit (self.lib.network.ipv6) cidrSubnet cidrHost;
 in
 {
-  flake.nixosModules.enthalpy =
+  flake.modules.nixos."services/enthalpy" =
     { config, pkgs, ... }:
     let
       cfg = config.services.enthalpy;

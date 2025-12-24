@@ -1,4 +1,4 @@
-{ self, lib, ... }:
+{ self, lib, ... }@flake:
 let
   inherit (lib.modules) mkForce;
   inherit (lib.trivial) pipe;
@@ -21,7 +21,7 @@ in
           { ... }:
           {
             imports = [
-              self.nixosModules.netns
+              flake.config.flake.modules.nixos.netns
               immutable
             ];
 

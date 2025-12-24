@@ -27,7 +27,7 @@ let
   );
 in
 {
-  flake.nixosModules.netns =
+  flake.modules.nixos.netns =
     {
       pkgs,
       utils,

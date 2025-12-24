@@ -49,7 +49,7 @@ let
     };
 in
 {
-  flake.nixosModules.netns =
+  flake.modules.nixos.netns =
     { config, ... }:
     let
       inherit (config.lib.netns) mkNetnsOption mkRuntimeDirectoryPath;

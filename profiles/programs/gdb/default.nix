@@ -6,7 +6,7 @@ in
   flake.unify.modules."programs/gdb" = {
     homeManager = {
       meta = {
-        requires = [ "imports/preservation" ];
+        requires = [ "imports/self/preservation" ];
       };
 
       module =

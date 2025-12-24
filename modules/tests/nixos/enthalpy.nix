@@ -1,4 +1,4 @@
-{ self, lib, ... }:
+{ self, lib, ... }@flake:
 let
   inherit (lib.trivial) pipe;
 
@@ -15,8 +15,8 @@ in
     let
       common = {
         imports = [
-          self.nixosModules.enthalpy
-          self.nixosModules.netns
+          flake.config.flake.modules.nixos."services/enthalpy"
+          flake.config.flake.modules.nixos.netns
           immutable
         ];
 
