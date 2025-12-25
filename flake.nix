@@ -62,7 +62,7 @@
 
         transposition = mkDefault { };
 
-        partitions = {
+        partitions = optionalAttrs (partitionStack == [ ]) {
           # keep-sorted start block=yes
           common.module = import-tree ./common;
           configs = {
