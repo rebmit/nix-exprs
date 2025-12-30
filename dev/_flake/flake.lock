@@ -24,11 +24,11 @@
     "flake-compat": {
       "flake": false,
       "locked": {
-        "lastModified": 1765121682,
-        "narHash": "sha256-4VBOP18BFeiPkyhy9o4ssBNQEvfvv1kXkasAYd0+rrA=",
+        "lastModified": 1767039857,
+        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
         "owner": "edolstra",
         "repo": "flake-compat",
-        "rev": "65f23138d8d09a92e30f1e5c87611b23ef451bf3",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
         "type": "github"
       },
       "original": {
@@ -123,11 +123,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1766419400,
-        "narHash": "sha256-9SXi88sh/Mbz+kOHWvYVhhq1YzRinzDw8Tx0n/+Fnc4=",
+        "lastModified": 1767076727,
+        "narHash": "sha256-o9uCYnCKWRvwmxAviFH61TjG76454E5H7NEPTItAxnk=",
         "owner": "rebmit",
         "repo": "nixpkgs",
-        "rev": "ddf79dd27597cb85b89ec02383134a39a9033b35",
+        "rev": "eca18bd1abe169f3f8336b361ab4d4f30bbae6e9",
         "type": "github"
       },
       "original": {
@@ -145,11 +145,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766279342,
-        "narHash": "sha256-qG4dYBFdIkjeLsf4ZH3TRniy4aW0UtzbkOX85FxeWMM=",
+        "lastModified": 1767056729,
+        "narHash": "sha256-f1wDd8ZKkbvlSZTNmBkCEHQXCEg+k1abX0az9sLdCPg=",
         "owner": "nix-community",
         "repo": "nixpkgs-terraform-providers-bin",
-        "rev": "d80e3b13ea782a0d267883dfa92a0cef9d1e215d",
+        "rev": "9b08f916924bb7c94269ddb9cb24712b40ec578f",
         "type": "github"
       },
       "original": {
