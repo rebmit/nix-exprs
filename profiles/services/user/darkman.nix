@@ -15,7 +15,12 @@
           defaultMode = pkgs.writeText "darkman-default-mode" "light";
         in
         {
-          services.darkman.enable = true;
+          services.darkman = {
+            enable = true;
+            settings = {
+              usegeoclue = false;
+            };
+          };
 
           preservation.preserveAt.state.directories = [ ".cache/darkman" ];
 
