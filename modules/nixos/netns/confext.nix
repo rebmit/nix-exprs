@@ -219,29 +219,20 @@ in
               Type = "oneshot";
               RemainAfterExit = true;
             };
+            before = [ "sysinit-reactivation.target" ];
             after = [ "netns-${name}.service" ];
-            partOf = [ "netns-${name}.service" ];
+            partOf = [
+              "netns-${name}.service"
+              "sysinit-reactivation.target"
+            ];
             wants = [ "netns-${name}.service" ];
+            requiredBy = [ "sysinit-reactivation.target" ];
             wantedBy = [
               "netns-${name}.service"
               "multi-user.target"
             ];
           }
         ) enabledNetns;
-
-        # hack
-        system.activationScripts.netns-confext = {
-          deps = [ "etc" ];
-          text = ''
-            ${concatStringsSep "\n" (
-              mapAttrsToList (name: _cfg: ''
-                if [[ ! $IN_NIXOS_SYSTEMD_STAGE1 ]] && ${config.systemd.package}/bin/systemctl is-active --quiet "netns-${name}-confext.service"; then
-                  echo "netns-${name}-confext.service" >> /run/nixos/activation-restart-list
-                fi
-              '') enabledNetns
-            )}
-          '';
-        };
       };
     };
 }
