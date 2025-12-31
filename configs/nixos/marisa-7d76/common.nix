@@ -21,6 +21,7 @@
       meta = {
         includes = [
           # keep-sorted start
+          "programs/minecraft"
           "tags/features/baseline"
           "tags/features/desktop"
           "tags/features/development"
