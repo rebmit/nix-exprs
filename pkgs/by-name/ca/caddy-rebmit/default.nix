@@ -14,4 +14,10 @@ in
     {
       caddy-rebmit = final.callPackage caddy-rebmit { };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) caddy-rebmit;
+    };
 }

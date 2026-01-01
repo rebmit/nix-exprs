@@ -30,4 +30,10 @@ in
     {
       canokey-udev-rules = final.callPackage canokey-udev-rules { };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) canokey-udev-rules;
+    };
 }

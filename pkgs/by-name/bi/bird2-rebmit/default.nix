@@ -58,4 +58,10 @@ in
     {
       bird2-rebmit = final.callPackage bird2-rebmit { };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) bird2-rebmit;
+    };
 }

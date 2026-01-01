@@ -12,4 +12,10 @@
         ];
       });
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) mautrix-telegram;
+    };
 }

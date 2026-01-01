@@ -122,4 +122,10 @@ in
         in
         final.callPackage nheko { inherit mtxclient source; };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) nheko_unstable;
+    };
 }

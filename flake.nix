@@ -102,6 +102,7 @@
                   # keep-sorted start
                   (partitionAttr "configs" "checks")
                   (partitionAttr "modules" "checks")
+                  (partitionAttr "pkgs" "checks")
                   (partitionAttr "profiles" "checks")
                   # keep-sorted end
                 ];

@@ -66,4 +66,10 @@ in
     {
       canokey-manager = final.callPackage canokey-manager { };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) canokey-manager;
+    };
 }

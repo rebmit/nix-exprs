@@ -25,4 +25,10 @@ in
         };
       };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) qemu qemu_kvm qemu-user;
+    };
 }

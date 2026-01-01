@@ -41,4 +41,10 @@ in
     {
       dnsmasq-china-list = final.callPackage dnsmasq-china-list { };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) dnsmasq-china-list;
+    };
 }

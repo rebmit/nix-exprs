@@ -6,4 +6,10 @@
         svgBackend = "librsvg";
       };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) fuzzel;
+    };
 }

@@ -67,4 +67,12 @@ in
         in
         final.callPackage pyscard { inherit source; };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      python3Packages = {
+        inherit (pkgs.python3Packages) pyscard_2_2_1;
+      };
+    };
 }

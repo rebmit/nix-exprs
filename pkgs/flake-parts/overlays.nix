@@ -31,6 +31,10 @@ in
         }
       )
     );
+    default = { };
+    description = ''
+      Scopes defined as modules and used to generate Nixpkgs overlays.
+    '';
   };
 
   config = {

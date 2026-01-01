@@ -80,4 +80,10 @@ in
         in
         final.callPackage mtxclient { inherit source; };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) mtxclient_unstable;
+    };
 }

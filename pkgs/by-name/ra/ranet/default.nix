@@ -38,4 +38,10 @@ in
     {
       ranet = final.callPackage ranet { };
     };
+
+  checks =
+    { pkgs, ... }:
+    {
+      inherit (pkgs) ranet;
+    };
 }
