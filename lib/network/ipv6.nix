@@ -84,8 +84,8 @@ let
   checkMask = a: mask: all (x: x == 0) (bitwiseAnd mask a);
 in
 {
-  flake.lib =
-    _:
+  lib =
+    { ... }:
     let
       cidrHost =
         netnum: cidr:

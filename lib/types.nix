@@ -15,8 +15,8 @@ let
     ;
 in
 {
-  flake.lib =
-    _:
+  lib =
+    { ... }:
     let
       mkStructuredType =
         {

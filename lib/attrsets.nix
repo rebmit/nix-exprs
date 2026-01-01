@@ -11,11 +11,11 @@ let
     attrsToList
     recursiveUpdate
     ;
-  inherit (lib.lists) flatten fold;
+  inherit (lib.lists) flatten foldr;
 in
 {
-  flake.lib =
-    _:
+  lib =
+    { ... }:
     let
       flattenTree =
         settings: tree:
@@ -39,11 +39,11 @@ in
       transposeAttrs =
         attrs:
         let
-          list = fold (sys: l: map (pair: pair // { system = sys.name; }) (attrsToList sys.value) ++ l) [ ] (
+          list = foldr (sys: l: map (pair: pair // { system = sys.name; }) (attrsToList sys.value) ++ l) [ ] (
             attrsToList attrs
           );
         in
-        fold (
+        foldr (
           item: transposed: recursiveUpdate transposed { ${item.name}.${item.system} = item.value; }
         ) { } list;
     in

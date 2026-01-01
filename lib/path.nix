@@ -17,8 +17,8 @@ let
     ;
 in
 {
-  flake.lib =
-    _:
+  lib =
+    { ... }:
     let
       concatPath =
         parent: child:

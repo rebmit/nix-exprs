@@ -7,8 +7,8 @@ let
   inherit (lib.modules) mkMerge mkOptionDefault;
 in
 {
-  flake.lib =
-    _:
+  lib =
+    { ... }:
     let
       mkHardenedService =
         cfg:
