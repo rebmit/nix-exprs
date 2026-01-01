@@ -8,14 +8,14 @@ let
 
     stdenvNoCC.mkDerivation {
       pname = "dnsmasq-china-list";
-      version = "0-unstable-2025-12-12";
+      version = "0-unstable-2025-12-30";
 
       src = fetchFromGitHub {
         owner = "felixonmars";
         repo = "dnsmasq-china-list";
-        rev = "79e5a0663e5a12f721e45571669a95a2c8f38dc4";
+        rev = "90e77e94e3184645cad516bc528717b624547917";
         fetchSubmodules = false;
-        hash = "sha256-ZFXODva5dNHHHot0A4YvZJ2sWS80dWMTKxkF0mkXqMk=";
+        hash = "sha256-cHd7uoSUILbE61pQh2kAFIBC4zDaOLuM025NJbDu0OY=";
       };
 
       makeFlags = [ "raw" ];
