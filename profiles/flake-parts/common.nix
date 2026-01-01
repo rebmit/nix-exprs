@@ -11,6 +11,6 @@
   perSystem =
     { system, ... }:
     {
-      nixpkgs = self.partitions.common.module.allSystems.${system}.nixpkgs;
+      nixpkgs = self.partitions.pkgs.module.allSystems.${system}.nixpkgs;
     };
 }
