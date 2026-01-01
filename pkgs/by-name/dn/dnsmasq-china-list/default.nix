@@ -36,9 +36,9 @@ let
     };
 in
 {
-  perSystem =
-    { prev, ... }:
+  scopes.default =
+    { final, ... }:
     {
-      packages.dnsmasq-china-list = prev.callPackage dnsmasq-china-list { };
+      dnsmasq-china-list = final.callPackage dnsmasq-china-list { };
     };
 }

@@ -100,22 +100,19 @@
                 { }
                 [
                   # keep-sorted start
-                  (partitionAttr "common" "checks")
                   (partitionAttr "configs" "checks")
                   (partitionAttr "modules" "checks")
-                  (partitionAttr "pkgs" "checks")
                   (partitionAttr "profiles" "checks")
                   # keep-sorted end
                 ];
             devShells = partitionAttr "dev" "devShells";
             flakeModules = partitionAttr "modules" "flakeModules";
             formatter = partitionAttr "dev" "formatter";
-            legacyPackages = partitionAttr "common" "legacyPackages";
+            legacyPackages = partitionAttr "pkgs" "legacyPackages";
             lib = partitionAttr "lib" "lib";
             nixosConfigurations = partitionAttr "configs" "nixosConfigurations";
             nixosModules = partitionAttr "modules" "nixosModules";
             overlays = partitionAttr "pkgs" "overlays";
-            packages = partitionAttr "pkgs" "packages";
             partitions = config.partitions;
             unify = {
               # keep-sorted start block=yes

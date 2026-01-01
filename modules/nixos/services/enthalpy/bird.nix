@@ -26,7 +26,7 @@ in
         netns.enthalpy = {
           services.bird = {
             enable = true;
-            package = self.packages.${pkgs.stdenv.hostPlatform.system}.bird2-rebmit;
+            package = self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.bird2-rebmit;
             config = mkBefore ''
               router id 42;
 

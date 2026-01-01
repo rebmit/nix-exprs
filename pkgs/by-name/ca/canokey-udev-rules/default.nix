@@ -25,9 +25,9 @@ let
     };
 in
 {
-  perSystem =
-    { prev, ... }:
+  scopes.default =
+    { final, ... }:
     {
-      packages.canokey-udev-rules = prev.callPackage canokey-udev-rules { };
+      canokey-udev-rules = final.callPackage canokey-udev-rules { };
     };
 }

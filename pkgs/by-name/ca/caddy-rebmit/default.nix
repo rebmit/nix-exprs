@@ -9,9 +9,9 @@ let
     };
 in
 {
-  perSystem =
-    { prev, ... }:
+  scopes.default =
+    { final, ... }:
     {
-      packages.caddy-rebmit = prev.callPackage caddy-rebmit { };
+      caddy-rebmit = final.callPackage caddy-rebmit { };
     };
 }

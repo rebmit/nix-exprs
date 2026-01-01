@@ -33,9 +33,9 @@ let
     });
 in
 {
-  perSystem =
-    { prev, ... }:
+  scopes.default =
+    { final, ... }:
     {
-      packages.ranet = prev.callPackage ranet { };
+      ranet = final.callPackage ranet { };
     };
 }

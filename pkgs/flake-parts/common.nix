@@ -1,16 +1,17 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 {
   imports = [
     # keep-sorted start
-    "${inputs.flake-parts}/modules/checks.nix"
+    "${inputs.flake-parts}/modules/legacyPackages.nix"
     "${inputs.flake-parts}/modules/overlays.nix"
-    "${inputs.flake-parts}/modules/packages.nix"
     # keep-sorted end
   ];
 
   perSystem =
-    { system, ... }:
+    { system, pkgs, ... }:
     {
-      _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system};
+      _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system}.extend config.flake.overlays.default;
+
+      legacyPackages = pkgs;
     };
 }

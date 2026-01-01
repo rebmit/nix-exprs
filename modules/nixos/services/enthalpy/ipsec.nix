@@ -143,7 +143,7 @@ in
           mkHardenedService {
             path = with pkgs; [
               iproute2
-              self.packages.${pkgs.stdenv.hostPlatform.system}.ranet
+              self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.ranet
             ];
             script = "${command} up";
             reload = "${command} up";

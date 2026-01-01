@@ -74,9 +74,9 @@ let
     };
 in
 {
-  perSystem =
-    { prev, ... }:
+  scopes.default =
+    { final, ... }:
     {
-      packages.canokey-manager = prev.callPackage canokey-manager { };
+      canokey-manager = final.callPackage canokey-manager { };
     };
 }

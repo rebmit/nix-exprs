@@ -1,5 +1,5 @@
 let
-  bird3-rebmit =
+  bird2-rebmit =
     {
       lib,
       stdenv,
@@ -13,14 +13,14 @@ let
 
     stdenv.mkDerivation {
       pname = "bird";
-      version = "3.1.5-unstable-2025-12-11";
+      version = "2.17.3-unstable-2025-12-11";
 
       src = fetchFromGitHub {
         owner = "rebmit";
         repo = "bird";
-        rev = "86fbd43a8d27b2a6d4c0aca0ab61adb570a6d0b5";
+        rev = "51d7d554adf7b0eb5febf091cb6488ab0b4425fe";
         fetchSubmodules = false;
-        hash = "sha256-wP3brdKNWLNBnnzmnSEQ53xYnGiq3LkHB34o38875cw=";
+        hash = "sha256-lA38pjV2/gqT5dXVGpcTiT82z1qEgCTUPolQaqswwUs=";
       };
 
       nativeBuildInputs = [
@@ -45,7 +45,7 @@ let
 
       meta = {
         description = "BIRD Internet Routing Daemon";
-        homepage = "https://bird.nic.cz/";
+        homepage = "https://bird.network.cz/";
         license = lib.licenses.gpl2Plus;
         maintainers = with lib.maintainers; [ rebmit ];
         platforms = lib.platforms.linux;
@@ -53,9 +53,9 @@ let
     };
 in
 {
-  perSystem =
-    { prev, ... }:
+  scopes.default =
+    { final, ... }:
     {
-      packages.bird3-rebmit = prev.callPackage bird3-rebmit { };
+      bird2-rebmit = final.callPackage bird2-rebmit { };
     };
 }
