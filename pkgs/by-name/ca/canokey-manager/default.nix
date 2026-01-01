@@ -9,19 +9,6 @@ let
       procps,
     }:
 
-    let
-      pyscard' = python3Packages.pyscard.overrideAttrs (
-        final: _prev: {
-          version = "2.2.1";
-          src = fetchFromGitHub {
-            owner = "LudovicRousseau";
-            repo = "pyscard";
-            tag = final.version;
-            hash = "sha256-RXCz6Npb/MrykHxtUsYlghCPeTwjDC6s9258iLA7OKs=";
-          };
-        }
-      );
-    in
     python3Packages.buildPythonPackage {
       pname = "canokey-manager";
       version = "5.4.0-unstable-2025-03-26";
@@ -46,7 +33,7 @@ let
 
       propagatedBuildInputs = with python3Packages; [
         cryptography
-        pyscard'
+        pyscard_2_2_1
         fido2
         click
         keyring
