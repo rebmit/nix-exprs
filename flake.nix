@@ -74,15 +74,22 @@
                 extraInputsFlake = ./modules/_flake;
                 module = import-tree ./modules;
               };
+              pkgs = {
+                extraInputsFlake = ./pkgs/_flake;
+                module = import-tree ./pkgs;
+              };
               # keep-sorted end
             };
 
             flake = {
               # keep-sorted start block=yes
+              checks = partitionAttr "pkgs" "checks";
               devShells = partitionAttr "dev" "devShells";
               flakeModules = partitionAttr "modules" "flakeModules";
               formatter = partitionAttr "dev" "formatter";
+              legacyPackages = partitionAttr "pkgs" "legacyPackages";
               lib = partitionAttr "lib" "lib";
+              overlays = partitionAttr "pkgs" "overlays";
               partitions = config.partitions;
               # keep-sorted end
             };
