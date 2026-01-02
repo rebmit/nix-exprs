@@ -34,6 +34,7 @@
           "misc/xdg/user-dirs"
           "nix/common"
           "programs/collections/common"
+          "programs/comma"
           "programs/helix"
           "programs/tmux"
           "programs/yazi"
