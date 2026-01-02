@@ -11,7 +11,24 @@ in
         {
           freeformType = types.lazyAttrsOf types.raw;
 
-          _module.args = {
+          options.__functor = mkOption {
+            internal = true;
+            visible = false;
+            readOnly = true;
+            default =
+              _: final: prev:
+              let
+                eval = extendModules {
+                  specialArgs = { inherit final prev; };
+                };
+              in
+              removeAttrs eval.config [ "__functor" ];
+            description = ''
+              Functor used to evaluate the scope as a Nixpkgs overlay.
+            '';
+          };
+
+          config._module.args = {
             final = throw ''
               `final` is only defined when applying the scope as an overlay.
             '';
@@ -19,15 +36,6 @@ in
               `prev` is only defined when applying the scope as an overlay.
             '';
           };
-
-          __functor =
-            _: final: prev:
-            let
-              eval = extendModules {
-                specialArgs = { inherit final prev; };
-              };
-            in
-            removeAttrs eval.config [ "__functor" ];
         }
       )
     );

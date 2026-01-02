@@ -15,22 +15,39 @@ in
     type = types.submodule (
       { extendModules, ... }:
       {
-        freeformType = types.lazyAttrsOf types.raw;
+        freeformType =
+          let
+            checkType = types.lazyAttrsOf (
+              types.oneOf [
+                checkType
+                types.raw
+              ]
+            );
+          in
+          checkType;
 
-        _module.args = {
+        options.__functor = mkOption {
+          internal = true;
+          visible = false;
+          readOnly = true;
+          default =
+            _: pkgs:
+            let
+              eval = extendModules {
+                specialArgs = { inherit pkgs; };
+              };
+            in
+            removeAttrs eval.config [ "__functor" ];
+          description = ''
+            Functor used to evaluate the checks module with a Nixpkgs package set.
+          '';
+        };
+
+        config._module.args = {
           pkgs = throw ''
             `pkgs` is only available when evaluating checks with a Nixpkgs package set.
           '';
         };
-
-        __functor =
-          _: pkgs:
-          let
-            eval = extendModules {
-              specialArgs = { inherit pkgs; };
-            };
-          in
-          removeAttrs eval.config [ "__functor" ];
       }
     );
     default = { };
