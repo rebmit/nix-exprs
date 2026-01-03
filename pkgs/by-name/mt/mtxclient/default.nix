@@ -62,6 +62,24 @@ in
   scopes.default =
     { final, ... }:
     {
+      mtxclient_latest =
+        let
+          source = {
+            pname = "mtxclient";
+            version = "0.10.1";
+            src = final.callPackage (
+              { fetchFromGitHub }:
+              fetchFromGitHub {
+                owner = "Nheko-Reborn";
+                repo = "mtxclient";
+                rev = "v${source.version}";
+                hash = "sha256-Y0FMCq4crSbm0tJtYq04ZFwWw+vlfxXKXBo0XUgf7hw=";
+              }
+            ) { };
+          };
+        in
+        final.callPackage mtxclient { inherit source; };
+
       mtxclient_unstable =
         let
           source = {
@@ -84,6 +102,6 @@ in
   checks =
     { pkgs, ... }:
     {
-      inherit (pkgs) mtxclient_unstable;
+      inherit (pkgs) mtxclient mtxclient_latest mtxclient_unstable;
     };
 }
