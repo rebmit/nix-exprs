@@ -26,12 +26,13 @@ let
       source,
     }:
 
-    stdenv.mkDerivation (_finalAttrs: {
+    stdenv.mkDerivation {
       inherit (source) pname version src;
 
       patches = [
         ./fix-darwin-build.patch
-      ];
+      ]
+      ++ (source.extraPatches or [ ]);
 
       nativeBuildInputs = [
         asciidoc
@@ -96,12 +97,47 @@ let
         maintainers = with lib.maintainers; [ rebmit ];
         platforms = lib.platforms.all;
       };
-    });
+    };
 in
 {
   scopes.default =
     { final, ... }:
     {
+      nheko_latest =
+        let
+          mtxclient = final.mtxclient_latest;
+
+          source = {
+            pname = "nheko";
+            version = "0.12.1";
+            src = final.callPackage (
+              { fetchFromGitHub }:
+              fetchFromGitHub {
+                owner = "Nheko-Reborn";
+                repo = "nheko";
+                rev = "v${source.version}";
+                hash = "sha256-WlWxe4utRSc9Tt2FsnhBwxzQsoDML2hvm3g5zRnDEiU=";
+              }
+            ) { };
+            extraPatches = final.callPackage (
+              { fetchpatch }:
+              [
+                # Fixes rendering replies with QT 6.9.2
+                (fetchpatch {
+                  url = "https://github.com/Nheko-Reborn/nheko/commit/2769642d3c7bd3c0d830b2f18ef6b3bf6a710bf4.patch";
+                  hash = "sha256-y8aiS6h5CSJYBdsAH4jYhAyrFug7aH2H8L6rBfULnQQ=";
+                })
+                # Fix for Qt 6.10
+                (fetchpatch {
+                  url = "https://github.com/Nheko-Reborn/nheko/commit/af2ca72030deb14a920a888e807dc732d93e3714.patch";
+                  hash = "sha256-tlYrfEoUkdJoVzvfF34IhXdn1AxLO0MOlp9rzuFivws=";
+                })
+              ]
+            ) { };
+          };
+        in
+        final.callPackage nheko { inherit mtxclient source; };
+
       nheko_unstable =
         let
           mtxclient = final.mtxclient_unstable;
@@ -126,6 +162,6 @@ in
   checks =
     { pkgs, ... }:
     {
-      inherit (pkgs) nheko_unstable;
+      inherit (pkgs) nheko nheko_latest nheko_unstable;
     };
 }
