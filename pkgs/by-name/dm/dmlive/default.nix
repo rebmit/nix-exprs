@@ -84,6 +84,6 @@ in
   checks =
     { pkgs, ... }:
     {
-      inherit (pkgs) dmlive_latest;
+      inherit (pkgs) dmlive dmlive_latest;
     };
 }
