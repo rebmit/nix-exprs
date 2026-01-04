@@ -3,25 +3,16 @@ let
     {
       lib,
       stdenv,
-      fetchFromGitHub,
       autoreconfHook,
       flex,
       bison,
       readline,
       libssh,
+      source,
     }:
 
     stdenv.mkDerivation {
-      pname = "bird";
-      version = "2.17.3-unstable-2025-12-11";
-
-      src = fetchFromGitHub {
-        owner = "rebmit";
-        repo = "bird";
-        rev = "51d7d554adf7b0eb5febf091cb6488ab0b4425fe";
-        fetchSubmodules = false;
-        hash = "sha256-lA38pjV2/gqT5dXVGpcTiT82z1qEgCTUPolQaqswwUs=";
-      };
+      inherit (source) pname version src;
 
       nativeBuildInputs = [
         autoreconfHook
@@ -56,12 +47,31 @@ in
   scopes.default =
     { final, ... }:
     {
-      bird2-rebmit = final.callPackage bird2-rebmit { };
+      bird2-rebmit = final.bird2-rebmit_latest;
+
+      bird2-rebmit_latest =
+        let
+          source = {
+            pname = "bird";
+            version = "2.18-unstable-2026-01-04";
+            src = final.callPackage (
+              { fetchFromGitHub }:
+              fetchFromGitHub {
+                owner = "rebmit";
+                repo = "bird";
+                rev = "cb6f8414e25af797949529a09f1336e71e91b38e";
+                fetchSubmodules = false;
+                hash = "sha256-gcqj+YtNqqo/2365xEAq056KTazg/HfJVk1FJ+oGDLg=";
+              }
+            ) { };
+          };
+        in
+        final.callPackage bird2-rebmit { inherit source; };
     };
 
   checks =
     { pkgs, ... }:
     {
-      inherit (pkgs) bird2-rebmit;
+      inherit (pkgs) bird2-rebmit bird2-rebmit_latest;
     };
 }
