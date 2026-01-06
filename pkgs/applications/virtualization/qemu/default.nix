@@ -7,13 +7,13 @@ in
     { final, prev, ... }:
     {
       qemu = prev.qemu.overrideAttrs {
-        version = "10.1.2-unstable-2025-12-13";
+        version = "10.2.0-unstable-2026-01-06";
         src = final.fetchFromGitHub {
           owner = "rebmit";
           repo = "qemu";
-          rev = "747bb69f67c4aa30e89f6523fe932960c62a31c5";
+          rev = "3ed318f65253c24c380ff805a8c326bcace0b251";
           fetchSubmodules = true;
-          hash = "sha256-wrd+3GXpZ8VxuVjkPHZubTJRhexKRvors3uZ1L7cNVk=";
+          hash = "sha256-s3nHA1Wl8nDduaiJimKBTMaxSUY7UTUxj5Y2ufSiLRI=";
           postFetch = ''
             cd $out
             subprojects="keycodemapdb libvfio-user berkeley-softfloat-3 berkeley-testfloat-3"
