@@ -27,6 +27,7 @@ in
           ids.uids.rebmit = 1000;
 
           users.users.rebmit = {
+            description = meta.users.rebmit.name;
             uid = config.ids.uids.rebmit;
             shell = config.programs.fish.package;
             home = "/home/rebmit";

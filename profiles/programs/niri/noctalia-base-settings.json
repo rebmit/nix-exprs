@@ -190,7 +190,7 @@
     "manualSunset": "18:30",
     "matugenSchemeType": "scheme-neutral",
     "predefinedScheme": "Nord",
-    "schedulingMode": "off",
+    "schedulingMode": "manual",
     "useWallpaperColors": true
   },
   "controlCenter": {
@@ -324,9 +324,9 @@
     "wifiEnabled": true
   },
   "nightLight": {
-    "autoSchedule": true,
+    "autoSchedule": false,
     "dayTemp": "6500",
-    "enabled": false,
+    "enabled": true,
     "forced": false,
     "manualSunrise": "06:30",
     "manualSunset": "18:30",
