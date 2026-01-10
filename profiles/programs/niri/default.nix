@@ -9,9 +9,10 @@ let
     concatLists
     foldr
     ;
+  inherit (lib.meta) hiPrio getExe;
   inherit (lib.modules) mkMerge mkIf;
   inherit (lib.strings) hasPrefix concatMapAttrsStringSep;
-  inherit (lib.meta) hiPrio getExe;
+  inherit (lib.trivial) boolToString;
   inherit (self.lib.attrsets) flattenTree;
 in
 {
@@ -295,12 +296,9 @@ in
                   text = ''
                     if [ "$1" = "true" ]; then
                       mode="dark"
-                      noctalia-shell ipc call wallpaper set ${config.theme.dark.wallpaper} all
                     else
                       mode="light"
-                      noctalia-shell ipc call wallpaper set ${config.theme.light.wallpaper} all
                     fi
-                    niri msg action do-screen-transition --delay-ms 500
                     darkman set "$mode"
                   '';
                 };
@@ -333,7 +331,10 @@ in
                 };
 
                 specialSettings = {
-                  hooks.darkModeChange = "${getExe toggleDarkMode} $1";
+                  hooks = {
+                    enabled = true;
+                    darkModeChange = "${getExe toggleDarkMode} $1";
+                  };
                 };
               in
               {
@@ -377,6 +378,31 @@ in
 
                   Install.WantedBy = [ "graphical-session.target" ];
                 };
+
+                services.darkman =
+                  let
+                    mkScript =
+                      mode:
+                      let
+                        inherit (config.theme.${mode}) wallpaper;
+                      in
+                      pkgs.writeShellApplication {
+                        name = "darkman-switch-noctalia-${mode}";
+                        text = ''
+                          noctalia-shell ipc call wallpaper set ${wallpaper} all
+
+                          dark_mode=$(noctalia-shell ipc call state all | jq -r '.settings.colorSchemes.darkMode')
+
+                          if [[ "$dark_mode" != ${boolToString (mode == "dark")} ]]; then
+                            noctalia-shell ipc call darkMode ${if mode == "dark" then "setDark" else "setLight"}
+                          fi
+                        '';
+                      };
+                  in
+                  {
+                    lightModeScripts.noctalia = "${getExe (mkScript "light")}";
+                    darkModeScripts.noctalia = "${getExe (mkScript "dark")}";
+                  };
               }
             )
 

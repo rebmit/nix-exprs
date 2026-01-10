@@ -12,15 +12,15 @@
     "showCategories": true,
     "showIconBackground": true,
     "sortByMostUsed": true,
-    "terminalCommand": "xterm -e",
+    "terminalCommand": "ghostty -e",
     "useApp2Unit": false,
     "viewMode": "list"
   },
   "audio": {
     "cavaFrameRate": 30,
-    "externalMixer": "pwvucontrol || pavucontrol",
+    "externalMixer": "pwvucontrol",
     "mprisBlacklist": [],
-    "preferredPlayer": "",
+    "preferredPlayer": "mpv",
     "visualizerType": "linear",
     "volumeOverdrive": false,
     "volumeStep": 5
@@ -125,6 +125,9 @@
           "hideWhenZero": false,
           "id": "NotificationHistory",
           "showUnreadBadge": true
+        },
+        {
+          "id": "DarkMode"
         },
         {
           "deviceNativePath": "",
@@ -294,7 +297,6 @@
     "showSessionButtonsOnLockScreen": true
   },
   "hooks": {
-    "enabled": true,
     "performanceModeDisabled": "",
     "performanceModeEnabled": "",
     "screenLock": "",
