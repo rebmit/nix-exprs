@@ -42,6 +42,7 @@ in
             door-knocker
             evolution
             foliate
+            fractal
             ghostty
             gimp3
             libreoffice-fresh
@@ -60,11 +61,13 @@ in
             ".zotero"
 
             ".cache/evolution"
+            ".cache/fractal"
             ".cache/org.gnome.Evolution"
             ".config/dconf"
             ".config/evolution"
             ".config/nheko"
             ".local/share/evolution"
+            ".local/share/fractal"
             ".local/share/keyrings"
             ".local/share/org.gnome.Evolution"
             ".local/share/nheko"
