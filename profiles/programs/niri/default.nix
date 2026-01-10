@@ -1,12 +1,18 @@
 # Portions of this file are sourced from
 # https://github.com/linyinfeng/dotfiles/blob/d40b75ca0955d2a999b36fa1bd0f8b3a6e061ef3/home-manager/profiles/niri/default.nix (MIT License)
-{ lib, ... }:
+{ self, lib, ... }:
 let
-  inherit (lib.attrsets) mapAttrsToList;
-  inherit (lib.lists) singleton range concatLists;
+  inherit (lib.attrsets) mapAttrsToList recursiveUpdate;
+  inherit (lib.lists)
+    singleton
+    range
+    concatLists
+    foldr
+    ;
   inherit (lib.modules) mkMerge mkIf;
-  inherit (lib.strings) hasPrefix;
+  inherit (lib.strings) hasPrefix concatMapAttrsStringSep;
   inherit (lib.meta) hiPrio getExe;
+  inherit (self.lib.attrsets) flattenTree;
 in
 {
   flake.unify.modules."programs/niri" = {
@@ -289,20 +295,65 @@ in
                   text = ''
                     if [ "$1" = "true" ]; then
                       mode="dark"
+                      noctalia-shell ipc call wallpaper set ${config.theme.dark.wallpaper} all
                     else
                       mode="light"
+                      noctalia-shell ipc call wallpaper set ${config.theme.light.wallpaper} all
                     fi
                     niri msg action do-screen-transition --delay-ms 500
                     darkman set "$mode"
                   '';
                 };
+
+                syncSettings = pkgs.writeShellApplication {
+                  name = "noctalia-sync-settings";
+                  runtimeInputs = with pkgs; [
+                    jq
+                  ];
+                  text = ''
+                    path="profiles/programs/niri/noctalia-base-settings.json"
+                    full_path="$PRJ_ROOT/$path"
+                    echo "writing to '$full_path'..."
+                    jq 'del(
+                      ${concatMapAttrsStringSep ",\n  " (name: _value: ".${name}") (
+                        flattenTree {
+                          separator = ".";
+                          mapper = x: "\"${x}\"";
+                        } specialSettings
+                      )}
+                    )' ~/.config/noctalia/gui-settings.json >"$full_path"
+                    nix fmt
+
+                    echo "git diff..."
+                    git diff -- "$path"
+
+                    echo "checking path leaking..."
+                    jq 'pick(.. | select(type == "string" and contains("/")))' "$full_path"
+                  '';
+                };
+
+                specialSettings = {
+                  hooks.darkModeChange = "${getExe toggleDarkMode} $1";
+                };
               in
               {
+                xdg.configFile."noctalia/settings.json" =
+                  let
+                    settings = foldr recursiveUpdate { } [
+                      (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json))
+                      specialSettings
+                    ];
+                  in
+                  {
+                    force = true;
+                    source = (pkgs.formats.json { }).generate "noctalia-settings.json" settings;
+                  };
+
                 home.packages = with pkgs; [
                   noctalia-shell
                   pwvucontrol
                   cliphist
-                  toggleDarkMode
+                  syncSettings
                 ];
 
                 systemd.user.services.noctalia-shell = {
@@ -312,6 +363,7 @@ in
                     After = [ "graphical-session.target" ];
                     Requisite = [ "graphical-session.target" ];
                     PartOf = [ "graphical-session.target" ];
+                    X-Restart-Triggers = [ config.xdg.configFile."noctalia/settings.json".source ];
                   };
 
                   Service = {
