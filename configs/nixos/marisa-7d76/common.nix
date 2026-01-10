@@ -32,20 +32,29 @@
       module =
         { ... }:
         {
-          programs.niri.settings = {
-            outputs = {
-              "HDMI-A-1" = {
-                scale = 1.75;
-              };
-              "DP-1" = {
-                scale = 1.75;
-                position = {
-                  x = 0;
-                  y = 0;
+          services.kanshi.settings =
+            let
+              monitor = "PNP(AOC) U2790B 0x00011D7B";
+            in
+            [
+              {
+                output = {
+                  criteria = monitor;
+                  scale = 1.75;
                 };
-              };
-            };
-          };
+              }
+              {
+                profile = {
+                  name = "default";
+                  outputs = [
+                    {
+                      criteria = monitor;
+                      position = "0,0";
+                    }
+                  ];
+                };
+              }
+            ];
         };
     };
 

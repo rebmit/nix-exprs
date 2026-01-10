@@ -406,6 +406,15 @@ in
               }
             )
 
+            # kanshi
+            {
+              home.packages = with pkgs; [
+                wdisplays
+              ];
+
+              services.kanshi.enable = true;
+            }
+
             # xdg-desktop-portal
             {
               xdg.portal = {
