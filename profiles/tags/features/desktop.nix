@@ -26,16 +26,9 @@
           "programs/dconf"
           "programs/fcitx5"
           "programs/firefox"
-          "programs/fuzzel"
           "programs/ghostty"
-          "programs/mako"
           "programs/niri"
-          "programs/swaylock"
-          "services/user/cliphist"
           "services/user/darkman"
-          "services/user/polkit-gnome"
-          "services/user/swww"
-          "services/user/waybar"
           # keep-sorted end
         ];
       };

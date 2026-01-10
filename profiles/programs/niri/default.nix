@@ -5,9 +5,8 @@ let
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) singleton range concatLists;
   inherit (lib.modules) mkMerge mkIf;
-  inherit (lib.options) mkEnableOption;
   inherit (lib.strings) hasPrefix;
-  inherit (lib.meta) hiPrio;
+  inherit (lib.meta) hiPrio getExe;
 in
 {
   flake.unify.modules."programs/niri" = {
@@ -17,9 +16,7 @@ in
         requires = [
           "imports/niri-flake"
           "programs/firefox"
-          "programs/fuzzel"
           "programs/ghostty"
-          "programs/swaylock"
         ];
       };
 
@@ -27,12 +24,16 @@ in
         { config, pkgs, ... }:
         let
           cfg = config.programs.niri;
+          noctaliaIpc =
+            cmd:
+            [
+              "noctalia-shell"
+              "ipc"
+              "call"
+            ]
+            ++ cmd;
         in
         {
-          options.programs.niri = {
-            xwayland.enable = mkEnableOption "xwayland support";
-          };
-
           config = mkMerge [
             # niri
             {
@@ -82,7 +83,7 @@ in
                     {
                       geometry-corner-radius =
                         let
-                          radius = 12.0;
+                          radius = 20.0;
                         in
                         {
                           bottom-left = radius;
@@ -93,6 +94,9 @@ in
                       clip-to-geometry = true;
                     }
                   ];
+                  debug = {
+                    honor-xdg-activation-with-invalid-serial = [ ];
+                  };
                   binds =
                     let
                       modMove = "Shift";
@@ -172,42 +176,56 @@ in
                       specialBindings = {
                         "Mod+W".action.spawn = [ "firefox" ];
                         "Mod+Return".action.spawn = [ "ghostty" ];
-                        "Mod+D".action.spawn = [ "fuzzel" ];
-                        "Mod+M".action.spawn = [ "swaylock" ];
-                        "Mod+V".action.spawn = [ "cliphist-fuzzel" ];
+                        "Mod+D".action.spawn = noctaliaIpc [
+                          "launcher"
+                          "toggle"
+                        ];
+                        "Mod+M".action.spawn = noctaliaIpc [
+                          "lockScreen"
+                          "lock"
+                        ];
+                        "Mod+V".action.spawn = noctaliaIpc [
+                          "launcher"
+                          "clipboard"
+                        ];
                         "XF86AudioRaiseVolume" = {
                           allow-when-locked = true;
-                          action.spawn = [
-                            "${pkgs.pulsemixer}/bin/pulsemixer"
-                            "--change-volume"
-                            "+5"
+                          action.spawn = noctaliaIpc [
+                            "volume"
+                            "increase"
                           ];
                         };
                         "XF86AudioLowerVolume" = {
                           allow-when-locked = true;
-                          action.spawn = [
-                            "${pkgs.pulsemixer}/bin/pulsemixer"
-                            "--change-volume"
-                            "-5"
+                          action.spawn = noctaliaIpc [
+                            "volume"
+                            "decrease"
                           ];
                         };
                         "XF86AudioMute" = {
                           allow-when-locked = true;
-                          action.spawn = [
-                            "${pkgs.pulsemixer}/bin/pulsemixer"
-                            "--toggle-mute"
+                          action.spawn = noctaliaIpc [
+                            "volume"
+                            "muteOutput"
                           ];
                         };
-                        "Mod+P".action.spawn = [
-                          "${pkgs.playerctl}/bin/playerctl"
-                          "play-pause"
+                        "XF86AudioMicMute" = {
+                          allow-when-locked = true;
+                          action.spawn = noctaliaIpc [
+                            "volume"
+                            "muteInput"
+                          ];
+                        };
+                        "Mod+P".action.spawn = noctaliaIpc [
+                          "media"
+                          "playPause"
                         ];
-                        "Mod+I".action.spawn = [
-                          "${pkgs.playerctl}/bin/playerctl"
+                        "Mod+I".action.spawn = noctaliaIpc [
+                          "media"
                           "previous"
                         ];
-                        "Mod+O".action.spawn = [
-                          "${pkgs.playerctl}/bin/playerctl"
+                        "Mod+O".action.spawn = noctaliaIpc [
+                          "media"
                           "next"
                         ];
                         "Mod+Shift+Q".action.close-window = [ ];
@@ -258,6 +276,58 @@ in
               ];
             }
 
+            # noctalia
+            (
+              let
+                inherit (pkgs) noctalia-shell;
+
+                toggleDarkMode = pkgs.writeShellApplication {
+                  name = "noctalia-toggle-dark-mode";
+                  runtimeInputs = [
+                    config.services.darkman.package
+                  ];
+                  text = ''
+                    if [ "$1" = "true" ]; then
+                      mode="dark"
+                    else
+                      mode="light"
+                    fi
+                    niri msg action do-screen-transition --delay-ms 500
+                    darkman set "$mode"
+                  '';
+                };
+              in
+              {
+                home.packages = with pkgs; [
+                  noctalia-shell
+                  pwvucontrol
+                  cliphist
+                  toggleDarkMode
+                ];
+
+                systemd.user.services.noctalia-shell = {
+                  Unit = {
+                    Description = "Noctalia Shell - Wayland desktop shell";
+                    Documentation = "https://docs.noctalia.dev/docs";
+                    After = [ "graphical-session.target" ];
+                    Requisite = [ "graphical-session.target" ];
+                    PartOf = [ "graphical-session.target" ];
+                  };
+
+                  Service = {
+                    ExecStart = getExe noctalia-shell;
+                    Restart = "on-failure";
+                    Environment = [
+                      "QT_QPA_PLATFORMTHEME=gtk3"
+                      "NOCTALIA_SETTINGS_FALLBACK=%h/.config/noctalia/gui-settings.json"
+                    ];
+                  };
+
+                  Install.WantedBy = [ "graphical-session.target" ];
+                };
+              }
+            )
+
             # xdg-desktop-portal
             {
               xdg.portal = {
@@ -282,12 +352,23 @@ in
               ];
             }
 
-            # xwayland
-            (mkIf cfg.xwayland.enable {
-              home.packages = with pkgs; [
-                xwayland-satellite
-              ];
-            })
+            # polkit agent
+            {
+              systemd.user.services.niri-polkit-agent = {
+                Unit = {
+                  Description = "PolicyKit Agent for Niri";
+                  After = [ "graphical-session.target" ];
+                  Requisite = [ "graphical-session.target" ];
+                  PartOf = [ "graphical-session.target" ];
+                };
+                Service = {
+                  ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+                  RestartSec = 5;
+                  Restart = "on-failure";
+                };
+                Install.WantedBy = [ "graphical-session.target" ];
+              };
+            }
           ];
         };
     };
