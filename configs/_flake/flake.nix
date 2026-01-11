@@ -24,11 +24,6 @@
 
     # programs
 
-    niri-flake = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "rebmit/nixpkgs";
-      inputs.nixpkgs-stable.follows = "rebmit/nixpkgs";
-    };
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "rebmit/nixpkgs";

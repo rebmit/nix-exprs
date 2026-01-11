@@ -2,16 +2,18 @@
 # https://github.com/linyinfeng/dotfiles/blob/d40b75ca0955d2a999b36fa1bd0f8b3a6e061ef3/home-manager/profiles/niri/default.nix (MIT License)
 { self, lib, ... }:
 let
+  inherit (lib) types;
   inherit (lib.attrsets) mapAttrsToList recursiveUpdate;
-  inherit (lib.lists)
-    singleton
-    range
-    concatLists
-    foldr
-    ;
+  inherit (lib.lists) range foldr flatten;
   inherit (lib.meta) hiPrio getExe;
-  inherit (lib.modules) mkMerge mkIf;
-  inherit (lib.strings) hasPrefix concatMapAttrsStringSep;
+  inherit (lib.modules) mkMerge;
+  inherit (lib.options) mkOption mkPackageOption;
+  inherit (lib.strings)
+    hasPrefix
+    concatMapAttrsStringSep
+    concatStringsSep
+    concatMapStringsSep
+    ;
   inherit (lib.trivial) boolToString;
   inherit (self.lib.attrsets) flattenTree;
 in
@@ -21,7 +23,6 @@ in
       meta = {
         tags = [ "desktop" ];
         requires = [
-          "imports/niri-flake"
           "programs/firefox"
           "programs/ghostty"
         ];
@@ -41,233 +42,313 @@ in
             ++ cmd;
         in
         {
+          options.programs.niri = {
+            package = mkPackageOption pkgs "niri" { };
+            binds = mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+            };
+          };
+
           config = mkMerge [
             # niri
             {
-              programs.niri = {
-                package = pkgs.niri;
-                settings = {
-                  input = {
-                    touchpad = {
-                      tap = true;
-                      natural-scroll = true;
-                      dwt = true;
-                    };
-                  };
-                  layout = {
-                    gaps = 8;
-                    center-focused-column = "never";
-                    preset-column-widths = [
-                      { proportion = 1.0 / 3.0; }
-                      { proportion = 1.0 / 2.0; }
-                      { proportion = 2.0 / 3.0; }
-                    ];
-                    default-column-width = {
-                      proportion = 1.0 / 2.0;
-                    };
-                    focus-ring = {
-                      enable = true;
-                      width = 4;
-                      active.color = "#7fc8ff";
-                      inactive.color = "#505050";
-                    };
-                    border = {
-                      enable = false;
-                      width = 4;
-                      active.color = "#ffc87f";
-                      inactive.color = "#505050";
-                    };
-                    struts = { };
-                  };
-                  hotkey-overlay = {
-                    skip-at-startup = true;
-                  };
-                  spawn-at-startup = [ ];
-                  prefer-no-csd = true;
-                  screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
-                  animations.enable = true;
-                  window-rules = [
-                    {
-                      geometry-corner-radius =
-                        let
-                          radius = 20.0;
-                        in
-                        {
-                          bottom-left = radius;
-                          bottom-right = radius;
-                          top-left = radius;
-                          top-right = radius;
-                        };
-                      clip-to-geometry = true;
+              xdg.configFile."niri/config.kdl" =
+                let
+                  windowCornerRadius = 8.0;
+                  shadowColor = "#00000050";
+                in
+                {
+                  force = true;
+                  source = pkgs.writeText "niri-config.kdl" ''
+                    input {
+                      keyboard {
+                        repeat-delay 600
+                        repeat-rate 25
+                        track-layout "global"
+                      }
+                      touchpad {
+                        tap
+                        dwt
+                        natural-scroll
+                      }
                     }
-                  ];
-                  debug = {
-                    honor-xdg-activation-with-invalid-serial = [ ];
+
+                    screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+                    prefer-no-csd
+
+                    hotkey-overlay { skip-at-startup; }
+
+                    layout {
+                      gaps 8
+                      struts {
+                        left 0
+                        right 0
+                        top 0
+                        bottom 0
+                      }
+                      focus-ring {
+                        width 3
+                      }
+                      border { off; }
+                      shadow {
+                        on
+                        offset x=0 y=0
+                        softness 8
+                        spread 5
+                        draw-behind-window true
+                        color "${shadowColor}"
+                        inactive-color "${shadowColor}"
+                      }
+                      tab-indicator {
+                        place-within-column
+                        gap 5
+                        width 6
+                        length total-proportion=0.5
+                        position "left"
+                        gaps-between-tabs 8
+                        corner-radius 3
+                      }
+                      default-column-width { proportion 0.500000; }
+                      preset-column-widths {
+                        proportion 0.333333
+                        proportion 0.500000
+                        proportion 0.666667
+                      }
+                      center-focused-column "never"
+                    }
+
+                    recent-windows {
+                      highlight {
+                        padding 30
+                        corner-radius ${toString windowCornerRadius}
+                      }
+
+                      binds {
+                        Alt+Tab         { next-window; }
+                        Alt+Shift+Tab   { previous-window; }
+                        Alt+grave       { next-window     filter="app-id"; }
+                        Alt+Shift+grave { previous-window filter="app-id"; }
+                      }
+                    }
+
+                    window-rule {
+                      geometry-corner-radius ${toString windowCornerRadius}
+                      clip-to-geometry true
+                    }
+
+                    window-rule {
+                      match app-id="^nheko$"
+                      match app-id="^org.telegram.desktop$"
+                      block-out-from "screencast"
+                    }
+
+                    binds {
+                      ${concatStringsSep "\n  " cfg.binds}
+                    }
+
+                    debug {
+                      honor-xdg-activation-with-invalid-serial
+                    }
+
+                    cursor {
+                      xcursor-theme "capitaine-cursors"
+                      xcursor-size 36
+                    }
+
+                    include "noctalia.kdl"
+                  '';
+                };
+
+              systemd.user.tmpfiles.rules = [
+                "f %h/.config/niri/noctalia.kdl - - - -"
+              ];
+
+              programs.niri.binds =
+                let
+                  modMove = "Shift";
+                  modMonitor = "Ctrl";
+                  keyUp = "K";
+                  keyDown = "J";
+                  keyLeft = "H";
+                  keyRight = "L";
+                  directions = {
+                    left = {
+                      keys = [
+                        "Left"
+                        keyLeft
+                        "WheelScrollLeft"
+                      ];
+                      windowTerm = "column";
+                    };
+                    down = {
+                      keys = [
+                        "Down"
+                        keyDown
+                      ];
+                      windowTerm = "window";
+                    };
+                    up = {
+                      keys = [
+                        "Up"
+                        keyUp
+                      ];
+                      windowTerm = "window";
+                    };
+                    right = {
+                      keys = [
+                        "Right"
+                        keyRight
+                        "WheelScrollRight"
+                      ];
+                      windowTerm = "column";
+                    };
                   };
-                  binds =
+                  workspaceDirections = {
+                    up = {
+                      keys = [
+                        "Page_Up"
+                        "WheelScrollUp"
+                      ];
+                    };
+                    down = {
+                      keys = [
+                        "Page_Down"
+                        "WheelScrollDown"
+                      ];
+                    };
+                  };
+                  workspaceIndices = range 1 9;
+                  isWheelKey = hasPrefix "Wheel";
+                  wheelCooldownMs = 100;
+                  windowBindings = mapAttrsToList (
+                    direction: cfg:
+                    (map (
+                      key:
+                      let
+                        cooldown = if (isWheelKey key) then "cooldown-ms=${toString wheelCooldownMs} " else "";
+                      in
+                      [
+                        "Mod+${key} ${cooldown}{ focus-${cfg.windowTerm}-${direction}; }"
+                        "Mod+${modMove}+${key} ${cooldown}{ move-${cfg.windowTerm}-${direction}; }"
+                        "Mod+${modMonitor}+${key} ${cooldown}{ focus-monitor-${direction}; }"
+                        "Mod+${modMove}+${modMonitor}+${key} ${cooldown}{ move-column-to-monitor-${direction}; }"
+                      ]
+                    ) cfg.keys)
+                  ) directions;
+                  workspaceBindings = mapAttrsToList (
+                    direction: cfg:
+                    (map (
+                      key:
+                      let
+                        cooldown = if (isWheelKey key) then "cooldown-ms=${toString wheelCooldownMs} " else "";
+                      in
+                      [
+                        "Mod+${key} ${cooldown}{ focus-workspace-${direction}; }"
+                        "Mod+${modMove}+${key} ${cooldown}{ move-column-to-workspace-${direction}; }"
+                        "Mod+Ctrl+${key} ${cooldown}{ move-workspace-${direction}; }"
+                      ]
+                    ) cfg.keys)
+                  ) workspaceDirections;
+                  indexedWorkspaceBindings = map (index: [
+                    "Mod+${toString index} { focus-workspace ${toString index}; }"
+                    "Mod+${modMove}+${toString index} { move-column-to-workspace ${toString index}; }"
+                  ]) workspaceIndices;
+                  specialBindings =
                     let
-                      modMove = "Shift";
-                      modMonitor = "Ctrl";
-                      keyUp = "K";
-                      keyDown = "J";
-                      keyLeft = "H";
-                      keyRight = "L";
-                      directions = {
-                        left = {
-                          keys = [
-                            keyLeft
-                            "WheelScrollLeft"
-                          ];
-                          windowTerm = "column";
-                        };
-                        down = {
-                          keys = singleton keyDown;
-                          windowTerm = "window";
-                        };
-                        up = {
-                          keys = singleton keyUp;
-                          windowTerm = "window";
-                        };
-                        right = {
-                          keys = [
-                            keyRight
-                            "WheelScrollRight"
-                          ];
-                          windowTerm = "column";
-                        };
-                      };
-                      workspaceIndices = range 1 9;
-                      isWheelKey = hasPrefix "Wheel";
-                      wheelCooldownMs = 100;
-                      windowBindings = mkMerge (
-                        concatLists (
-                          mapAttrsToList (
-                            direction: cfg:
-                            (map (
-                              key:
-                              let
-                                cooldown-ms = mkIf (isWheelKey key) wheelCooldownMs;
-                              in
-                              {
-                                "Mod+${key}" = {
-                                  action."focus-${cfg.windowTerm}-${direction}" = [ ];
-                                  inherit cooldown-ms;
-                                };
-                                "Mod+${modMove}+${key}" = {
-                                  action."move-${cfg.windowTerm}-${direction}" = [ ];
-                                  inherit cooldown-ms;
-                                };
-                                "Mod+${modMonitor}+${key}" = {
-                                  action."focus-monitor-${direction}" = [ ];
-                                  inherit cooldown-ms;
-                                };
-                                "Mod+${modMove}+${modMonitor}+${key}" = {
-                                  action."move-column-to-monitor-${direction}" = [ ];
-                                  inherit cooldown-ms;
-                                };
-                              }
-                            ) cfg.keys)
-                          ) directions
-                        )
-                      );
-                      indexedWorkspaceBindings = mkMerge (
-                        map (index: {
-                          "Mod+${toString index}" = {
-                            action.focus-workspace = [ index ];
-                          };
-                          "Mod+${modMove}+${toString index}" = {
-                            action.move-column-to-workspace = [ index ];
-                          };
-                        }) workspaceIndices
-                      );
-                      specialBindings = {
-                        "Mod+W".action.spawn = [ "firefox" ];
-                        "Mod+Return".action.spawn = [ "ghostty" ];
-                        "Mod+D".action.spawn = noctaliaIpc [
+                      spawn = command: ''spawn ${concatMapStringsSep " " (s: "\"${s}\"") command}'';
+                    in
+                    [
+                      "Mod+W      repeat=false { ${spawn [ "firefox" ]}; }"
+                      "Mod+Return repeat=false { ${spawn [ "ghostty" ]}; }"
+                      "Mod+D      repeat=false { ${
+                        spawn (noctaliaIpc [
                           "launcher"
                           "toggle"
-                        ];
-                        "Mod+M".action.spawn = noctaliaIpc [
-                          "lockScreen"
-                          "lock"
-                        ];
-                        "Mod+V".action.spawn = noctaliaIpc [
+                        ])
+                      }; }"
+                      "Mod+V      repeat=false { ${
+                        spawn (noctaliaIpc [
                           "launcher"
                           "clipboard"
-                        ];
-                        "XF86AudioRaiseVolume" = {
-                          allow-when-locked = true;
-                          action.spawn = noctaliaIpc [
-                            "volume"
-                            "increase"
-                          ];
-                        };
-                        "XF86AudioLowerVolume" = {
-                          allow-when-locked = true;
-                          action.spawn = noctaliaIpc [
-                            "volume"
-                            "decrease"
-                          ];
-                        };
-                        "XF86AudioMute" = {
-                          allow-when-locked = true;
-                          action.spawn = noctaliaIpc [
-                            "volume"
-                            "muteOutput"
-                          ];
-                        };
-                        "XF86AudioMicMute" = {
-                          allow-when-locked = true;
-                          action.spawn = noctaliaIpc [
-                            "volume"
-                            "muteInput"
-                          ];
-                        };
-                        "Mod+P".action.spawn = noctaliaIpc [
+                        ])
+                      }; }"
+                      "Mod+M      repeat=false { ${
+                        spawn (noctaliaIpc [
+                          "lockScreen"
+                          "lock"
+                        ])
+                      }; }"
+                      "XF86AudioRaiseVolume allow-when-locked=true { ${
+                        spawn (noctaliaIpc [
+                          "volume"
+                          "increase"
+                        ])
+                      }; }"
+                      "XF86AudioLowerVolume allow-when-locked=true { ${
+                        spawn (noctaliaIpc [
+                          "volume"
+                          "decrease"
+                        ])
+                      }; }"
+                      "XF86AudioMute        allow-when-locked=true { ${
+                        spawn (noctaliaIpc [
+                          "volume"
+                          "muteOutput"
+                        ])
+                      }; }"
+                      "XF86AudioMicMute     allow-when-locked=true { ${
+                        spawn (noctaliaIpc [
+                          "volume"
+                          "muteInput"
+                        ])
+                      }; }"
+                      "Mod+P { ${
+                        spawn (noctaliaIpc [
                           "media"
                           "playPause"
-                        ];
-                        "Mod+I".action.spawn = noctaliaIpc [
+                        ])
+                      }; }"
+                      "Mod+I { ${
+                        spawn (noctaliaIpc [
                           "media"
                           "previous"
-                        ];
-                        "Mod+O".action.spawn = noctaliaIpc [
+                        ])
+                      }; }"
+                      "Mod+O { ${
+                        spawn (noctaliaIpc [
                           "media"
                           "next"
-                        ];
-                        "Mod+Shift+Q".action.close-window = [ ];
-                        "Mod+Tab".action.focus-workspace-previous = [ ];
-                        "Mod+C".action.center-column = [ ];
-                        "Mod+Comma".action.consume-window-into-column = [ ];
-                        "Mod+Period".action.expel-window-from-column = [ ];
-                        "Mod+BracketLeft".action.consume-or-expel-window-left = [ ];
-                        "Mod+BracketRight".action.consume-or-expel-window-right = [ ];
-                        "Mod+R".action.switch-preset-column-width = [ ];
-                        "Mod+Shift+R".action.reset-window-height = [ ];
-                        "Mod+F".action.maximize-column = [ ];
-                        "Mod+Shift+F".action.fullscreen-window = [ ];
-                        "Mod+Minus".action.set-column-width = [ "-10%" ];
-                        "Mod+Equal".action.set-column-width = [ "+10%" ];
-                        "Mod+Shift+Minus".action.set-window-height = [ "-10%" ];
-                        "Mod+Shift+Equal".action.set-window-height = [ "+10%" ];
-                        "Mod+Shift+S".action.screenshot = [ ];
-                        "Mod+Ctrl+S".action.screenshot-window = [ ];
-                        "Mod+Shift+E".action.quit = [ ];
-                        "Mod+Z".action.toggle-overview = [ ];
-                      };
-                    in
-                    mkMerge [
-                      windowBindings
-                      indexedWorkspaceBindings
-                      specialBindings
+                        ])
+                      }; }"
+                      "Mod+Shift+Q { close-window; }"
+                      "Mod+Tab { focus-workspace-previous; }"
+                      "Mod+C { center-column; }"
+                      "Mod+Comma        { consume-window-into-column; }"
+                      "Mod+Period       { expel-window-from-column; }"
+                      "Mod+BracketLeft  { consume-or-expel-window-left; }"
+                      "Mod+BracketRight { consume-or-expel-window-right; }"
+                      "Mod+R { switch-preset-column-width; }"
+                      "Mod+Shift+R { reset-window-height; }"
+                      "Mod+F { maximize-column; }"
+                      "Mod+Shift+F { fullscreen-window; }"
+                      "Mod+Minus { set-column-width \"-10%\"; }"
+                      "Mod+Equal { set-column-width \"+10%\"; }"
+                      "Mod+Shift+Minus { set-window-height \"-10%\"; }"
+                      "Mod+Shift+Equal { set-window-height \"+10%\"; }"
+                      "Mod+Shift+S { screenshot; }"
+                      "Mod+Ctrl+S { screenshot-window; }"
+                      "Mod+Shift+E { quit; }"
+                      "Mod+Z { toggle-overview; }"
                     ];
-                  cursor = {
-                    # TODO: light / dark
-                    theme = config.theme.dark.cursorTheme;
-                    size = config.theme.dark.cursorSize;
-                  };
-                };
-              };
+                in
+                flatten [
+                  specialBindings
+                  workspaceBindings
+                  indexedWorkspaceBindings
+                  windowBindings
+                ];
 
               home.packages = with pkgs; [
                 (hiPrio (writeShellApplication {
