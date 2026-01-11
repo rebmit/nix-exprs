@@ -55,7 +55,7 @@ in
             {
               xdg.configFile."niri/config.kdl" =
                 let
-                  windowCornerRadius = 8.0;
+                  windowCornerRadius = 20.0;
                   shadowColor = "#00000050";
                 in
                 {
@@ -81,7 +81,7 @@ in
                     hotkey-overlay { skip-at-startup; }
 
                     layout {
-                      gaps 8
+                      gaps 12
                       struts {
                         left 0
                         right 0
@@ -142,6 +142,11 @@ in
                       match app-id="^nheko$"
                       match app-id="^org.telegram.desktop$"
                       block-out-from "screencast"
+                    }
+
+                    layer-rule {
+                      match namespace="^noctalia-overview*"
+                      place-within-backdrop true
                     }
 
                     binds {
