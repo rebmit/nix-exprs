@@ -6,7 +6,6 @@
           # keep-sorted start
           "misc/fontconfig"
           "misc/xdg/portal"
-          "security/pam/swaylock"
           "services/gnome-keyring"
           "services/greetd"
           # keep-sorted end
