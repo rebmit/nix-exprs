@@ -3,13 +3,15 @@ let
   inherit (builtins) hashString toJSON;
   inherit (lib) types;
   inherit (lib.attrsets) genAttrs getAttrs mapAttrs;
+  inherit (lib.modules) mkAliasOptionModule;
   inherit (lib.options) mkOption;
   inherit (lib.trivial) pipe flip;
 
   mkProviderType =
     {
+      namePrefix,
       contextAware ? true,
-    }:
+    }@attrs:
     types.submodule (
       {
         name,
@@ -20,11 +22,13 @@ let
       {
         freeformType = types.lazyAttrsOf types.deferredModule;
 
+        imports = [ (mkAliasOptionModule [ "_" ] [ "provides" ]) ];
+
         options = {
           name = mkOption {
             type = types.str;
             readOnly = true;
-            default = name;
+            default = "${namePrefix}/${name}";
             description = ''
               Name of this provider.
             '';
@@ -44,6 +48,15 @@ let
               Names of providers that this provider depends on.
             '';
           };
+          provides = mkOption {
+            type = types.submodule {
+              freeformType = types.lazyAttrsOf (mkProviderType (attrs // { namePrefix = config.name; }));
+            };
+            default = { };
+            description = ''
+              Sub-providers associated with this provider.
+            '';
+          };
           __functor = mkOption {
             internal = true;
             visible = false;
@@ -58,10 +71,14 @@ let
               in
               pipe eval.config [
                 (flip removeAttrs [
-                  "name"
-                  "contexts"
-                  "requires"
+                  # keep-sorted start
+                  "_"
                   "__functor"
+                  "contexts"
+                  "name"
+                  "provides"
+                  "requires"
+                  # keep-sorted end
                 ])
                 (mapAttrs (
                   k: v: {
@@ -87,8 +104,11 @@ let
       }
     );
 
-  featureProviderType = mkProviderType { contextAware = false; };
-  profileProviderType = mkProviderType { };
+  featureProviderType = mkProviderType {
+    contextAware = false;
+    namePrefix = "features";
+  };
+  profileProviderType = mkProviderType { namePrefix = "profiles"; };
 
   unifyModule =
     { config, ... }:
