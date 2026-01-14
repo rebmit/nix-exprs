@@ -29,6 +29,6 @@ in
   checks =
     { pkgs, ... }:
     {
-      inherit (pkgs) qemu qemu_kvm qemu-user;
+      inherit (pkgs) qemu_kvm;
     };
 }

@@ -6,11 +6,11 @@
       };
 
       module =
-        { pkgs, ... }:
+        { ... }:
         {
-          home.packages = with pkgs; [
-            prismlauncher
-          ];
+          # home.packages = with pkgs; [
+          #   prismlauncher
+          # ];
 
           preservation.preserveAt.state.directories = [ ".local/share/PrismLauncher" ];
         };

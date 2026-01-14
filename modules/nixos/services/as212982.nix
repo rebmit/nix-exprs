@@ -430,9 +430,7 @@ in
               protocol static ${cfg.router.static.ipv6.name} {
                 ipv6;
 
-                ${concatMapStringsSep "\n  " (
-                  r: ''route ${r.prefix} ${r.option};''
-                ) cfg.router.static.ipv6.routes}
+                ${concatMapStringsSep "\n  " (r: "route ${r.prefix} ${r.option};") cfg.router.static.ipv6.routes}
               }
 
               ${concatMapStringsSep "\n\n" (
@@ -447,7 +445,7 @@ in
                       else
                         "${session.type.ipv6}"
                     };
-                    ${if (isNull session.source.ipv6) then "" else ''source address ${session.source.ipv6};''}
+                    ${if (isNull session.source.ipv6) then "" else "source address ${session.source.ipv6};"}
                     local as ${toString cfg.asn};
                     neighbor ${session.neighbor.ipv6} as ${toString session.neighbor.asn};${
                       if isNull session.password then "" else "\n  password ${session.password};"

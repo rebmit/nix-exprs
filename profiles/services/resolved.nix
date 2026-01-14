@@ -6,11 +6,10 @@
         {
           services.resolved = {
             enable = true;
-            llmnr = "false";
-            extraConfig = ''
-              MulticastDNS=off
-              DNSStubListener=no
-            '';
+            settings.Resolve = {
+              LLMNR = false;
+              MulticastDNS = false;
+            };
           };
         };
     };

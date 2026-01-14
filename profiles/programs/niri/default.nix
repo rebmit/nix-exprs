@@ -262,7 +262,7 @@ in
                   ]) workspaceIndices;
                   specialBindings =
                     let
-                      spawn = command: ''spawn ${concatMapStringsSep " " (s: "\"${s}\"") command}'';
+                      spawn = command: "spawn ${concatMapStringsSep " " (s: "\"${s}\"") command}";
                     in
                     [
                       "Mod+W      repeat=false { ${spawn [ "firefox" ]}; }"

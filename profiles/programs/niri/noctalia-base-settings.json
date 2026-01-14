@@ -1,12 +1,14 @@
 {
   "appLauncher": {
+    "autoPasteClipboard": false,
+    "clipboardWrapText": true,
     "customLaunchPrefix": "niri msg action spawn --",
     "customLaunchPrefixEnabled": true,
     "enableClipPreview": true,
     "enableClipboardHistory": true,
     "iconMode": "tabler",
     "ignoreMouseInput": false,
-    "pinnedExecs": [],
+    "pinnedApps": [],
     "position": "center",
     "screenshotAnnotationTool": "",
     "showCategories": true,
@@ -18,7 +20,6 @@
   },
   "audio": {
     "cavaFrameRate": 30,
-    "externalMixer": "pwvucontrol",
     "mprisBlacklist": [],
     "preferredPlayer": "mpv",
     "visualizerType": "linear",
@@ -31,8 +32,8 @@
     "density": "comfortable",
     "exclusive": true,
     "floating": false,
-    "marginHorizontal": 0.25,
-    "marginVertical": 0.25,
+    "marginHorizontal": 5,
+    "marginVertical": 5,
     "monitors": [],
     "outerCorners": true,
     "position": "top",
@@ -96,10 +97,15 @@
           "useFixedWidth": false
         },
         {
+          "compactMode": false,
+          "compactShowAlbumArt": true,
+          "compactShowVisualizer": false,
           "hideMode": "hidden",
           "hideWhenIdle": false,
           "id": "MediaMini",
           "maxWidth": 145,
+          "panelShowAlbumArt": true,
+          "panelShowVisualizer": true,
           "scrollingMode": "hover",
           "showAlbumArt": false,
           "showArtistFirst": true,
@@ -110,9 +116,6 @@
         }
       ],
       "right": [
-        {
-          "id": "ScreenRecorder"
-        },
         {
           "blacklist": [],
           "colorizeIcons": false,
@@ -140,7 +143,8 @@
         },
         {
           "displayMode": "onhover",
-          "id": "Volume"
+          "id": "Volume",
+          "middleClickCommand": "pwvucontrol || pavucontrol"
         },
         {
           "displayMode": "onhover",
@@ -185,7 +189,6 @@
   },
   "colorSchemes": {
     "darkMode": false,
-    "generateTemplatesForPredefined": true,
     "manualSunrise": "06:30",
     "manualSunset": "18:30",
     "matugenSchemeType": "scheme-neutral",
@@ -231,9 +234,6 @@
           "id": "Bluetooth"
         },
         {
-          "id": "ScreenRecorder"
-        },
-        {
           "id": "WallpaperSelector"
         }
       ],
@@ -271,6 +271,7 @@
     "onlySameOutput": true,
     "pinnedApps": [],
     "pinnedStatic": false,
+    "position": "bottom",
     "size": 1
   },
   "general": {
@@ -292,6 +293,7 @@
     "shadowDirection": "bottom_right",
     "shadowOffsetX": 2,
     "shadowOffsetY": 3,
+    "showChangelogOnStartup": true,
     "showHibernateOnLockScreen": false,
     "showScreenCorners": false,
     "showSessionButtonsOnLockScreen": true
@@ -306,6 +308,8 @@
   "location": {
     "analogClockInCalendar": false,
     "firstDayOfWeek": -1,
+    "hideWeatherCityName": false,
+    "hideWeatherTimezone": false,
     "name": "Tokyo",
     "showCalendarEvents": true,
     "showCalendarWeather": true,
@@ -367,18 +371,6 @@
     "monitors": [],
     "overlayLayer": true
   },
-  "screenRecorder": {
-    "audioCodec": "opus",
-    "audioSource": "default_output",
-    "colorRange": "limited",
-    "copyToClipboard": false,
-    "directory": "/home/rebmit/Videos",
-    "frameRate": 60,
-    "quality": "very_high",
-    "showCursor": true,
-    "videoCodec": "h264",
-    "videoSource": "portal"
-  },
   "sessionMenu": {
     "countdownDuration": 10000,
     "enableCountdown": true,
@@ -426,7 +418,7 @@
     "showHeader": true,
     "showNumberLabels": true
   },
-  "settingsVersion": 37,
+  "settingsVersion": 39,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -476,18 +468,23 @@
     "walker": false,
     "wezterm": false,
     "yazi": false,
-    "zed": false
+    "zed": false,
+    "zenBrowser": false
   },
   "ui": {
+    "bluetoothDetailsViewMode": "grid",
+    "bluetoothHideUnnamedDevices": false,
     "boxBorderEnabled": false,
     "fontDefault": "Sans Serif",
     "fontDefaultScale": 1,
     "fontFixed": "monospace",
     "fontFixedScale": 1,
+    "networkPanelView": "wifi",
     "panelBackgroundOpacity": 0.93,
     "panelsAttachedToBar": true,
     "settingsPanelMode": "centered",
-    "tooltipsEnabled": true
+    "tooltipsEnabled": true,
+    "wifiDetailsViewMode": "grid"
   },
   "wallpaper": {
     "directory": "/home/rebmit/Pictures/Wallpapers",
