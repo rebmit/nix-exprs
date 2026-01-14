@@ -1,11 +1,23 @@
 # https://github.com/vic/flake-aspects/blob/d0a226c84be2900d307aa1896e4e2c6e451844b2/nix/types.nix
 { lib, ... }:
 let
-  inherit (builtins) hashString toJSON;
+  inherit (builtins)
+    concatMap
+    hashString
+    length
+    mapAttrs
+    toJSON
+    ;
   inherit (lib) types;
-  inherit (lib.attrsets) genAttrs getAttrs mapAttrs;
+  inherit (lib.attrsets)
+    genAttrs
+    getAttrs
+    getAttrFromPath
+    ;
+  inherit (lib.lists) take drop flatten;
   inherit (lib.modules) mkAliasOptionModule;
   inherit (lib.options) mkOption;
+  inherit (lib.strings) splitString;
   inherit (lib.trivial) pipe flip;
 
   mkProviderType =
@@ -109,12 +121,67 @@ let
     contextAware = false;
     namePrefix = "features";
   };
+
   profileProviderType = mkProviderType { namePrefix = "profiles"; };
 
+  getProviderFromName =
+    unify: name:
+    let
+      parts = splitString "/" name;
+    in
+    if length parts < 2 then
+      throw ''
+        Invalid provider name `${name}`.
+        Expected at least two path segments, e.g. `features/foo`.
+      ''
+    else
+      let
+        prefix = take 2 parts;
+        rest = drop 2 parts;
+        attrPath =
+          prefix
+          ++ concatMap (part: [
+            "provides"
+            part
+          ]) rest;
+      in
+      getAttrFromPath attrPath unify;
+
+  collectModules =
+    unify:
+    {
+      class,
+      providerNames ? [ ],
+      contexts ? { },
+    }:
+    let
+      resolve =
+        providerName:
+        let
+          provider = getProviderFromName unify providerName;
+        in
+        {
+          imports = flatten [
+            ((provider contexts).${class} or { })
+            (map resolve provider.requires)
+          ];
+        };
+    in
+    {
+      imports = map resolve providerNames;
+    };
+
   unifyModule =
-    { config, ... }:
+    { config, unify, ... }:
     {
       options.unify = {
+        lib = mkOption {
+          readOnly = true;
+          description = ''
+            A set of helper functions for unify.
+          '';
+        };
+
         features = mkOption {
           type = types.submodule {
             freeformType = types.lazyAttrsOf featureProviderType;
@@ -140,7 +207,13 @@ let
         };
       };
 
-      config._module.args.unify = config.unify;
+      config = {
+        _module.args.unify = config.unify;
+
+        unify.lib = mapAttrs (_: f: f unify) {
+          inherit getProviderFromName collectModules;
+        };
+      };
     };
 in
 {
