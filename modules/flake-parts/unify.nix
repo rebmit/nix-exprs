@@ -61,6 +61,13 @@ let
               Names of providers that this provider depends on.
             '';
           };
+          passthru = mkOption {
+            type = types.lazyAttrsOf types.raw;
+            default = { };
+            description = ''
+              A set of freeform attributes exposed by this provider.
+            '';
+          };
           provides = mkOption {
             type = types.submodule {
               freeformType = types.lazyAttrsOf (mkProviderType (attrs // { namePrefix = config.name; }));
@@ -89,6 +96,7 @@ let
                   "__functor"
                   "contexts"
                   "name"
+                  "passthru"
                   "provides"
                   "requires"
                   # keep-sorted end
@@ -107,13 +115,17 @@ let
           };
         };
 
-        config._module.args = genAttrs config.contexts (
-          ctx:
-          throw ''
-            Missing required context `${ctx}` for this provider.
-            Required contexts must be provided via functor arguments.
-          ''
-        );
+        config._module.args =
+          genAttrs config.contexts (
+            ctx:
+            throw ''
+              Missing required context `${ctx}` for this provider.
+              Required contexts must be provided via functor arguments.
+            ''
+          )
+          // {
+            provider = config;
+          };
       }
     );
 
