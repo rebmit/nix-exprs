@@ -6,7 +6,7 @@ in
   flake.unify.modules."programs/helix" = {
     homeManager = {
       module =
-        { ... }:
+        { config, pkgs, ... }:
         {
           programs.helix = {
             enable = true;
@@ -47,6 +47,34 @@ in
               };
             };
           };
+
+          programs.helix.settings.theme = "custom";
+
+          systemd.user.tmpfiles.rules = [
+            "L %h/.config/helix/themes/custom.toml - - - - ${config.theme.light.helixTheme}"
+          ];
+
+          services.darkman =
+            let
+              mkScript =
+                mode:
+                pkgs.writeShellApplication {
+                  name = "darkman-switch-helix-${mode}";
+                  runtimeInputs = with pkgs; [
+                    procps
+                  ];
+                  text = ''
+                    ln --force --symbolic --verbose "${
+                      config.theme.${mode}.helixTheme
+                    }" "$HOME/.config/helix/themes/custom.toml"
+                    pkill -USR1 -u "$USER" hx || true
+                  '';
+                };
+            in
+            {
+              lightModeScripts.helix = "${lib.getExe (mkScript "light")}";
+              darkModeScripts.helix = "${lib.getExe (mkScript "dark")}";
+            };
         };
     };
   };
