@@ -1,6 +1,10 @@
 {
   inputs = {
     # keep-sorted start block=yes
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "rebmit/nixpkgs";
+    };
     nixpkgs-terraform-providers-bin = {
       url = "github:nix-community/nixpkgs-terraform-providers-bin";
       inputs.nixpkgs.follows = "rebmit/nixpkgs";
