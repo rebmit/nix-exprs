@@ -23,6 +23,12 @@ in
     # keep-sorted end
   ];
 
+  overlays.internal =
+    { final, prev, ... }:
+    {
+      inherit (inputs.nixpkgs-terraform-providers-bin.overlay final prev) terraform-providers-bin;
+    };
+
   perSystem =
     { pkgs, ... }:
     {
@@ -30,7 +36,7 @@ in
         config = {
           allowNonSource = false;
         };
-        overlays = mkOrder 600 [ (_: config.overlays.default _) ];
+        overlays = mkOrder 600 [ (_: config.overlays.internal _) ];
         predicates = {
           allowNonSource =
             p:
