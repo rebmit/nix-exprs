@@ -15,7 +15,9 @@
 
               dirs=(
                 "$PRJ_ROOT"
+                "$PRJ_ROOT/pkgs/_flake"
                 "$PRJ_ROOT/dev/_flake"
+                "$PRJ_ROOT/modules/_flake"
               )
 
               for dir in "''${dirs[@]}"; do
