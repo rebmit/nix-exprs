@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   imports = [
     # keep-sorted start
@@ -9,6 +9,6 @@
   perSystem =
     { system, ... }:
     {
-      _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system};
+      nixpkgs = self.partitions.pkgs.module.allSystems.${system}.nixpkgs;
     };
 }

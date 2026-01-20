@@ -36,7 +36,10 @@ in
         config = {
           allowNonSource = false;
         };
-        overlays = mkOrder 600 [ (_: config.overlays.internal _) ];
+        overlays = mkOrder 600 [
+          (_: config.overlays.default _)
+          (_: config.overlays.internal _)
+        ];
         predicates = {
           allowNonSource =
             p:

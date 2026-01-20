@@ -135,5 +135,7 @@ let
     };
 in
 {
+  imports = [ nixpkgsModule ];
+
   flake.flakeModules.nixpkgs = nixpkgsModule;
 }

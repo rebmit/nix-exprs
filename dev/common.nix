@@ -1,4 +1,12 @@
-{ inputs, ... }:
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
+let
+  inherit (lib.modules) mkMerge mkForce;
+in
 {
   imports = [
     # keep-sorted start
@@ -8,12 +16,16 @@
     inputs.devshell.flakeModule
     inputs.git-hooks-nix.flakeModule
     inputs.treefmt-nix.flakeModule
+    self.flakeModules.nixpkgs
     # keep-sorted end
   ];
 
   perSystem =
     { system, ... }:
     {
-      _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system};
+      nixpkgs = mkMerge [
+        self.partitions.pkgs.module.allSystems.${system}.nixpkgs
+        { config.allowNonSource = mkForce true; }
+      ];
     };
 }
