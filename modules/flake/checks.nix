@@ -69,5 +69,7 @@ let
     };
 in
 {
+  imports = [ checksModule ];
+
   flake.flakeModules.checks = checksModule;
 }

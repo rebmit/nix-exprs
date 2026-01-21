@@ -41,6 +41,7 @@ in
     {
       strings = {
         inherit
+          concatPath
           concatPaths
           parentDirectory
           ;

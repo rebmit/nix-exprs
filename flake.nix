@@ -20,9 +20,16 @@
     }:
     let
       inherit (nixpkgs) lib;
-      inherit (lib.attrsets) getAttrFromPath optionalAttrs;
+      inherit (lib.attrsets)
+        getAttrFromPath
+        listToAttrs
+        nameValuePair
+        optionalAttrs
+        ;
+      inherit (lib.lists) foldl;
       inherit (lib.modules) evalModules mkOptionDefault;
       inherit (lib.strings) splitString;
+      inherit (lib.trivial) pipe;
     in
     (evalModules {
       specialArgs = {
@@ -83,7 +90,22 @@
 
             flake = {
               # keep-sorted start block=yes
-              checks = partitionAttr "pkgs" "checks";
+              checks =
+                foldl
+                  (
+                    acc: v:
+                    pipe config.systems [
+                      (map (system: nameValuePair system (acc.${system} or { } // v.${system} or { })))
+                      listToAttrs
+                    ]
+                  )
+                  { }
+                  [
+                    # keep-sorted start
+                    (partitionAttr "modules" "checks")
+                    (partitionAttr "pkgs" "checks")
+                    # keep-sorted end
+                  ];
               devShells = partitionAttr "dev" "devShells";
               flakeModules = partitionAttr "modules" "flakeModules";
               formatter = partitionAttr "dev" "formatter";
