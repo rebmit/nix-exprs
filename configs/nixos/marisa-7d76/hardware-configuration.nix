@@ -9,7 +9,7 @@ in
     };
 
     module =
-      { ... }:
+      { pkgs, ... }:
       {
         disko.devices = {
           nodev."/".mountOptions = [ "size=8G" ];
@@ -24,7 +24,9 @@ in
             "usbhid"
             "sd_mod"
           ];
+          kernelPackages = pkgs.linuxPackages_testing;
           kernelModules = [ "kvm-amd" ];
+          kernelParams = [ "amdgpu.dcdebugmask=0x10" ];
           loader = {
             efi.canTouchEfiVariables = true;
             systemd-boot.enable = mkDefault true;

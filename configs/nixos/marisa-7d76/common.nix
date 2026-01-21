@@ -13,6 +13,11 @@
         "tags/roles/workstation"
         # keep-sorted end
       ];
+      excludes = [
+        # keep-sorted start
+        "system/boot/kernel/latest"
+        # keep-sorted end
+      ];
     };
 
     system = "x86_64-linux";
