@@ -48,9 +48,10 @@
 
         virtualisation.vmVariant = {
           virtualisation = {
-            emptyDiskImages = [ 1024 ];
+            diskImage = null;
+            emptyDiskImages = [ 512 ];
             fileSystems."/persist" = {
-              device = "/dev/vdb";
+              device = "/dev/vda";
               fsType = "ext4";
               neededForBoot = true;
               autoFormat = true;
