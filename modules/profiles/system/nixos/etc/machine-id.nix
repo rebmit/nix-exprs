@@ -1,36 +1,27 @@
-{ lib, ... }:
+{ unify, lib, ... }:
 let
-  inherit (lib.modules) mkIf;
+  inherit (lib.attrsets) setAttrByPath;
   inherit (lib.meta) getExe;
 in
 {
   unify.profiles.system._.nixos._.etc._.machine-id = {
+    requires = [ "profiles/system/nixos/initrd/systemd" ];
+
     nixos =
-      { config, pkgs, ... }:
+      { pkgs, ... }:
       {
         environment.etc."machine-id" = {
           source = "/var/lib/nixos/systemd/machine-id";
           mode = "direct-symlink";
         };
 
-        boot.initrd.systemd.tmpfiles.settings.machine-id = mkIf config.boot.initrd.systemd.enable {
+        boot.initrd.systemd.tmpfiles.settings.machine-id = {
           "/sysroot/var/lib/nixos/systemd/machine-id".f = {
             user = "root";
             group = "root";
             mode = "0444";
             argument = "uninitialized";
           };
-        };
-
-        system.activationScripts.tmpfiles = mkIf (!config.boot.initrd.systemd.enable) {
-          text = ''
-            mkdir -p /var/lib/nixos/systemd
-            if [ ! -e /var/lib/nixos/systemd/machine-id ]; then
-              echo "uninitialized" > /var/lib/nixos/systemd/machine-id
-              chown -v root:root     /var/lib/nixos/systemd/machine-id
-              chmod -v 0444          /var/lib/nixos/systemd/machine-id
-            fi
-          '';
         };
 
         systemd.services.systemd-machine-id-commit = {
@@ -63,4 +54,88 @@ in
         };
       };
   };
+
+  checks =
+    { pkgs, ... }:
+    let
+      provider = unify.profiles.system._.nixos._.etc._.machine-id;
+
+      mkTest =
+        {
+          name,
+          extraProviderNames ? [ ],
+        }:
+        pkgs.testers.runNixOSTest {
+          name = "${provider.name}/${name}";
+
+          nodes.machine =
+            { ... }:
+            {
+              imports = [
+                (unify.lib.collectModules {
+                  class = "nixos";
+                  providerNames = [
+                    provider.name
+                    "profiles/system/nixos/kernel/latest"
+                  ]
+                  ++ extraProviderNames;
+                })
+              ];
+
+              networking.useNetworkd = true;
+
+              virtualisation = {
+                diskImage = null;
+                emptyDiskImages = [ 512 ];
+                fileSystems."/var" = {
+                  device = "/dev/vda";
+                  fsType = "ext4";
+                  neededForBoot = true;
+                  autoFormat = true;
+                };
+              };
+            };
+
+          testScript =
+            # python
+            ''
+              machine.start(allow_reboot=True)
+              machine.wait_for_unit("default.target")
+
+              machine.succeed("findmnt --kernel --types tmpfs /")
+
+              with subtest("Initial boot meets ConditionFirstBoot"):
+                machine.require_unit_state("first-boot-complete.target", "active")
+                machine.require_unit_state("systemd-machine-id-commit.service", "active")
+
+              with subtest("/etc/machine-id is preserved across reboots"):
+                machine_id = machine.succeed("cat /etc/machine-id")
+
+                machine.reboot()
+                machine.wait_for_unit("default.target")
+
+                machine.succeed("test -s /etc/machine-id")
+                new_machine_id = machine.succeed("cat /etc/machine-id")
+                t.assertEqual(new_machine_id, machine_id, "machine id changed")
+
+              with subtest("Second boot does not meet ConditionFirstBoot"):
+                machine.require_unit_state("first-boot-complete.target", "inactive")
+                machine.require_unit_state("systemd-machine-id-commit.service", "inactive")
+
+              machine.shutdown()
+            '';
+        };
+    in
+    {
+      tests = setAttrByPath provider.path {
+        basic = mkTest {
+          name = "basic";
+        };
+
+        etc-overlay = mkTest {
+          name = "etc-overlay";
+          extraProviderNames = [ "profiles/system/nixos/etc/overlay" ];
+        };
+      };
+    };
 }
