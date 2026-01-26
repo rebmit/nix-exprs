@@ -1,9 +1,11 @@
 {
-  unify.profiles.system._.nixos._.kernel._.testing = {
-    nixos =
-      { pkgs, ... }:
-      {
-        boot.kernelPackages = pkgs.linuxPackages_testing;
-      };
-  };
+  unify.profiles.system._.nixos._.kernel._.testing =
+    { ... }:
+    {
+      nixos =
+        { pkgs, ... }:
+        {
+          boot.kernelPackages = pkgs.linuxPackages_testing;
+        };
+    };
 }

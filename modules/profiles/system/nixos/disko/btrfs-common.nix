@@ -1,61 +1,64 @@
 { inputs, ... }:
 {
-  unify.profiles.system._.nixos._.disko._.btrfs-common = {
-    requires = [
-      # keep-sorted start
-      "profiles/system/nixos/btrfs-auto-scrub"
-      "profiles/system/nixos/preservation"
-      # keep-sorted end
-    ];
+  unify.profiles.system._.nixos._.disko._.btrfs-common =
+    { ... }:
+    {
+      requires = [
+        # keep-sorted start
+        "profiles/system/nixos/btrfs-auto-scrub"
+        "profiles/system/nixos/preservation"
+        # keep-sorted end
+      ];
 
-    nixos =
-      { ... }:
-      {
-        imports = [ inputs.disko.nixosModules.disko ];
+      nixos =
+        { ... }:
+        {
+          imports = [ inputs.disko.nixosModules.disko ];
 
-        disko.devices = {
-          nodev = {
-            "/" = {
-              fsType = "tmpfs";
-              mountOptions = [
-                "defaults"
-                "mode=755"
-                "nosuid"
-                "nodev"
-              ];
+          disko.devices = {
+            nodev = {
+              "/" = {
+                fsType = "tmpfs";
+                mountOptions = [
+                  "defaults"
+                  "mode=755"
+                  "nosuid"
+                  "nodev"
+                ];
+              };
             };
-          };
-          disk = {
-            main = {
-              type = "disk";
-              content = {
-                type = "gpt";
-                partitions = {
-                  esp = {
-                    label = "ESP";
-                    size = "2G";
-                    type = "EF00";
-                    content = {
-                      type = "filesystem";
-                      format = "vfat";
-                      mountpoint = "/boot";
-                      mountOptions = [ "umask=0077" ];
+            disk = {
+              main = {
+                type = "disk";
+                content = {
+                  type = "gpt";
+                  partitions = {
+                    esp = {
+                      label = "ESP";
+                      size = "2G";
+                      type = "EF00";
+                      content = {
+                        type = "filesystem";
+                        format = "vfat";
+                        mountpoint = "/boot";
+                        mountOptions = [ "umask=0077" ];
+                      };
                     };
-                  };
-                  root = {
-                    label = "ROOT";
-                    size = "100%";
-                    content = {
-                      type = "btrfs";
-                      extraArgs = [ "-f" ];
-                      subvolumes = {
-                        "/nix" = {
-                          mountpoint = "/nix";
-                          mountOptions = [ "compress=zstd" ];
-                        };
-                        "/persist" = {
-                          mountpoint = "/persist";
-                          mountOptions = [ "compress=zstd" ];
+                    root = {
+                      label = "ROOT";
+                      size = "100%";
+                      content = {
+                        type = "btrfs";
+                        extraArgs = [ "-f" ];
+                        subvolumes = {
+                          "/nix" = {
+                            mountpoint = "/nix";
+                            mountOptions = [ "compress=zstd" ];
+                          };
+                          "/persist" = {
+                            mountpoint = "/persist";
+                            mountOptions = [ "compress=zstd" ];
+                          };
                         };
                       };
                     };
@@ -64,11 +67,10 @@
               };
             };
           };
+
+          fileSystems."/persist".neededForBoot = true;
+
+          services.btrfs.autoScrub.fileSystems = [ "/persist" ];
         };
-
-        fileSystems."/persist".neededForBoot = true;
-
-        services.btrfs.autoScrub.fileSystems = [ "/persist" ];
-      };
-  };
+    };
 }
