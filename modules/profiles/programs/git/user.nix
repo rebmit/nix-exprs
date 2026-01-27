@@ -2,6 +2,8 @@
   unify.profiles.programs._.git._.user =
     { ... }:
     {
+      requires = [ "profiles/programs/delta/user" ];
+
       homeManager =
         { ... }:
         {
