@@ -19,7 +19,7 @@ let
   inherit (lib.strings) splitString;
   inherit (lib.trivial) pipe flip;
 
-  mkProviderType =
+  providerType =
     {
       namePrefix,
       contextAware ? true,
@@ -77,7 +77,7 @@ let
           };
           provides = mkOption {
             type = types.submodule {
-              freeformType = types.lazyAttrsOf (mkProviderType (attrs // { namePrefix = config.name; }));
+              freeformType = types.lazyAttrsOf (providerType (attrs // { namePrefix = config.name; }));
             };
             default = { };
             description = ''
@@ -137,62 +137,62 @@ let
       }
     );
 
-  featureProviderType = mkProviderType {
+  featureProviderType = providerType {
     contextAware = false;
     namePrefix = "features";
   };
 
-  profileProviderType = mkProviderType { namePrefix = "profiles"; };
-
-  getProviderFromName =
-    unify: name:
-    let
-      parts = splitString "/" name;
-    in
-    if length parts < 2 then
-      throw ''
-        Invalid provider name `${name}`.
-        Expected at least two path segments, e.g. `features/foo`.
-      ''
-    else
-      let
-        prefix = take 2 parts;
-        rest = drop 2 parts;
-        attrPath =
-          prefix
-          ++ concatMap (part: [
-            "provides"
-            part
-          ]) rest;
-      in
-      getAttrFromPath attrPath unify;
-
-  collectModules =
-    unify:
-    {
-      class,
-      providerNames ? [ ],
-      contexts ? { },
-    }:
-    let
-      resolve =
-        providerName:
-        let
-          provider = getProviderFromName unify providerName;
-        in
-        {
-          imports = flatten [
-            ((provider contexts).${class} or { })
-            (map resolve provider.requires)
-          ];
-        };
-    in
-    {
-      imports = map resolve providerNames;
-    };
+  profileProviderType = providerType { namePrefix = "profiles"; };
 
   unifyModule =
     { config, unify, ... }:
+    let
+      getProviderFromName =
+        name:
+        let
+          parts = splitString "/" name;
+        in
+        if length parts < 2 then
+          throw ''
+            Invalid provider name `${name}`.
+            Expected at least two path segments, e.g. `features/foo`.
+          ''
+        else
+          let
+            prefix = take 2 parts;
+            rest = drop 2 parts;
+            attrPath =
+              prefix
+              ++ concatMap (part: [
+                "provides"
+                part
+              ]) rest;
+          in
+          getAttrFromPath attrPath unify;
+
+      collectModules =
+        {
+          class,
+          providerNames ? [ ],
+          contexts ? { },
+        }:
+        let
+          resolve =
+            providerName:
+            let
+              provider = getProviderFromName providerName;
+            in
+            {
+              imports = flatten [
+                ((provider contexts).${class} or { })
+                (map resolve provider.requires)
+              ];
+            };
+        in
+        {
+          imports = map resolve providerNames;
+        };
+    in
     {
       options.unify = {
         lib = mkOption {
@@ -230,7 +230,7 @@ let
       config = {
         _module.args.unify = config.unify;
 
-        unify.lib = mapAttrs (_: f: f unify) {
+        unify.lib = {
           inherit getProviderFromName collectModules;
         };
       };
