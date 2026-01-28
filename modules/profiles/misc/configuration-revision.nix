@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  unify.profiles.misc._.version =
+  unify.profiles.misc._.configuration-revision =
     { ... }:
     {
       nixos =
