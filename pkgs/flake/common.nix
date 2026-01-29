@@ -27,7 +27,11 @@ in
     { final, prev, ... }:
     {
       inherit (inputs.nixpkgs-terraform-providers-bin.overlay final prev) terraform-providers-bin;
-      inherit (inputs.nix-index-database.overlays.nix-index final prev) comma-with-db;
+      inherit (inputs.nix-index-database.overlays.nix-index final prev)
+        nix-index-with-db
+        nix-index-with-small-db
+        comma-with-db
+        ;
     };
 
   perSystem =
