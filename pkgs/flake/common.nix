@@ -38,8 +38,8 @@ in
           allowNonSource = false;
         };
         overlays = mkOrder 600 [
-          (_: config.overlays.default _)
-          (_: config.overlays.internal _)
+          config.overlays.default
+          config.overlays.internal
         ];
         predicates = {
           allowNonSource =

@@ -51,9 +51,11 @@ let
       };
 
       config = {
-        flake = optionalAttrs (options.flake.type.getSubOptions [ ] ? overlays) {
-          overlays.default = config.overlays.default;
-        };
+        flake =
+          optionalAttrs (options.flake.type.getSubOptions [ ] ? overlays && config.overlays ? default)
+            {
+              overlays.default = config.overlays.default;
+            };
       };
     };
 in

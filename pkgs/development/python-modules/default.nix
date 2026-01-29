@@ -8,7 +8,6 @@ in
     { prev, ... }:
     genAttrs
       [
-        "python27"
         "python310"
         "python311"
         "python312"
@@ -22,15 +21,11 @@ in
       ]
       (
         name:
-        prev.${name}.override (
-          prev:
-          prev
-          // {
-            packageOverrides = composeManyExtensions [
-              (prev.packageOverrides or (_: _: { }))
-              (_: config.overlays.python _)
-            ];
-          }
-        )
+        prev.${name}.override (prev: {
+          packageOverrides = composeManyExtensions [
+            (prev.packageOverrides or (_: _: { }))
+            config.overlays.python
+          ];
+        })
       );
 }
