@@ -2,14 +2,14 @@
   unify.profiles.programs._.fish._.user =
     { user, ... }:
     {
-      contexts = [ "user" ];
-
       requires = [
         # keep-sorted start
         "features/preservation"
         "profiles/programs/fish"
         # keep-sorted end
       ];
+
+      contexts.user = { };
 
       homeManager =
         { pkgs, ... }:

@@ -1,6 +1,7 @@
 { lib, ... }:
 let
   inherit (builtins)
+    attrNames
     concatMap
     hashString
     length
@@ -54,11 +55,22 @@ let
             '';
           };
           contexts = mkOption {
-            type = types.listOf types.str;
+            type = types.lazyAttrsOf types.deferredModule;
             readOnly = !contextAware;
-            default = [ ];
+            default = { };
             description = ''
-              A list of required context names for this provider.
+              Contexts required by this provider.
+
+              Each attribute name declares a required context. The corresponding value
+              is a module that will be imported into that context's module system, typically
+              to declare options that this provider expects the context to provide.
+
+              Context modules from all required providers are collected transitively and
+              automatically imported into the corresponding contexts of configurations
+              that depend on this provider.
+
+              Declared contexts become available as arguments to this provider when
+              evaluating the provider's class modules (e.g. nixos, darwin).
             '';
           };
           requires = mkOption {
@@ -66,6 +78,9 @@ let
             default = [ ];
             description = ''
               Names of providers that this provider depends on.
+
+              Required providers contribute their modules and context declarations
+              transitively to configurations that depend on this provider.
             '';
           };
           passthru = mkOption {
@@ -91,7 +106,7 @@ let
             default =
               _: inputContexts:
               let
-                contexts = getAttrs config.contexts inputContexts;
+                contexts = getAttrs (attrNames config.contexts) inputContexts;
                 eval = extendModules {
                   specialArgs = contexts;
                 };
@@ -124,7 +139,7 @@ let
         };
 
         config._module.args =
-          genAttrs config.contexts (
+          genAttrs (attrNames config.contexts) (
             ctx:
             throw ''
               Missing required context `${ctx}` for this provider.

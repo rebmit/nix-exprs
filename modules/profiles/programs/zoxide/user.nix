@@ -2,9 +2,9 @@
   unify.profiles.programs._.zoxide._.user =
     { user, ... }:
     {
-      contexts = [ "user" ];
-
       requires = [ "features/preservation" ];
+
+      contexts.user = { };
 
       homeManager =
         { ... }:

@@ -3,7 +3,7 @@
   unify.profiles.misc._.read-only-pkgs =
     { host, ... }:
     {
-      contexts = [ "host" ];
+      contexts.host = { };
 
       nixos =
         { ... }:

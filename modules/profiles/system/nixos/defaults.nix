@@ -6,7 +6,7 @@ in
   unify.profiles.system._.nixos._.defaults =
     { host, ... }:
     {
-      contexts = [ "host" ];
+      contexts.host = { };
 
       nixos =
         { ... }:

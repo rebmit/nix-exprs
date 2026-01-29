@@ -2,9 +2,9 @@
   unify.profiles.programs._.comma._.user =
     { user, ... }:
     {
-      contexts = [ "user" ];
-
       requires = [ "features/preservation" ];
+
+      contexts.user = { };
 
       homeManager =
         { pkgs, ... }:
