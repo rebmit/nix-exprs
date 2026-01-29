@@ -4,10 +4,8 @@ let
 in
 {
   unify.profiles.system._.nixos._.defaults =
-    { host, ... }:
+    { ... }:
     {
-      contexts.host = { };
-
       nixos =
         { ... }:
         {
@@ -19,8 +17,6 @@ in
           };
 
           networking = {
-            domain = mkDefault "rebmit.link";
-            hostName = mkDefault host.hostName;
             nftables.enable = mkDefault true;
             useNetworkd = mkDefault true;
             useDHCP = mkDefault false;
