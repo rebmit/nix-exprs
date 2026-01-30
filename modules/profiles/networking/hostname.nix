@@ -7,6 +7,8 @@ in
   unify.profiles.networking._.hostname =
     { host, ... }:
     {
+      requires = [ "profiles/networking/addresses" ];
+
       contexts.host =
         { config, ... }:
         {
@@ -39,8 +41,8 @@ in
         { ... }:
         {
           ${host.domain}.subdomains.${host.hostName} = {
-            A = host.ipv4.addresses or [ ];
-            AAAA = host.ipv6.addresses or [ ];
+            A = host.ipv4.addresses;
+            AAAA = host.ipv6.addresses;
           };
         };
 
