@@ -15,7 +15,7 @@ let
     getAttrFromPath
     ;
   inherit (lib.lists) take drop flatten;
-  inherit (lib.modules) mkAliasOptionModule;
+  inherit (lib.modules) mkAliasOptionModule evalModules;
   inherit (lib.options) mkOption;
   inherit (lib.strings) splitString;
   inherit (lib.trivial) pipe flip;
@@ -192,20 +192,37 @@ let
           contexts ? { },
         }:
         let
-          resolve =
-            providerName:
+          resolveWithFunc =
+            providerName: func:
             let
               provider = getProviderFromName providerName;
             in
             {
               imports = flatten [
-                ((provider contexts).${class} or { })
-                (map resolve provider.requires)
+                (func provider)
+                (map (flip resolveWithFunc func) provider.requires)
               ];
             };
+
+          resolveContext =
+            providerName: contextName:
+            resolveWithFunc providerName (provider: provider.contexts.${contextName} or { });
+
+          finalContexts = mapAttrs (
+            contextName: context:
+            (evalModules {
+              modules = flatten [
+                context
+                (map (flip resolveContext contextName) providerNames)
+              ];
+            }).config
+          ) contexts;
+
+          resolveModule =
+            providerName: resolveWithFunc providerName (provider: (provider finalContexts).${class} or { });
         in
         {
-          imports = map resolve providerNames;
+          imports = map resolveModule providerNames;
         };
     in
     {
