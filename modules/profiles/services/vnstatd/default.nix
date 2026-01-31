@@ -1,5 +1,5 @@
 {
-  unify.profiles.services._.vnstat =
+  unify.profiles.services._.vnstatd =
     { ... }:
     {
       requires = [ "features/preservation" ];
