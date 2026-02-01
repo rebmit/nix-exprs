@@ -5,16 +5,16 @@ let
 in
 {
   unify.profiles.networking._.addresses =
-    { ... }:
+    { host, ... }:
     {
       contexts.host =
-        { config, ... }:
+        { ... }:
         {
           options = {
             addresses = mkOption {
               type = types.listOf types.str;
               readOnly = true;
-              default = config.ipv6.addresses ++ config.ipv4.addresses;
+              default = host.ipv6.addresses ++ host.ipv4.addresses;
               description = ''
                 IP addresses of this host.
               '';

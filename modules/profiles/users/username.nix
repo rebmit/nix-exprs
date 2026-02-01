@@ -8,12 +8,12 @@ in
     { user, ... }:
     {
       contexts.user =
-        { config, ... }:
+        { ... }:
         {
           options = {
             userName = mkOption {
               type = types.str;
-              default = config.name;
+              default = user.name;
               description = ''
                 The username for this user.
               '';

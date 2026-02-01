@@ -10,12 +10,12 @@ in
       requires = [ "profiles/networking/addresses" ];
 
       contexts.host =
-        { config, ... }:
+        { ... }:
         {
           options = {
             hostName = mkOption {
               type = types.str;
-              default = config.name;
+              default = host.name;
               description = ''
                 The hostname of this host.
               '';
@@ -29,7 +29,7 @@ in
             };
             fqdn = mkOption {
               type = types.str;
-              default = "${config.hostName}.${config.domain}";
+              default = "${host.hostName}.${host.domain}";
               description = ''
                 The fully qualified domain name (FQDN) of this host.
               '';

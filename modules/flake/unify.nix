@@ -116,7 +116,6 @@ let
                   # keep-sorted start
                   "_"
                   "__functor"
-                  "contexts"
                   "name"
                   "passthru"
                   "path"
@@ -125,11 +124,15 @@ let
                   # keep-sorted end
                 ])
                 (mapAttrs (
-                  k: v: {
-                    _class = k;
-                    key = "${config.name}@${hashString "sha256" (toJSON contexts)}";
-                    imports = [ v ];
-                  }
+                  k: v:
+                  if k != "contexts" then
+                    {
+                      _class = k;
+                      key = "${config.name}@${hashString "sha256" (toJSON contexts)}";
+                      imports = [ v ];
+                    }
+                  else
+                    v
                 ))
               ];
             description = ''
@@ -206,7 +209,7 @@ let
 
           resolveContext =
             providerName: contextName:
-            resolveWithFunc providerName (provider: provider.contexts.${contextName} or { });
+            resolveWithFunc providerName (provider: (provider finalContexts).contexts.${contextName} or { });
 
           finalContexts = mapAttrs (
             contextName: context:
