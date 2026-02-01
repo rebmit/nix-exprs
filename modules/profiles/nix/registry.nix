@@ -3,6 +3,8 @@
   unify.profiles.nix._.registry =
     { ... }:
     {
+      requires = [ "profiles/nix" ];
+
       nixos =
         { ... }:
         {
