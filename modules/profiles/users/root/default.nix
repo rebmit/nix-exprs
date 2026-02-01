@@ -13,11 +13,9 @@ in
         # keep-sorted end
       ];
 
-      contexts.user =
-        { ... }:
-        {
-          config.userName = "root";
-        };
+      contexts.user = {
+        config.userName = "root";
+      };
 
       nixos =
         { config, ... }:

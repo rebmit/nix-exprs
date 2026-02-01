@@ -9,33 +9,31 @@ in
     {
       requires = [ "profiles/networking/addresses" ];
 
-      contexts.host =
-        { ... }:
-        {
-          options = {
-            hostName = mkOption {
-              type = types.str;
-              default = host.name;
-              description = ''
-                The hostname of this host.
-              '';
-            };
-            domain = mkOption {
-              type = types.str;
-              default = "rebmit.link";
-              description = ''
-                The dns domain name of this host.
-              '';
-            };
-            fqdn = mkOption {
-              type = types.str;
-              default = "${host.hostName}.${host.domain}";
-              description = ''
-                The fully qualified domain name (FQDN) of this host.
-              '';
-            };
+      contexts.host = {
+        options = {
+          hostName = mkOption {
+            type = types.str;
+            default = host.name;
+            description = ''
+              The hostname of this host.
+            '';
+          };
+          domain = mkOption {
+            type = types.str;
+            default = "rebmit.link";
+            description = ''
+              The dns domain name of this host.
+            '';
+          };
+          fqdn = mkOption {
+            type = types.str;
+            default = "${host.hostName}.${host.domain}";
+            description = ''
+              The fully qualified domain name (FQDN) of this host.
+            '';
           };
         };
+      };
 
       dns =
         { ... }:
