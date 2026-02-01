@@ -2,7 +2,12 @@
   unify.profiles.programs._.comma._.user =
     { user, ... }:
     {
-      requires = [ "features/preservation" ];
+      requires = [
+        # keep-sorted start
+        "features/preservation"
+        "profiles/users/username"
+        # keep-sorted end
+      ];
 
       contexts.user = { };
 
@@ -15,7 +20,9 @@
       nixos =
         { ... }:
         {
-          preservation.preserveAt.state.users.${user.name}.directories = [ ".local/state/comma" ];
+          preservation.preserveAt = {
+            state.users.${user.userName}.directories = [ ".local/state/comma" ];
+          };
         };
     };
 }

@@ -5,7 +5,7 @@
       requires = [
         # keep-sorted start
         "features/preservation"
-        "profiles/programs/fish"
+        "profiles/users/username"
         # keep-sorted end
       ];
 
@@ -46,8 +46,8 @@
         { ... }:
         {
           preservation.preserveAt = {
-            cache.users.${user.name}.directories = [ ".cache/fish" ];
-            state.users.${user.name}.directories = [ ".local/share/fish" ];
+            cache.users.${user.userName}.directories = [ ".cache/fish" ];
+            state.users.${user.userName}.directories = [ ".local/share/fish" ];
           };
         };
     };
