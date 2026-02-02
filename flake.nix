@@ -111,6 +111,7 @@
               formatter = partitionAttr "dev" "formatter";
               legacyPackages = partitionAttr "pkgs" "legacyPackages";
               lib = partitionAttr "lib" "lib";
+              nixosConfigurations = partitionAttr "modules" "nixosConfigurations";
               nixosModules = partitionAttr "modules" "nixosModules";
               overlays = partitionAttr "pkgs" "overlays";
               partitions = config.partitions;
