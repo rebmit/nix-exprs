@@ -125,14 +125,17 @@ let
                 ])
                 (mapAttrs (
                   k: v:
-                  if k != "contexts" then
+                  if k == "contexts" then
+                    mapAttrs (_: ctx: {
+                      key = config.name;
+                      imports = [ ctx ];
+                    }) v
+                  else
                     {
                       _class = k;
                       key = "${config.name}@${hashString "sha256" (toJSON contexts)}";
                       imports = [ v ];
                     }
-                  else
-                    v
                 ))
               ];
             description = ''
