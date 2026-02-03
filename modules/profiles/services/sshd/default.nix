@@ -1,22 +1,34 @@
 { lib, ... }:
 let
+  inherit (builtins) attrValues;
   inherit (lib.modules) mkVMOverride;
 in
 {
   unify.profiles.services._.sshd =
-    { ... }:
+    { host, ... }:
     {
-      requires = [ "profiles/misc/sops-nix" ];
+      requires = [
+        # keep-sorted start
+        "profiles/misc/sops-nix"
+        "profiles/networking/ports"
+        # keep-sorted end
+      ];
+
+      contexts.host = {
+        ports = {
+          "sshd/ssh" = 22;
+          "sshd/ssh-alt" = 2222;
+        };
+      };
 
       nixos =
         { config, ... }:
         {
           services.openssh = {
             enable = true;
-            ports = [
-              22
-              2222
-            ];
+            ports = attrValues {
+              inherit (host.ports) "sshd/ssh" "sshd/ssh-alt";
+            };
             openFirewall = true;
             settings = {
               Ciphers = [
