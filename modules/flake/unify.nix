@@ -110,6 +110,7 @@ let
                 eval = extendModules {
                   specialArgs = contexts;
                 };
+                keys = mapAttrs (_: v: v.key) contexts;
               in
               pipe eval.config [
                 (flip removeAttrs [
@@ -133,7 +134,7 @@ let
                   else
                     {
                       _class = k;
-                      key = "${config.name}@${hashString "sha256" (toJSON contexts)}";
+                      key = "${config.name}@${hashString "sha256" (toJSON keys)}";
                       imports = [ v ];
                     }
                 ))
@@ -164,6 +165,20 @@ let
   };
 
   profileProviderType = providerType { namePrefix = "profiles"; };
+
+  internalContextModule =
+    { ... }:
+    {
+      options = {
+        key = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          description = ''
+            An optional key used to distinguish different realizations of the same context.
+          '';
+        };
+      };
+    };
 
   unifyModule =
     { config, unify, ... }:
@@ -219,6 +234,7 @@ let
             (evalModules {
               modules = flatten [
                 context
+                internalContextModule
                 (map (flip resolveContext contextName) providerNames)
               ];
             }).config
