@@ -206,25 +206,24 @@ let
           in
           getAttrFromPath attrPath unify;
 
-      collectModules =
+      resolveWithFunc =
+        providerName: func:
+        let
+          provider = getProviderFromName providerName;
+        in
         {
-          class,
+          imports = flatten [
+            (func provider)
+            (map (flip resolveWithFunc func) provider.requires)
+          ];
+        };
+
+      collectContexts =
+        {
           requires ? [ ],
           contexts ? { },
         }:
         let
-          resolveWithFunc =
-            providerName: func:
-            let
-              provider = getProviderFromName providerName;
-            in
-            {
-              imports = flatten [
-                (func provider)
-                (map (flip resolveWithFunc func) provider.requires)
-              ];
-            };
-
           resolveContext =
             providerName: contextName:
             resolveWithFunc providerName (provider: (provider finalContexts).contexts.${contextName} or { });
@@ -239,6 +238,17 @@ let
               ];
             }).config
           ) contexts;
+        in
+        finalContexts;
+
+      collectModules =
+        {
+          class,
+          requires ? [ ],
+          contexts ? { },
+        }:
+        let
+          finalContexts = collectContexts { inherit requires contexts; };
 
           resolveModule =
             providerName: resolveWithFunc providerName (provider: (provider finalContexts).${class} or { });
@@ -285,7 +295,7 @@ let
         _module.args.unify = config.unify;
 
         unify.lib = {
-          inherit getProviderFromName collectModules;
+          inherit getProviderFromName collectContexts collectModules;
         };
       };
     };
