@@ -222,22 +222,25 @@ let
         {
           requires ? [ ],
           contexts ? { },
+          resolvedContexts ? { },
         }:
         let
           resolveContext =
             providerName: contextName:
             resolveWithFunc providerName (provider: (provider finalContexts).contexts.${contextName} or { });
 
-          finalContexts = mapAttrs (
-            contextName: context:
-            (evalModules {
-              modules = flatten [
-                context
-                internalContextModule
-                (map (flip resolveContext contextName) requires)
-              ];
-            }).config
-          ) contexts;
+          finalContexts =
+            resolvedContexts
+            // mapAttrs (
+              contextName: context:
+              (evalModules {
+                modules = flatten [
+                  context
+                  internalContextModule
+                  (map (flip resolveContext contextName) requires)
+                ];
+              }).config
+            ) contexts;
         in
         finalContexts;
 
@@ -246,9 +249,10 @@ let
           class,
           requires ? [ ],
           contexts ? { },
+          resolvedContexts ? { },
         }:
         let
-          finalContexts = collectContexts { inherit requires contexts; };
+          finalContexts = collectContexts { inherit requires contexts resolvedContexts; };
 
           resolveModule =
             providerName: resolveWithFunc providerName (provider: (provider finalContexts).${class} or { });
