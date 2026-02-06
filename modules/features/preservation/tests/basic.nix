@@ -12,7 +12,7 @@ in
     { pkgs, ... }:
     {
       tests = setAttrByPath provider.path {
-        basic = pkgs.testers.nixosTest {
+        basic = pkgs.testers.runNixOSTest {
           name = "${provider.name}/basic";
 
           nodes.machine =
@@ -21,7 +21,7 @@ in
               imports = [
                 (unify.lib.collectModules {
                   class = "nixos";
-                  providerNames = [ provider.name ];
+                  requires = [ provider.name ];
                 })
               ];
 

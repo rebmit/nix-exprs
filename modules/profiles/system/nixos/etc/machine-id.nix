@@ -65,7 +65,7 @@ in
       mkTest =
         {
           name,
-          extraProviderNames ? [ ],
+          extraRequires ? [ ],
         }:
         pkgs.testers.runNixOSTest {
           name = "${provider.name}/${name}";
@@ -76,11 +76,11 @@ in
               imports = [
                 (unify.lib.collectModules {
                   class = "nixos";
-                  providerNames = [
+                  requires = [
                     provider.name
                     "profiles/system/nixos/kernel/latest"
                   ]
-                  ++ extraProviderNames;
+                  ++ extraRequires;
                 })
               ];
 
@@ -136,7 +136,7 @@ in
 
         etc-overlay = mkTest {
           name = "etc-overlay";
-          extraProviderNames = [ "profiles/system/nixos/etc/overlay" ];
+          extraRequires = [ "profiles/system/nixos/etc/overlay" ];
         };
       };
     };

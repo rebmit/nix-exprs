@@ -209,7 +209,7 @@ let
       collectModules =
         {
           class,
-          providerNames ? [ ],
+          requires ? [ ],
           contexts ? { },
         }:
         let
@@ -235,7 +235,7 @@ let
               modules = flatten [
                 context
                 internalContextModule
-                (map (flip resolveContext contextName) providerNames)
+                (map (flip resolveContext contextName) requires)
               ];
             }).config
           ) contexts;
@@ -244,7 +244,7 @@ let
             providerName: resolveWithFunc providerName (provider: (provider finalContexts).${class} or { });
         in
         {
-          imports = map resolveModule providerNames;
+          imports = map resolveModule requires;
         };
     in
     {
