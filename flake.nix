@@ -106,6 +106,7 @@
                     (partitionAttr "pkgs" "checks")
                     # keep-sorted end
                   ];
+              darwinConfigurations = partitionAttr "modules" "darwinConfigurations";
               devShells = partitionAttr "dev" "devShells";
               flakeModules = partitionAttr "modules" "flakeModules";
               formatter = partitionAttr "dev" "formatter";
