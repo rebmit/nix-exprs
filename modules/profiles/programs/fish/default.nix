@@ -11,5 +11,14 @@
             generateCompletions = false;
           };
         };
+
+      darwin =
+        { ... }:
+        {
+          programs.fish = {
+            enable = true;
+            useBabelfish = true;
+          };
+        };
     };
 }
