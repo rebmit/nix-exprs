@@ -39,5 +39,25 @@ in
             }
           );
         };
+
+      darwin =
+        { pkgs, ... }:
+        {
+          documentation = {
+            enable = true;
+            doc.enable = false;
+            info.enable = false;
+            man.enable = true;
+          };
+
+          environment.systemPackages = attrValues (
+            optionalAttrs workstation {
+              inherit (pkgs)
+                man-pages
+                man-pages-posix
+                ;
+            }
+          );
+        };
     };
 }
