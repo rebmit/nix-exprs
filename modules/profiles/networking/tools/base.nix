@@ -19,5 +19,21 @@
             # keep-sorted end
           ];
         };
+
+      darwin =
+        { pkgs, ... }:
+        {
+          environment.systemPackages = with pkgs; [
+            # keep-sorted start
+            dnsutils
+            iperf3
+            mtr
+            netcat
+            nmap
+            socat
+            tcpdump
+            # keep-sorted end
+          ];
+        };
     };
 }
