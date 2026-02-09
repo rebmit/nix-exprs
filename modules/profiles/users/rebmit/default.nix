@@ -18,6 +18,7 @@ in
       requires = [
         # keep-sorted start
         "profiles/misc/sops-nix"
+        "profiles/programs/fish"
         "profiles/programs/fish/user"
         "profiles/users/username"
         # keep-sorted end
@@ -57,6 +58,19 @@ in
               hashedPasswordFile = mkVMOverride null;
             };
           };
+        };
+
+      darwin =
+        { config, ... }:
+        {
+          users.users.rebmit = {
+            description = provider.passthru.name;
+            shell = config.programs.fish.package;
+            home = "/Users/rebmit";
+            openssh.authorizedKeys.keys = provider.passthru.authorizedKeys;
+          };
+
+          system.primaryUser = "rebmit";
         };
 
       homeManager =
