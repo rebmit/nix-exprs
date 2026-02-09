@@ -30,5 +30,30 @@
             };
           };
         };
+
+      darwin =
+        { pkgs, ... }:
+        {
+          nix = {
+            package = pkgs.nixVersions.latest;
+            channel.enable = false;
+            optimise.automatic = true;
+            settings = {
+              # keep-sorted start block=yes
+              allowed-users = [ "@staff" ];
+              builders-use-substitutes = true;
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+              flake-registry = "";
+              keep-derivations = true;
+              keep-outputs = true;
+              trusted-users = [ "@admin" ];
+              use-xdg-base-directories = true;
+              # keep-sorted end
+            };
+          };
+        };
     };
 }
