@@ -187,15 +187,24 @@ in
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                 definedAliases = [ "@no" ];
               };
-              "Home Manager Options" = {
+              "nix-darwin Options" = {
                 urls = singleton {
-                  template = "https://home-manager-options.extranix.com";
+                  template = "https://searchix.ovh/options/darwin/search";
                   params = attrsToList {
-                    "release" = "master";
                     "query" = "{searchTerms}";
                   };
                 };
-                icon = "https://home-manager-options.extranix.com/images/favicon.png";
+                icon = "https://searchix.ovh/favicon.ico";
+                definedAliases = [ "@ndo" ];
+              };
+              "Home Manager Options" = {
+                urls = singleton {
+                  template = "https://searchix.ovh/options/home-manager/search";
+                  params = attrsToList {
+                    "query" = "{searchTerms}";
+                  };
+                };
+                icon = "https://searchix.ovh/favicon.ico";
                 definedAliases = [ "@ho" ];
               };
             };
