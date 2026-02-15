@@ -165,6 +165,7 @@ in
               "ebay".metaData.hidden = true;
               "amazondotcom-us".metaData.hidden = true;
               "wikipedia".metaData.hidden = true;
+              "perplexity".metaData.hidden = true;
               "Nixpkgs" = {
                 urls = singleton {
                   template = "https://search.nixos.org/packages";
