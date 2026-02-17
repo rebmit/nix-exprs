@@ -54,12 +54,16 @@ in
               "cargo-bootstrap"
               "dart"
               "ghc-binary"
+              "ghostty-bin"
               "go"
               "gradle"
               "librusty_v8"
               "rustc-bootstrap"
               "rustc-bootstrap-wrapper"
               "temurin-bin"
+              "utm"
+              "zotero"
+              "zulu-ca-jdk"
               # keep-sorted end
             ]
             || elem sourceTypes.binaryFirmware p.meta.sourceProvenance;
