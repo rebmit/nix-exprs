@@ -121,6 +121,7 @@ in
               "browser.tabs.inTitlebar" = 1;
               "browser.theme.dark-private-windows" = false;
               "browser.urlbar.suggest.history" = false;
+              "browser.urlbar.suggest.topsites" = false;
               "svg.context-properties.content.enabled" = true;
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "widget.gtk.rounded-bottom-corners.enabled" = true;
