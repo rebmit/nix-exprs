@@ -7,13 +7,10 @@ in
   unify.profiles.networking._.hostname =
     { host, ... }:
     {
-      requires = [ "profiles/networking/addresses" ];
-
       contexts.host = {
         options = {
           hostName = mkOption {
             type = types.str;
-            default = host.name;
             description = ''
               The hostname of this host.
             '';
@@ -30,6 +27,28 @@ in
             default = "${host.hostName}.${host.domain}";
             description = ''
               The fully qualified domain name (FQDN) of this host.
+            '';
+          };
+          addresses = mkOption {
+            type = types.listOf types.str;
+            readOnly = true;
+            default = host.ipv6.addresses ++ host.ipv4.addresses;
+            description = ''
+              IP addresses of this host.
+            '';
+          };
+          ipv4.addresses = mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+            description = ''
+              IPv4 addresses of this host.
+            '';
+          };
+          ipv6.addresses = mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+            description = ''
+              IPv6 addresses of this host.
             '';
           };
         };
