@@ -11,16 +11,7 @@ in
         {
           boot.tmp.useTmpfs = mkDefault true;
 
-          environment = {
-            defaultPackages = mkDefault [ ];
-            stub-ld.enable = mkDefault false;
-          };
-
-          networking = {
-            nftables.enable = mkDefault true;
-            useNetworkd = mkDefault true;
-            useDHCP = mkDefault false;
-          };
+          environment.stub-ld.enable = mkDefault false;
 
           services.dbus.implementation = mkDefault "broker";
 
