@@ -9,15 +9,15 @@ in
       nixos =
         { ... }:
         {
-          boot.tmp.useTmpfs = mkDefault true;
+          boot.tmp.useTmpfs = true;
 
-          environment.stub-ld.enable = mkDefault false;
+          environment.stub-ld.enable = false;
 
-          services.dbus.implementation = mkDefault "broker";
+          services.dbus.implementation = "broker";
 
           time.timeZone = mkDefault "Asia/Hong_Kong";
 
-          users.mutableUsers = mkDefault false;
+          users.mutableUsers = false;
         };
     };
 }
