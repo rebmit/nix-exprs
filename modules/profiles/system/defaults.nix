@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkDefault;
 in
 {
-  unify.profiles.system._.nixos._.defaults =
+  unify.profiles.system._.defaults =
     { ... }:
     {
       nixos =
