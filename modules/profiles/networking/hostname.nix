@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, data, ... }:
 let
   inherit (lib) types;
   inherit (lib.options) mkOption;
@@ -39,14 +39,14 @@ in
           };
           ipv4.addresses = mkOption {
             type = types.listOf types.str;
-            default = [ ];
+            default = data.hosts.${host.hostName}.endpoints_v4 or [ ];
             description = ''
               IPv4 addresses of this host.
             '';
           };
           ipv6.addresses = mkOption {
             type = types.listOf types.str;
-            default = [ ];
+            default = data.hosts.${host.hostName}.endpoints_v6 or [ ];
             description = ''
               IPv6 addresses of this host.
             '';
