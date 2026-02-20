@@ -3,7 +3,7 @@ let
   inherit (lib.modules) mkVMOverride;
 in
 {
-  unify.profiles.system._.nixos._.btrfs-auto-scrub =
+  unify.profiles.system._.linux._.btrfs-auto-scrub =
     { ... }:
     {
       requires = [ "features/preservation" ];

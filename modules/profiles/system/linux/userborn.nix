@@ -1,5 +1,5 @@
 {
-  unify.profiles.system._.nixos._.userborn =
+  unify.profiles.system._.linux._.userborn =
     { ... }:
     {
       nixos =

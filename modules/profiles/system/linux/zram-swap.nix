@@ -1,5 +1,5 @@
 {
-  unify.profiles.system._.nixos._.zram-swap =
+  unify.profiles.system._.linux._.zram-swap =
     { ... }:
     {
       nixos =

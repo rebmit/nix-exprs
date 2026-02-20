@@ -1,12 +1,12 @@
 {
-  unify.profiles.system._.nixos._.etc._.overlay =
+  unify.profiles.system._.linux._.etc._.overlay =
     { ... }:
     {
       requires = [
         # keep-sorted start
-        "profiles/system/nixos/etc/machine-id"
-        "profiles/system/nixos/initrd/systemd"
-        "profiles/system/nixos/userborn"
+        "profiles/system/linux/etc/machine-id"
+        "profiles/system/linux/initrd/systemd"
+        "profiles/system/linux/userborn"
         # keep-sorted end
       ];
 

@@ -1,5 +1,5 @@
 {
-  unify.profiles.system._.nixos._.initrd._.systemd =
+  unify.profiles.system._.linux._.initrd._.systemd =
     { ... }:
     {
       nixos =

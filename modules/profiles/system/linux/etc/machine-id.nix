@@ -4,10 +4,10 @@ let
   inherit (lib.meta) getExe;
 in
 {
-  unify.profiles.system._.nixos._.etc._.machine-id =
+  unify.profiles.system._.linux._.etc._.machine-id =
     { ... }:
     {
-      requires = [ "profiles/system/nixos/initrd/systemd" ];
+      requires = [ "profiles/system/linux/initrd/systemd" ];
 
       nixos =
         { pkgs, ... }:
@@ -60,7 +60,7 @@ in
   checks =
     { pkgs, ... }:
     let
-      provider = unify.profiles.system._.nixos._.etc._.machine-id;
+      provider = unify.profiles.system._.linux._.etc._.machine-id;
 
       mkTest =
         {
@@ -78,7 +78,7 @@ in
                   class = "nixos";
                   requires = [
                     provider.name
-                    "profiles/system/nixos/kernel/latest"
+                    "profiles/system/linux/kernel/latest"
                   ]
                   ++ extraRequires;
                 })
@@ -136,7 +136,7 @@ in
 
         etc-overlay = mkTest {
           name = "etc-overlay";
-          extraRequires = [ "profiles/system/nixos/etc/overlay" ];
+          extraRequires = [ "profiles/system/linux/etc/overlay" ];
         };
       };
     };

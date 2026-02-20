@@ -1,12 +1,12 @@
 {
-  unify.profiles.system._.nixos._.preservation =
+  unify.profiles.system._.linux._.preservation =
     { ... }:
     {
       requires = [
         # keep-sorted start
         "features/preservation"
-        "profiles/system/nixos/etc/machine-id"
-        "profiles/system/nixos/initrd/systemd"
+        "profiles/system/linux/etc/machine-id"
+        "profiles/system/linux/initrd/systemd"
         # keep-sorted end
       ];
 

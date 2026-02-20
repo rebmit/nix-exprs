@@ -1,5 +1,5 @@
 {
-  unify.profiles.system._.nixos._.kernel._.testing =
+  unify.profiles.system._.linux._.kernel._.testing =
     { ... }:
     {
       nixos =

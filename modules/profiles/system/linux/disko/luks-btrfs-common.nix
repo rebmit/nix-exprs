@@ -1,12 +1,12 @@
 { inputs, ... }:
 {
-  unify.profiles.system._.nixos._.disko._.luks-btrfs-common =
+  unify.profiles.system._.linux._.disko._.luks-btrfs-common =
     { ... }:
     {
       requires = [
         # keep-sorted start
-        "profiles/system/nixos/btrfs-auto-scrub"
-        "profiles/system/nixos/preservation"
+        "profiles/system/linux/btrfs-auto-scrub"
+        "profiles/system/linux/preservation"
         # keep-sorted end
       ];
 
