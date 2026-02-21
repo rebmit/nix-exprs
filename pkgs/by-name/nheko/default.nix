@@ -112,14 +112,14 @@ in
 
           source = {
             pname = "nheko";
-            version = "0.12.1-unstable-2026-02-11";
+            version = "0.12.1-unstable-2026-02-20";
             src = final.callPackage (
               { fetchFromGitHub }:
               fetchFromGitHub {
                 owner = "Nheko-Reborn";
                 repo = "nheko";
-                rev = "89e06f32ddb58e1c6385a54f4ae4fba1d1247026";
-                hash = "sha256-bBo/HnpezhanmW2IkxtRPZuqSbftZoCAGHgpYa+pmu0=";
+                rev = "51da48c706e28283bfb7f7ed4e70b984975e8b76";
+                hash = "sha256-jpObVYt51ElPHoXgf4co/1cWM0W+GBIUfKqiGd/wipA=";
               }
             ) { };
           };
