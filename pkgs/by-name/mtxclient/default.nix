@@ -66,14 +66,14 @@ in
         let
           source = {
             pname = "mtxclient";
-            version = "0.10.1-unstable-2025-09-20";
+            version = "0.10.1-unstable-2026-02-20";
             src = final.callPackage (
               { fetchFromGitHub }:
               fetchFromGitHub {
                 owner = "Nheko-Reborn";
                 repo = "mtxclient";
-                rev = "d6f10427d1c5e5b1a45f426274f8d2e8dd0b64be";
-                hash = "sha256-zxpvRDKpp8sWSmf/xLgoHDWMzmdkQenZepXg+CoGtcg=";
+                rev = "873911e352a0845dfb178f77b1ddea796a5d3455";
+                hash = "sha256-kbS0Z0AuALf5I7OCqTF6snV5cX2HB1d16CB3agNtxCg=";
               }
             ) { };
           };
