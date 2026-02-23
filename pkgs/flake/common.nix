@@ -62,7 +62,6 @@ in
               "rustc-bootstrap-wrapper"
               "temurin-bin"
               "utm"
-              "zotero"
               "zulu-ca-jdk"
               # keep-sorted end
             ]
