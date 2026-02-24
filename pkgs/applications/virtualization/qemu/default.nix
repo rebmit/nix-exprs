@@ -1,21 +1,19 @@
 { lib, ... }:
 let
-  inherit (builtins) filter;
   inherit (lib.meta) getExe';
-  inherit (lib.strings) hasInfix;
 in
 {
   overlays.default =
     { final, prev, ... }:
     {
-      qemu = prev.qemu.overrideAttrs (oldAttrs: {
-        version = "10.2.0-unstable-2026-02-04";
+      qemu = prev.qemu.overrideAttrs {
+        version = "10.2.0-unstable-2026-02-24";
         src = final.fetchFromGitHub {
           owner = "rebmit";
           repo = "qemu";
-          rev = "5af00a36710bb23871d733383903fd7329e6769b";
+          rev = "5bdc4c5a18a42cae19af8047e0e4bdd970636d6e";
           fetchSubmodules = true;
-          hash = "sha256-rZXPwXfML4R6fdQAdIc9QAzRn8tdujlB9v43CQR8IiM=";
+          hash = "sha256-siBefUzo/IVqd66ycDIVKjft6bq7U3laiRcEirJhKDA=";
           postFetch = ''
             cd $out
             subprojects="keycodemapdb libvfio-user berkeley-softfloat-3 berkeley-testfloat-3"
@@ -25,8 +23,7 @@ in
             rm -r subprojects/*/.git
           '';
         };
-        patches = filter (p: !hasInfix "termios" p) (oldAttrs.patches or [ ]);
-      });
+      };
     };
 
   checks =
