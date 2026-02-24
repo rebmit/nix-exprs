@@ -1,3 +1,7 @@
+{ lib, ... }:
+let
+  inherit (lib.modules) mkVMOverride;
+in
 {
   flake.unify.modules."services/networkd" = {
     nixos = {
@@ -10,6 +14,13 @@
           };
 
           systemd.network.enable = true;
+
+          virtualisation.vmVariant = {
+            systemd.network.networks."00-eth0" = mkVMOverride {
+              name = "eth0";
+              DHCP = "yes";
+            };
+          };
         };
     };
   };
