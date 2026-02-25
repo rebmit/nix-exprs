@@ -123,6 +123,9 @@ in
               "/run/systemd/userdb".recursive = false;
               "/run/systemd/users".recursive = false;
 
+              # polkit
+              "/run/polkit".recursive = false;
+
               # udev
               "/run/udev".recursive = false;
             };
