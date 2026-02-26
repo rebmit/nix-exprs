@@ -75,17 +75,17 @@ in
         let
           source = {
             pname = "caddy";
-            version = "2.10.2-unstable-2026-02-04";
+            version = "2.11.1-unstable-2026-02-26";
             src = final.callPackage (
               { fetchFromGitHub }:
               fetchFromGitHub {
                 owner = "rebmit";
                 repo = "caddy";
-                rev = "fcdd848a890c335519a595e9ee9f11ec67995cb2";
-                hash = "sha256-dd+pM+NYRq9OfOhvbI2gPjlynF5DQy/jlVqMC3xwD4E=";
+                rev = "584de59c5e6c7bddbbfc6642fe2df4d7b42ea8e7";
+                hash = "sha256-Hz4d3/H4w32ilbZdVQbD40I51ZtCTp6ShLIKfh339sw=";
               }
             ) { };
-            vendorHash = "sha256-61eTMq3Ra/YBS2iBUkcYub2ybxZ8UI6ETVJbrZlMxvg=";
+            vendorHash = "sha256-aPGCTXFCedthFSt5Tzk7MKU49yv7J41g1ezVsMcm9MI=";
           };
         in
         final.callPackage caddy-rebmit { inherit source; };
