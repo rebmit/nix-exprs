@@ -68,7 +68,9 @@
     },
     "flake-utils": {
       "inputs": {
-        "systems": "systems"
+        "systems": [
+          "systems"
+        ]
       },
       "locked": {
         "lastModified": 1731533236,
@@ -181,7 +183,8 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "rebmit": "rebmit",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "systems": "systems"
       }
     },
     "sops-nix": {

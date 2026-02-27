@@ -10,7 +10,10 @@
       inputs.nixpkgs.follows = "rebmit/nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "rebmit/nixpkgs";
@@ -24,6 +27,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "rebmit/nixpkgs";
     };
+    systems.url = "github:nix-systems/default";
     # keep-sorted end
   };
 
