@@ -22,11 +22,11 @@
     },
     "import-tree": {
       "locked": {
-        "lastModified": 1771045967,
-        "narHash": "sha256-oYO4poyw0Sb/db2PigqugMlDwsvwLg6CSpFrMUWxA3Q=",
+        "lastModified": 1772159371,
+        "narHash": "sha256-AkfVgWWxt1pa1SlfKzcL1oQpMzgP70U3fBtzXqEGOms=",
         "owner": "vic",
         "repo": "import-tree",
-        "rev": "c968d3b54d12cf5d9c13f16f7c545a06c9d1fde6",
+        "rev": "78c35e32f2b499c25e0671e41662537a6b1edbf0",
         "type": "github"
       },
       "original": {
@@ -37,11 +37,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1771940324,
-        "narHash": "sha256-/zzigrJnhCVUaG2Ii9F4GMzD4dRAMLN6tjaK82Sac5Q=",
+        "lastModified": 1772203583,
+        "narHash": "sha256-6rm+1Hr0EHXhEJ07pWiDMZdEx07awKCKI7m1XmoEb70=",
         "owner": "rebmit",
         "repo": "nixpkgs",
-        "rev": "69265e7a0836551af21b67572b095b1b19d4eeed",
+        "rev": "56b28f2d2cf4890312fcfc8cf3ddf4c53dc86eec",
         "type": "github"
       },
       "original": {
