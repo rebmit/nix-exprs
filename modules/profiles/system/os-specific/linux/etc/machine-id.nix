@@ -60,7 +60,7 @@ in
   checks =
     { pkgs, ... }:
     let
-      provider = unify.profiles.system._.linux._.etc._.machine-id;
+      provider = unify.profiles.system._.os-specific._.linux._.etc._.machine-id;
 
       mkTest =
         {
@@ -78,7 +78,7 @@ in
                   class = "nixos";
                   requires = [
                     provider.name
-                    "profiles/system/linux/kernel/latest"
+                    "profiles/system/os-specific/linux/kernel/latest"
                   ]
                   ++ extraRequires;
                 })
@@ -136,7 +136,7 @@ in
 
         etc-overlay = mkTest {
           name = "etc-overlay";
-          extraRequires = [ "profiles/system/linux/etc/overlay" ];
+          extraRequires = [ "profiles/system/os-specific/linux/etc/overlay" ];
         };
       };
     };
