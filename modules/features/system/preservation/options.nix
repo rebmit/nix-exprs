@@ -359,7 +359,7 @@ let
     };
 in
 {
-  unify.features.preservation = {
+  unify.features.system._.preservation = {
     nixos.imports = [
       nixosOptionsModule
     ];

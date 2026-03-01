@@ -4,7 +4,7 @@
     {
       requires = [
         # keep-sorted start
-        "features/preservation"
+        "features/system/preservation"
         "profiles/system/os-specific/linux/etc/machine-id"
         "profiles/system/os-specific/linux/initrd/systemd"
         # keep-sorted end

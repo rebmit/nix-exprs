@@ -6,7 +6,7 @@ in
   unify.profiles.system._.os-specific._.linux._.btrfs-auto-scrub =
     { ... }:
     {
-      requires = [ "features/preservation" ];
+      requires = [ "features/system/preservation" ];
 
       nixos =
         { ... }:

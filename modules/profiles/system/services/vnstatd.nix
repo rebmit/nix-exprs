@@ -2,7 +2,7 @@
   unify.profiles.system._.services._.vnstatd =
     { ... }:
     {
-      requires = [ "features/preservation" ];
+      requires = [ "features/system/preservation" ];
 
       nixos =
         { config, ... }:

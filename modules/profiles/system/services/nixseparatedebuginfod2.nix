@@ -4,7 +4,7 @@
     {
       requires = [
         # keep-sorted start
-        "features/preservation"
+        "features/system/preservation"
         "profiles/system/networking/ports"
         # keep-sorted end
       ];

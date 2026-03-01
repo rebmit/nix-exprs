@@ -359,7 +359,7 @@ let
   };
 in
 {
-  unify.features.preservation.passthru.lib = {
+  unify.features.system._.preservation.passthru.lib = {
     inherit
       getAllDirectories
       getAllFiles

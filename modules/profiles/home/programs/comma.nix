@@ -4,7 +4,7 @@
     {
       requires = [
         # keep-sorted start
-        "features/preservation"
+        "features/system/preservation"
         "profiles/home/misc/username"
         # keep-sorted end
       ];

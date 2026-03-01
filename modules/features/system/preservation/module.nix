@@ -96,7 +96,7 @@ let
     };
 in
 {
-  unify.features.preservation =
+  unify.features.system._.preservation =
     { provider, ... }:
     {
       nixos.imports = [

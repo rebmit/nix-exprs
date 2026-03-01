@@ -4,7 +4,7 @@
     {
       requires = [
         # keep-sorted start
-        "features/preservation"
+        "features/system/preservation"
         "profiles/system/security/rtkit"
         # keep-sorted end
       ];

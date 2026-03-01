@@ -5,7 +5,7 @@ let
   inherit (lib.attrsets) mapAttrsToList setAttrByPath;
   inherit (lib.lists) flatten;
 
-  provider = unify.features.preservation;
+  provider = unify.features.system._.preservation;
 in
 {
   checks =
