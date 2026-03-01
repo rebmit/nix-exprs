@@ -3,3 +3,6 @@
 
 # profiles: simplify contexts to plain attrsets
 db717a9244a4b7c1341e3c98434388c29c9e7b70
+
+# profiles: reorganize into system and home
+5392d320ea393af146247eca41cfe425c55fb44f
