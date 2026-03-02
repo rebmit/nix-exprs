@@ -22,6 +22,7 @@
               ];
               flake-registry = "";
               keep-derivations = true;
+              keep-going = true;
               keep-outputs = true;
               trusted-users = [ "@wheel" ];
               use-cgroups = true;
@@ -48,6 +49,7 @@
               ];
               flake-registry = "";
               keep-derivations = true;
+              keep-going = true;
               keep-outputs = true;
               trusted-users = [ "@admin" ];
               use-xdg-base-directories = true;
