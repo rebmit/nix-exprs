@@ -73,6 +73,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-20260227-56b28f2": {
+      "locked": {
+        "lastModified": 1772203583,
+        "narHash": "sha256-6rm+1Hr0EHXhEJ07pWiDMZdEx07awKCKI7m1XmoEb70=",
+        "owner": "rebmit",
+        "repo": "nixpkgs",
+        "rev": "56b28f2d2cf4890312fcfc8cf3ddf4c53dc86eec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rebmit",
+        "ref": "20260227.56b28f2",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-terraform-providers-bin": {
       "inputs": {
         "nixpkgs": [
@@ -113,6 +129,7 @@
     "root": {
       "inputs": {
         "nix-index-database": "nix-index-database",
+        "nixpkgs-20260227-56b28f2": "nixpkgs-20260227-56b28f2",
         "nixpkgs-terraform-providers-bin": "nixpkgs-terraform-providers-bin",
         "rebmit": "rebmit"
       }

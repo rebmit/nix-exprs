@@ -7,6 +7,7 @@
 }:
 let
   inherit (lib) sourceTypes;
+  inherit (lib.attrsets) mapAttrs;
   inherit (lib.lists) elem;
   inherit (lib.modules) mkOrder;
   inherit (lib.strings) getName;
@@ -31,6 +32,13 @@ in
         nix-index-with-db
         nix-index-with-small-db
         comma-with-db
+        ;
+    }
+    // mapAttrs (n: v: if final.stdenv.hostPlatform.isDarwin then v else prev.${n}) {
+      inherit (inputs.nixpkgs-20260227-56b28f2.legacyPackages.${final.stdenv.hostPlatform.system})
+        thunderbird
+        zotero
+        zed-editor
         ;
     };
 
