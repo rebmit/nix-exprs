@@ -26,7 +26,7 @@ let
       source,
     }:
 
-    stdenv.mkDerivation (_finalAttrs: {
+    stdenv.mkDerivation {
       inherit (source) pname version src;
 
       patches = [
@@ -100,7 +100,7 @@ let
         maintainers = with lib.maintainers; [ rebmit ];
         platforms = lib.platforms.all;
       };
-    });
+    };
 in
 {
   overlays.default =
@@ -108,23 +108,25 @@ in
     {
       nheko_unstable =
         let
+          coeurl = final.coeurl_unstable;
+
           mtxclient = final.mtxclient_unstable;
 
           source = {
             pname = "nheko";
-            version = "0.12.1-unstable-2026-02-27";
+            version = "0.12.1-unstable-2026-03-02";
             src = final.callPackage (
               { fetchFromGitHub }:
               fetchFromGitHub {
                 owner = "Nheko-Reborn";
                 repo = "nheko";
-                rev = "8ec568c645ca20569b010dbbdb59b6953c1d5600";
-                hash = "sha256-E8e9ccWD8DNdEkyOzf+b2kDtIVRBub+GEwlohwXleV0=";
+                rev = "0c6f18382145ad4ea3725b763571fcbb7df4e987";
+                hash = "sha256-Q1zNhloZAjeEMk17itfBFiU9O767dEyvTpUID6x9ux0=";
               }
             ) { };
           };
         in
-        final.callPackage nheko { inherit mtxclient source; };
+        final.callPackage nheko { inherit coeurl mtxclient source; };
     };
 
   checks =
