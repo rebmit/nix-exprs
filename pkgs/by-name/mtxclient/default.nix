@@ -64,21 +64,23 @@ in
     {
       mtxclient_unstable =
         let
+          coeurl = final.coeurl_unstable;
+
           source = {
             pname = "mtxclient";
-            version = "0.10.1-unstable-2026-02-20";
+            version = "0.10.1-unstable-2026-03-02";
             src = final.callPackage (
               { fetchFromGitHub }:
               fetchFromGitHub {
                 owner = "Nheko-Reborn";
                 repo = "mtxclient";
-                rev = "873911e352a0845dfb178f77b1ddea796a5d3455";
-                hash = "sha256-kbS0Z0AuALf5I7OCqTF6snV5cX2HB1d16CB3agNtxCg=";
+                rev = "f5766cb53c244a808b7e512c7b83b3942fb67834";
+                hash = "sha256-5LapoeXRiRi4tSpFvcVu4Z6+aDIz43UBoDU1Rx2y8TA=";
               }
             ) { };
           };
         in
-        final.callPackage mtxclient { inherit source; };
+        final.callPackage mtxclient { inherit coeurl source; };
     };
 
   checks =
