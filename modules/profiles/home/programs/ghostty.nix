@@ -15,10 +15,13 @@
               else
                 null;
             settings = {
+              # keep-sorted start block=yes
               font-family = "monospace";
               font-size = 12;
-              theme = "light:Adwaita,dark:Adwaita Dark";
               gtk-single-instance = true;
+              macos-option-as-alt = true;
+              theme = "light:Adwaita,dark:Adwaita Dark";
+              # keep-sorted end
             };
           };
         };
