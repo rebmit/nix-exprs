@@ -23,16 +23,6 @@
                 indent-guides.render = true;
               };
               theme = "adwaita-light";
-              keys = {
-                normal = {
-                  esc = [
-                    "keep_primary_selection"
-                    "collapse_selection"
-                  ];
-                  S = ":w";
-                  Q = ":q";
-                };
-              };
             };
           };
         };
