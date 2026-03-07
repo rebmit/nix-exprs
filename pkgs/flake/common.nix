@@ -36,9 +36,7 @@ in
     }
     // mapAttrs (n: v: if final.stdenv.hostPlatform.isDarwin then v else prev.${n}) {
       inherit (inputs.nixpkgs-20260227-56b28f2.legacyPackages.${final.stdenv.hostPlatform.system})
-        thunderbird
         zotero
-        zed-editor
         ;
     };
 
