@@ -6,10 +6,10 @@ let
 in
 {
   unify.profiles.system._.users =
-    { host, ... }:
+    { host, inputContexts, ... }:
     let
       userType = types.submodule (
-        { name, ... }:
+        { name, config, ... }:
         {
           options = {
             name = mkOption {
@@ -34,11 +34,22 @@ in
                 Name of providers that this user depends on.
               '';
             };
-            contexts.user = mkOption {
-              type = types.deferredModule;
+            contexts = mkOption {
+              type = types.lazyAttrsOf types.deferredModule;
               default = { };
               description = ''
-                User context for this user.
+                Additional per-user contexts for this user.
+              '';
+            };
+            resolvedContexts = mkOption {
+              type = types.lazyAttrsOf types.raw;
+              readOnly = true;
+              default = unify.lib.collectContexts {
+                inherit (config) requires contexts;
+                resolvedContexts = inputContexts;
+              };
+              description = ''
+                Fully resolved contexts for this user.
               '';
             };
           };
@@ -65,8 +76,7 @@ in
             _: user:
             unify.lib.collectModules {
               class = "nixos";
-              inherit (user) requires contexts;
-              resolvedContexts.host = host;
+              inherit (user) requires resolvedContexts;
             }
           ) host.users;
         };
@@ -78,8 +88,7 @@ in
             _: user:
             unify.lib.collectModules {
               class = "darwin";
-              inherit (user) requires contexts;
-              resolvedContexts.host = host;
+              inherit (user) requires resolvedContexts;
             }
           ) host.users;
         };

@@ -28,8 +28,7 @@ in
               _: user:
               unify.lib.collectModules {
                 class = "homeManager";
-                inherit (user) requires contexts;
-                resolvedContexts.host = host;
+                inherit (user) requires resolvedContexts;
               }
             ) filteredUsers;
           };
@@ -47,8 +46,7 @@ in
               _: user:
               unify.lib.collectModules {
                 class = "homeManager";
-                inherit (user) requires contexts;
-                resolvedContexts.host = host;
+                inherit (user) requires resolvedContexts;
               }
             ) filteredUsers;
           };

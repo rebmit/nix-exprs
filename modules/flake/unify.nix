@@ -108,7 +108,9 @@ let
               let
                 contexts = getAttrs (attrNames config.contexts) inputContexts;
                 eval = extendModules {
-                  specialArgs = contexts;
+                  specialArgs = contexts // {
+                    inherit inputContexts;
+                  };
                 };
                 keys = mapAttrs (_: v: v.key) contexts;
               in
