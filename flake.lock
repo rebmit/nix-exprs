@@ -46,7 +46,6 @@
       },
       "original": {
         "owner": "rebmit",
-        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }

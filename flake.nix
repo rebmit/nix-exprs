@@ -6,7 +6,7 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     import-tree.url = "github:vic/import-tree";
-    nixpkgs.url = "github:rebmit/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:rebmit/nixpkgs";
     # keep-sorted end
   };
 
