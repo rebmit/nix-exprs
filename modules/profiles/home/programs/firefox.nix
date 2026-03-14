@@ -117,7 +117,6 @@ in
             PostQuantumKeyAgreementEnabled = true;
             Preferences = {
               # keep-sorted start
-              "browser.tabs.closeWindowWithLastTab" = false;
               "browser.tabs.inTitlebar" = 1;
               "browser.theme.dark-private-windows" = false;
               "browser.urlbar.suggest.history" = false;
