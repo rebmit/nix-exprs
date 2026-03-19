@@ -108,8 +108,6 @@ in
     {
       nheko_unstable =
         let
-          coeurl = final.coeurl_unstable;
-
           mtxclient = final.mtxclient_unstable;
 
           source = {
@@ -126,7 +124,7 @@ in
             ) { };
           };
         in
-        final.callPackage nheko { inherit coeurl mtxclient source; };
+        final.callPackage nheko { inherit mtxclient source; };
     };
 
   checks =

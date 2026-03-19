@@ -64,8 +64,6 @@ in
     {
       mtxclient_unstable =
         let
-          coeurl = final.coeurl_unstable;
-
           source = {
             pname = "mtxclient";
             version = "0.10.1-unstable-2026-03-02";
@@ -80,7 +78,7 @@ in
             ) { };
           };
         in
-        final.callPackage mtxclient { inherit coeurl source; };
+        final.callPackage mtxclient { inherit source; };
     };
 
   checks =
