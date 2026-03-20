@@ -1,5 +1,5 @@
 let
-  bird3-rebmit =
+  bird2 =
     {
       lib,
       stdenv,
@@ -27,7 +27,7 @@ let
 
       patches = [ ./dont-create-sysconfdir-2.patch ];
 
-      CPP = "${stdenv.cc.targetPrefix}cpp -E";
+      env.CPP = "${stdenv.cc.targetPrefix}cpp -E";
 
       configureFlags = [
         "--localstatedir=/var"
@@ -36,7 +36,7 @@ let
 
       meta = {
         description = "BIRD Internet Routing Daemon";
-        homepage = "https://bird.nic.cz/";
+        homepage = "https://bird.network.cz/";
         license = lib.licenses.gpl2Plus;
         maintainers = with lib.maintainers; [ rebmit ];
         platforms = lib.platforms.linux;
@@ -47,31 +47,31 @@ in
   overlays.default =
     { final, ... }:
     {
-      bird3-rebmit =
+      bird2-rebmit =
         let
           source = {
             pname = "bird";
-            version = "3.2.0-unstable-2026-01-04";
+            version = "2.18-unstable-2026-01-04";
             src = final.callPackage (
               { fetchFromGitHub }:
               fetchFromGitHub {
                 owner = "rebmit";
                 repo = "bird";
-                rev = "aa77caf9f253c706aadd932761aa535759d3b892";
+                rev = "cb6f8414e25af797949529a09f1336e71e91b38e";
                 fetchSubmodules = false;
-                hash = "sha256-EF/N+uulYWb3Dw5MNbTPOIV/ANuxoh/Y3UIXmdScw3w=";
+                hash = "sha256-gcqj+YtNqqo/2365xEAq056KTazg/HfJVk1FJ+oGDLg=";
               }
             ) { };
           };
         in
-        final.callPackage bird3-rebmit { inherit source; };
+        final.callPackage bird2 { inherit source; };
     };
 
   checks =
     { pkgs, ... }:
     {
       packages = {
-        inherit (pkgs) bird3-rebmit;
+        inherit (pkgs) bird2-rebmit;
       };
     };
 }

@@ -1,5 +1,5 @@
 let
-  caddy-rebmit =
+  caddy =
     {
       lib,
       buildGo125Module,
@@ -88,7 +88,7 @@ in
             vendorHash = "sha256-Zerl+Pa1bnM2I/p3HQzA8TRgzVxE6O/5/qJhI3J+TZc=";
           };
         in
-        final.callPackage caddy-rebmit { inherit source; };
+        final.callPackage caddy { inherit source; };
     };
 
   checks =
