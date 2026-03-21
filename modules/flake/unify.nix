@@ -23,7 +23,6 @@ let
   providerType =
     {
       namePrefix,
-      contextAware ? true,
     }@attrs:
     types.submodule (
       {
@@ -56,7 +55,6 @@ let
           };
           contexts = mkOption {
             type = types.lazyAttrsOf types.deferredModule;
-            readOnly = !contextAware;
             default = { };
             description = ''
               Contexts required by this provider.
@@ -161,10 +159,7 @@ let
       }
     );
 
-  featureProviderType = providerType {
-    contextAware = false;
-    namePrefix = "features";
-  };
+  featureProviderType = providerType { namePrefix = "features"; };
 
   profileProviderType = providerType { namePrefix = "profiles"; };
 
