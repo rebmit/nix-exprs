@@ -11,7 +11,10 @@ in
         projectRootFile = "flake.nix";
         programs = {
           # keep-sorted start block=yes
-          deadnix.enable = true;
+          deadnix = {
+            enable = true;
+            no-underscore = true;
+          };
           keep-sorted.enable = true;
           nixfmt.enable = true;
           prettier.enable = true;
