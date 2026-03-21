@@ -24,13 +24,12 @@ in
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users = mapAttrs (
-              _: user:
-              unify.lib.collectModules {
+            users = mapAttrs (_: user: {
+              imports = unify.lib.collectModules {
                 class = "homeManager";
-                inherit (user) requires resolvedContexts;
-              }
-            ) filteredUsers;
+                inherit (user) requires contexts;
+              };
+            }) filteredUsers;
           };
         };
 
@@ -42,13 +41,12 @@ in
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users = mapAttrs (
-              _: user:
-              unify.lib.collectModules {
+            users = mapAttrs (_: user: {
+              imports = unify.lib.collectModules {
                 class = "homeManager";
-                inherit (user) requires resolvedContexts;
-              }
-            ) filteredUsers;
+                inherit (user) requires contexts;
+              };
+            }) filteredUsers;
           };
         };
     };

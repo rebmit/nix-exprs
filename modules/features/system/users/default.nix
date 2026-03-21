@@ -2,11 +2,12 @@
 let
   inherit (lib) types;
   inherit (lib.attrsets) mapAttrsToList;
+  inherit (lib.lists) flatten;
   inherit (lib.options) mkOption;
 in
 {
   unify.features.system._.users =
-    { host, inputContexts, ... }:
+    { host, __inputContexts, ... }:
     let
       userType = types.submodule (
         { name, config, ... }:
@@ -37,19 +38,15 @@ in
             contexts = mkOption {
               type = types.lazyAttrsOf types.deferredModule;
               default = { };
+              apply =
+                contexts:
+                unify.lib.collectContexts {
+                  inherit (config) requires;
+                  inherit contexts;
+                  resolvedContexts = __inputContexts;
+                };
               description = ''
-                Additional per-user contexts for this user.
-              '';
-            };
-            resolvedContexts = mkOption {
-              type = types.lazyAttrsOf types.raw;
-              readOnly = true;
-              default = unify.lib.collectContexts {
-                inherit (config) requires contexts;
-                resolvedContexts = inputContexts;
-              };
-              description = ''
-                Fully resolved contexts for this user.
+                Contexts for this user.
               '';
             };
           };
@@ -72,25 +69,29 @@ in
       nixos =
         { ... }:
         {
-          imports = mapAttrsToList (
-            _: user:
-            unify.lib.collectModules {
-              class = "nixos";
-              inherit (user) requires resolvedContexts;
-            }
-          ) host.users;
+          imports = flatten (
+            mapAttrsToList (
+              _: user:
+              unify.lib.collectModules {
+                class = "nixos";
+                inherit (user) requires contexts;
+              }
+            ) host.users
+          );
         };
 
       darwin =
         { ... }:
         {
-          imports = mapAttrsToList (
-            _: user:
-            unify.lib.collectModules {
-              class = "darwin";
-              inherit (user) requires resolvedContexts;
-            }
-          ) host.users;
+          imports = flatten (
+            mapAttrsToList (
+              _: user:
+              unify.lib.collectModules {
+                class = "darwin";
+                inherit (user) requires contexts;
+              }
+            ) host.users
+          );
         };
     };
 }
