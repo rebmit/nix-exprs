@@ -9,3 +9,6 @@ db717a9244a4b7c1341e3c98434388c29c9e7b70
 
 # features: reorganize into system and home
 9374f37213928f93867fb579b48881cf3366ffe2
+
+# modules: merge profiles into features
+404a64770cb5baad222eab2ff7c8178858cbff13
