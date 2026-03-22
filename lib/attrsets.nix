@@ -11,8 +11,8 @@ let
   inherit (lib.lists) flatten foldr;
 in
 {
-  flake.lib =
-    { ... }:
+  lib =
+    _:
     let
       # https://github.com/linyinfeng/dotfiles/blob/5607d1c31434f33d9a8c2909fc694b9b4e4b5557/lib/flatten-tree.nix
       flattenTree =

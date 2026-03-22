@@ -4,8 +4,8 @@ let
   inherit (lib.modules) mkMerge mkOptionDefault;
 in
 {
-  flake.lib =
-    { ... }:
+  lib =
+    _:
     let
       # https://github.com/xddxdd/nixos-config/blob/710791365eef89076a742c000ddc3e719dbc8582/helpers/fn/service-harden.nix
       # https://github.com/NickCao/flakes/blob/3b03efb676ea602575c916b2b8bc9d9cd13b0d85/modules/cloud/services.nix
