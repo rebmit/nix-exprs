@@ -14,9 +14,7 @@ in
 {
   imports = [
     # keep-sorted start
-    "${inputs.flake-parts}/modules/checks.nix"
     "${inputs.flake-parts}/modules/legacyPackages.nix"
-    "${inputs.flake-parts}/modules/overlays.nix"
     self.flakeModules.checks
     self.flakeModules.nixpkgs
     self.flakeModules.overlays

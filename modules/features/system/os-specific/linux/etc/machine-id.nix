@@ -73,16 +73,14 @@ in
           nodes.machine =
             { ... }:
             {
-              imports = [
-                (unify.lib.collectModules {
-                  class = "nixos";
-                  requires = [
-                    provider.name
-                    "features/system/os-specific/linux/kernel/latest"
-                  ]
-                  ++ extraRequires;
-                })
-              ];
+              imports = unify.lib.collectModules {
+                class = "nixos";
+                requires = [
+                  (builtins.concatStringsSep "/" provider.path)
+                  "features/system/os-specific/linux/kernel/latest"
+                ]
+                ++ extraRequires;
+              };
 
               networking.useNetworkd = true;
 

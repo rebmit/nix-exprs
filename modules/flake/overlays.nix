@@ -1,11 +1,11 @@
 { lib, ... }:
 let
   inherit (lib) types;
-  inherit (lib.attrsets) mapAttrs optionalAttrs;
+  inherit (lib.attrsets) mapAttrs;
   inherit (lib.options) mkOption;
 
   overlaysModule =
-    { options, config, ... }:
+    { config, ... }:
     {
       _file = ./overlays.nix;
 
@@ -22,11 +22,9 @@ let
       };
 
       config = {
-        flake =
-          optionalAttrs (options.flake.type.getSubOptions [ ] ? overlays && config.overlays ? default)
-            {
-              overlays.default = config.overlays.default;
-            };
+        flake = {
+          overlays.default = config.overlays.default;
+        };
       };
     };
 in

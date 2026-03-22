@@ -18,12 +18,10 @@ in
           nodes.machine =
             { pkgs, ... }:
             {
-              imports = [
-                (unify.lib.collectModules {
-                  class = "nixos";
-                  requires = [ provider.name ];
-                })
-              ];
+              imports = unify.lib.collectModules {
+                class = "nixos";
+                requires = [ (builtins.concatStringsSep "/" provider.path) ];
+              };
 
               boot.kernelPackages = pkgs.linuxPackages_latest;
 
