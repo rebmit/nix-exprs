@@ -3,18 +3,19 @@
   self,
   config,
   lib,
+  getSystem,
   ...
 }:
 let
   inherit (builtins) elem;
   inherit (lib) sourceTypes;
+  inherit (lib.attrsets) genAttrs;
   inherit (lib.modules) mkOrder;
   inherit (lib.strings) getName;
 in
 {
   imports = [
     # keep-sorted start
-    "${inputs.flake-parts}/modules/legacyPackages.nix"
     self.flakeModules.checks
     self.flakeModules.nixpkgs
     self.flakeModules.overlays
@@ -35,7 +36,7 @@ in
     };
 
   perSystem =
-    { pkgs, ... }:
+    { ... }:
     {
       nixpkgs = {
         config = {
@@ -73,7 +74,9 @@ in
           config.overlays.internal
         ];
       };
-
-      legacyPackages = pkgs;
     };
+
+  flake = {
+    legacyPackages = genAttrs config.systems (system: (getSystem system).allModuleArgs.pkgs);
+  };
 }

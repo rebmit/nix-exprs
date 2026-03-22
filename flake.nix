@@ -116,7 +116,6 @@
               nixosConfigurations = partitionAttr "modules" "nixosConfigurations";
               nixosModules = partitionAttr "modules" "nixosModules";
               overlays = partitionAttr "pkgs" "overlays";
-              packages = partitionAttr "pkgs" "legacyPackages";
               partitions = config.partitions;
               # keep-sorted end
             };
