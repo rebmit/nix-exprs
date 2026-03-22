@@ -20,16 +20,14 @@
     }:
     let
       inherit (nixpkgs) lib;
+      inherit (lib) types;
       inherit (lib.attrsets)
         getAttrFromPath
-        listToAttrs
-        nameValuePair
         optionalAttrs
         ;
-      inherit (lib.lists) foldl;
-      inherit (lib.modules) evalModules mkOptionDefault;
+      inherit (lib.modules) evalModules mkMerge mkOptionDefault;
+      inherit (lib.options) mkOption;
       inherit (lib.strings) splitString;
-      inherit (lib.trivial) pipe;
     in
     (evalModules {
       specialArgs = {
@@ -44,7 +42,6 @@
       modules = [
         # keep-sorted start
         "${flake-parts}/modules/debug.nix"
-        "${flake-parts}/modules/flake.nix"
         "${flake-parts}/modules/moduleWithSystem.nix"
         "${flake-parts}/modules/perSystem.nix"
         "${flake-parts}/modules/transposition.nix"
@@ -60,6 +57,20 @@
             "aarch64-linux"
             "aarch64-darwin"
           ];
+        }
+
+        {
+          options.flake = mkOption {
+            type = types.submoduleWith {
+              modules = [
+                { freeformType = types.lazyAttrsOf (types.uniq types.raw); }
+                ./schema.nix
+              ];
+            };
+            description = ''
+              Raw flake output attributes.
+            '';
+          };
         }
 
         (
@@ -90,22 +101,12 @@
 
             flake = {
               # keep-sorted start block=yes
-              checks =
-                foldl
-                  (
-                    acc: v:
-                    pipe config.systems [
-                      (map (system: nameValuePair system (acc.${system} or { } // v.${system} or { })))
-                      listToAttrs
-                    ]
-                  )
-                  { }
-                  [
-                    # keep-sorted start
-                    (partitionAttr "modules" "checks")
-                    (partitionAttr "pkgs" "checks")
-                    # keep-sorted end
-                  ];
+              checks = mkMerge [
+                # keep-sorted start
+                (partitionAttr "modules" "checks")
+                (partitionAttr "pkgs" "checks")
+                # keep-sorted end
+              ];
               darwinConfigurations = partitionAttr "modules" "darwinConfigurations";
               devShells = partitionAttr "dev" "devShells";
               flakeModules = partitionAttr "modules" "flakeModules";
@@ -115,6 +116,7 @@
               nixosConfigurations = partitionAttr "modules" "nixosConfigurations";
               nixosModules = partitionAttr "modules" "nixosModules";
               overlays = partitionAttr "pkgs" "overlays";
+              packages = partitionAttr "pkgs" "legacyPackages";
               partitions = config.partitions;
               # keep-sorted end
             };
