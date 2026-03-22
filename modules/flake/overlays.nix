@@ -1,7 +1,7 @@
 { lib, ... }:
 let
   inherit (lib) types;
-  inherit (lib.attrsets) optionalAttrs;
+  inherit (lib.attrsets) mapAttrs optionalAttrs;
   inherit (lib.options) mkOption;
 
   overlaysModule =
@@ -10,43 +10,14 @@ let
       _file = ./overlays.nix;
 
       options.overlays = mkOption {
-        type = types.lazyAttrsOf (
-          types.submodule (
-            { extendModules, ... }:
-            {
-              freeformType = types.lazyAttrsOf types.raw;
-
-              options.__functor = mkOption {
-                internal = true;
-                visible = false;
-                readOnly = true;
-                default =
-                  _: final: prev:
-                  let
-                    eval = extendModules {
-                      specialArgs = { inherit final prev; };
-                    };
-                  in
-                  removeAttrs eval.config [ "__functor" ];
-                description = ''
-                  Functor used to evaluate the overlay module as a Nixpkgs overlay.
-                '';
-              };
-
-              config._module.args = {
-                final = throw ''
-                  `final` is only defined when applying the module as a Nixpkgs overlay.
-                '';
-                prev = throw ''
-                  `prev` is only defined when applying the module as a Nixpkgs overlay.
-                '';
-              };
-            }
-          )
-        );
+        type = types.lazyAttrsOf (types.functionTo (types.lazyAttrsOf (types.uniq types.raw)));
         default = { };
+        apply = mapAttrs (
+          _: f: final: prev:
+          f { inherit final prev; }
+        );
         description = ''
-          Overlays defined as modules and used to generate Nixpkgs overlays.
+          Overlays defined as functions and composed through the module system.
         '';
       };
 

@@ -258,25 +258,18 @@ let
           }
         );
 
-      classType =
-        { path, ... }:
-        types.submodule (
-          { name, ... }:
-          {
-            freeformType = types.lazyAttrsOf (configType { path = path ++ [ name ]; } name);
-          }
-        );
+      classType = types.submodule (
+        { name, ... }:
+        {
+          freeformType = types.lazyAttrsOf (configType name);
+        }
+      );
 
       configType =
-        { path, ... }:
         class:
         types.submodule (
           { name, config, ... }:
           {
-            freeformType = types.lazyAttrsOf types.deferredModule;
-
-            imports = [ (mkAliasOptionModule [ "_" ] [ "provides" ]) ];
-
             options = {
               name = mkOption {
                 type = types.str;
@@ -284,14 +277,6 @@ let
                 default = name;
                 description = ''
                   Name of this configuration.
-                '';
-              };
-              path = mkOption {
-                type = types.listOf types.str;
-                readOnly = true;
-                default = path ++ [ name ];
-                description = ''
-                  Path of this configuration.
                 '';
               };
               class = mkOption {
@@ -320,17 +305,6 @@ let
                   };
                 description = ''
                   Contexts for this configuration.
-                '';
-              };
-              provides = mkOption {
-                type = types.submodule {
-                  freeformType = types.lazyAttrsOf (providerType {
-                    inherit (config) path;
-                  });
-                };
-                default = { };
-                description = ''
-                  Sub-providers associated with this configuration.
                 '';
               };
               modules = mkOption {
@@ -423,9 +397,7 @@ let
 
         configs = mkOption {
           type = types.submodule {
-            freeformType = types.lazyAttrsOf (classType {
-              path = [ "configs" ];
-            });
+            freeformType = types.lazyAttrsOf classType;
           };
           default = { };
           description = ''
