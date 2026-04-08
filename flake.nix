@@ -109,7 +109,7 @@
           imports = [
             (import-tree ./dev)
             (import-tree ./lib)
-            (import-tree ./modules)
+            (import-tree ./modules/flake)
             (import-tree ./pkgs)
           ];
         }
