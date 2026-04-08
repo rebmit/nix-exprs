@@ -1,12 +1,68 @@
 {
   inputs = {
     # keep-sorted start block=yes
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dns = {
+      url = "github:nix-community/dns.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
+    git-hooks-nix = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.gitignore.follows = "gitignore-nix";
+      inputs.flake-compat.follows = "flake-compat";
+    };
+    gitignore-nix = {
+      url = "github:hercules-ci/gitignore.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     import-tree.url = "github:vic/import-tree";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs-terraform-providers-bin = {
+      url = "github:nix-community/nixpkgs-terraform-providers-bin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs.url = "github:rebmit/nixpkgs";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    systems.url = "github:nix-systems/default";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # keep-sorted end
   };
 
@@ -20,23 +76,13 @@
     }:
     let
       inherit (nixpkgs) lib;
-      inherit (lib.attrsets)
-        getAttrFromPath
-        listToAttrs
-        nameValuePair
-        optionalAttrs
-        ;
-      inherit (lib.lists) foldl;
       inherit (lib.modules) evalModules mkOptionDefault;
-      inherit (lib.strings) splitString;
-      inherit (lib.trivial) pipe;
     in
     (evalModules {
       specialArgs = {
         inherit inputs self;
         flake-parts-lib = flake-parts.lib;
         moduleLocation = "${self.outPath}/flake.nix";
-        partitionStack = [ ];
       };
 
       class = "flake";
@@ -49,7 +95,6 @@
         "${flake-parts}/modules/perSystem.nix"
         "${flake-parts}/modules/transposition.nix"
         "${flake-parts}/modules/withSystem.nix"
-        flake-parts.flakeModules.partitions
         # keep-sorted end
 
         {
@@ -60,66 +105,14 @@
             "aarch64-linux"
             "aarch64-darwin"
           ];
+
+          imports = [
+            (import-tree ./dev)
+            (import-tree ./lib)
+            (import-tree ./modules)
+            (import-tree ./pkgs)
+          ];
         }
-
-        (
-          { config, partitionStack, ... }:
-          let
-            partitionAttr =
-              partition: attrPath:
-              (getAttrFromPath (splitString "/" attrPath) config.partitions.${partition}.module.flake);
-          in
-          optionalAttrs (partitionStack == [ ]) {
-            partitions = {
-              # keep-sorted start block=yes
-              dev = {
-                extraInputsFlake = ./dev/_flake;
-                module = import-tree ./dev;
-              };
-              lib.module = import-tree ./lib;
-              modules = {
-                extraInputsFlake = ./modules/_flake;
-                module = import-tree ./modules;
-              };
-              pkgs = {
-                extraInputsFlake = ./pkgs/_flake;
-                module = import-tree ./pkgs;
-              };
-              # keep-sorted end
-            };
-
-            flake = {
-              # keep-sorted start block=yes
-              checks =
-                foldl
-                  (
-                    acc: v:
-                    pipe config.systems [
-                      (map (system: nameValuePair system (acc.${system} or { } // v.${system} or { })))
-                      listToAttrs
-                    ]
-                  )
-                  { }
-                  [
-                    # keep-sorted start
-                    (partitionAttr "modules" "checks")
-                    (partitionAttr "pkgs" "checks")
-                    # keep-sorted end
-                  ];
-              darwinConfigurations = partitionAttr "modules" "darwinConfigurations";
-              devShells = partitionAttr "dev" "devShells";
-              flakeModules = partitionAttr "modules" "flakeModules";
-              formatter = partitionAttr "dev" "formatter";
-              legacyPackages = partitionAttr "pkgs" "legacyPackages";
-              lib = partitionAttr "lib" "lib";
-              nixosConfigurations = partitionAttr "modules" "nixosConfigurations";
-              nixosModules = partitionAttr "modules" "nixosModules";
-              overlays = partitionAttr "pkgs" "overlays";
-              partitions = config.partitions;
-              # keep-sorted end
-            };
-          }
-        )
       ];
     }).config.flake;
 }

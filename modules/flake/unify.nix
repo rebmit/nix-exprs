@@ -420,6 +420,4 @@ let
 in
 {
   imports = [ unifyModule ];
-
-  flake.flakeModules.unify = unifyModule;
 }

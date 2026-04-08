@@ -35,5 +35,5 @@ let
     };
 in
 {
-  flake.flakeModules.lib = libModule;
+  imports = [ libModule ];
 }

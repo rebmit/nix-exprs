@@ -1,6 +1,5 @@
 {
   inputs,
-  self,
   config,
   lib,
   ...
@@ -15,24 +14,8 @@ in
   imports = [
     # keep-sorted start
     "${inputs.flake-parts}/modules/legacyPackages.nix"
-    self.flakeModules.checks
-    self.flakeModules.nixpkgs
-    self.flakeModules.overlays
     # keep-sorted end
   ];
-
-  overlays.internal =
-    { final, prev, ... }:
-    {
-      inherit (inputs.nixpkgs-terraform-providers-bin.overlay final prev)
-        terraform-providers-bin
-        ;
-      inherit (inputs.nix-index-database.overlays.nix-index final prev)
-        nix-index-with-db
-        nix-index-with-small-db
-        comma-with-db
-        ;
-    };
 
   perSystem =
     { pkgs, ... }:
@@ -70,7 +53,17 @@ in
         };
         overlays = mkOrder 600 [
           config.overlays.default
-          config.overlays.internal
+
+          (final: prev: {
+            inherit (inputs.nixpkgs-terraform-providers-bin.overlay final prev)
+              terraform-providers-bin
+              ;
+            inherit (inputs.nix-index-database.overlays.nix-index final prev)
+              nix-index-with-db
+              nix-index-with-small-db
+              comma-with-db
+              ;
+          })
         ];
       };
 

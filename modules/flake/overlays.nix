@@ -29,5 +29,5 @@ let
     };
 in
 {
-  flake.flakeModules.overlays = overlaysModule;
+  imports = [ overlaysModule ];
 }
