@@ -67,8 +67,9 @@ let
           };
 
           config = {
-            _module.args.pkgs = import cfg.path {
+            _module.args.pkgs = import ../../pkgs/top-level/default.nix {
               inherit (cfg)
+                path
                 localSystem
                 crossSystem
                 config
