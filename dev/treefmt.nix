@@ -14,6 +14,8 @@ in
           deadnix = {
             enable = true;
             no-underscore = true;
+            no-lambda-arg = true;
+            no-lambda-pattern-names = true;
           };
           keep-sorted.enable = true;
           nixfmt.enable = true;
