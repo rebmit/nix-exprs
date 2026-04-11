@@ -10,4 +10,16 @@
     inputs.treefmt-nix.flakeModule
     # keep-sorted end
   ];
+
+  perSystem =
+    { system, ... }:
+    {
+      _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system}.extend (
+        final: prev: {
+          inherit (inputs.nixpkgs-terraform-providers-bin.overlay final prev)
+            terraform-providers-bin
+            ;
+        }
+      );
+    };
 }

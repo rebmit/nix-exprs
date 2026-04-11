@@ -8,7 +8,7 @@ in
     {
       treefmt = {
         flakeCheck = false;
-        projectRootFile = "flake.nix";
+        projectRootFile = "flake/flake.nix";
         programs = {
           # keep-sorted start block=yes
           deadnix = {
@@ -32,5 +32,7 @@ in
         entry = getExe config.treefmt.build.wrapper;
         pass_filenames = false;
       };
+
+      devshells.default.packages = [ config.treefmt.build.wrapper ];
     };
 }

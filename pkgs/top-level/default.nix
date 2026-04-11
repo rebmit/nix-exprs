@@ -2,7 +2,7 @@
   # Path to the nixpkgs source tree to be imported.
   path ? (
     let
-      lock = builtins.fromJSON (builtins.readFile ../../flake.lock);
+      lock = builtins.fromJSON (builtins.readFile ../../flake/flake.lock);
       nodeName = lock.nodes.root.inputs.nixpkgs;
     in
     fetchTree lock.nodes.${nodeName}.locked
