@@ -15,7 +15,7 @@
       inputs.flake-utils.follows = "flake-utils";
     };
     flake-compat = {
-      url = "github:edolstra/flake-compat";
+      url = "https://git.lix.systems/lix-project/flake-compat/archive/main.tar.gz";
       flake = false;
     };
     flake-parts = {
