@@ -108,7 +108,6 @@
 
           imports = [
             (import-tree ./dev)
-            (import-tree ./lib)
             (import-tree ./modules/flake)
           ];
         }

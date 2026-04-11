@@ -36,6 +36,7 @@ let
       ;
 
     overlays = [
+      (import ./lib.nix)
       (import ./all-packages.nix)
     ]
     ++ overlays;

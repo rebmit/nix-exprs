@@ -8,6 +8,8 @@
 
   _module.args.data = builtins.fromJSON (builtins.readFile ../../infra/data.json);
 
+  flake.lib = import ../../lib { };
+
   perSystem =
     { pkgs, ... }:
     {

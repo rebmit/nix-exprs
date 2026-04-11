@@ -3,7 +3,7 @@ let
   inherit (lib) types;
   inherit (lib.attrsets) isDerivation genAttrs;
   inherit (lib.options) mkOption;
-  inherit (self.lib.attrsets) flattenTree;
+  inherit (self.lib.rebmit.attrsets) flattenTree;
 
   checksModule =
     { config, getSystem, ... }:
