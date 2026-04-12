@@ -72,12 +72,14 @@ let
         };
 
       finalInputs =
-        assert lib.all (
-          name: inputs ? ${name} -> throw "'${name}' cannot be used as the name of an input"
-        ) [ "registry" ];
+        assert lib.all (name: inputs ? ${name} -> throw "'${name}' cannot be used as the name of an input")
+          [
+            "registry"
+            "__findFile"
+          ];
         inputs
         // {
-          inherit registry;
+          inherit registry __findFile;
         };
 
       __findFile =
@@ -98,7 +100,7 @@ let
         if lib.isPath m then
           { config, ... }:
           let
-            provider = scopedImport { inherit __findFile; } m;
+            provider = import m;
 
             provider' = lib.toFunction ((lib.toFunction provider) finalInputs);
             provider'' = provider' requiredArgs;

@@ -1,4 +1,9 @@
-{ inputs, lib, ... }:
+{
+  inputs,
+  lib,
+  __findFile,
+  ...
+}:
 
 {
   includes = [ <rebmit/features/project/nixpkgs> ];

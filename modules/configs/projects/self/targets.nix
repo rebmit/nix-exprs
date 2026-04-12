@@ -1,3 +1,5 @@
+{ __findFile, ... }:
+
 {
   includes = [ <rebmit/features/project/targets> ];
 
