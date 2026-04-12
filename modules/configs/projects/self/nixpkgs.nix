@@ -1,6 +1,8 @@
 { inputs, lib, ... }:
 
 {
+  includes = [ <rebmit/features/project/nixpkgs> ];
+
   modules.perTarget =
     { ... }:
     {

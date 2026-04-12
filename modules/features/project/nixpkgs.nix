@@ -3,8 +3,7 @@
 { project, ... }:
 
 {
-  # TODO: scopedImport with __findFile
-  # imports = [ <rebmit/features/project/targets> ];
+  includes = [ ./targets.nix ];
 
   configs.project =
     { ... }:

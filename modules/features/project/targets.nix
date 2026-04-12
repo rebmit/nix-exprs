@@ -1,6 +1,6 @@
 { lib, ... }:
 
-{ config, project, ... }:
+{ modules, project, ... }:
 
 {
   configs.project =
@@ -45,7 +45,7 @@
           default = lib.mapAttrs (
             _: target:
             (lib.evalModules {
-              modules = [ config.modules.perTarget ];
+              modules = [ modules.perTarget ];
               specialArgs = { inherit target; };
             }).config
           ) project.targets;

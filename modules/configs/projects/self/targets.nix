@@ -1,4 +1,6 @@
 {
+  includes = [ <rebmit/features/project/targets> ];
+
   configs.project =
     { ... }:
     {
