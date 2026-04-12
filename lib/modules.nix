@@ -91,7 +91,7 @@ let
           tail = "/" + lib.concatStringsSep "/" (lib.tail parts);
 
           path = registry.${head} + tail;
-          resolved = if lib.pathIsDirectory path then path + "/default.nix" else path + ".nix";
+          resolved = if lib.pathIsDirectory path then path else path + ".nix";
         in
         lib.addErrorContext "while evaluating provider path from `<${name}>`:" resolved;
 
@@ -100,7 +100,9 @@ let
         if lib.isPath m then
           { config, ... }:
           let
-            provider = import m;
+            path = lib.filesystem.resolveDefaultNix m;
+
+            provider = import path;
 
             provider' = lib.toFunction ((lib.toFunction provider) finalInputs);
             provider'' = provider' requiredArgs;
@@ -113,7 +115,8 @@ let
 
             requiredArgs = lib.mapAttrs (
               name: _:
-              lib.addErrorContext ''while evaluating the lattice provider argument `${name}' in "${toString m}":''
+              lib.addErrorContext
+                ''while evaluating the lattice provider argument `${name}' in "${toString path}":''
                 allArgs.${name}
             ) (lib.functionArgs provider');
 
@@ -129,22 +132,22 @@ let
 
             configs = lib.mapAttrs (n: v: {
               _class = n;
-              _file = m;
-              key = toString m;
+              _file = path;
+              key = toString path;
               imports = [ v ];
             }) (provider''.configs or { });
 
             modules = lib.mapAttrs (n: v: {
               _class = n;
-              _file = m;
-              key = "${toString m}@${lib.hashString "sha256" (lib.toJSON keys)}";
+              _file = path;
+              key = "${toString path}@${lib.hashString "sha256" (lib.toJSON keys)}";
               imports = [ v ];
             }) (provider''.modules or { });
           in
           {
             _class = "provider";
-            _file = m;
-            key = toString m;
+            _file = path;
+            key = toString path;
             imports = map loadProvider provider''.includes or [ ];
             disabledModules = provider''.excludes or [ ];
             config = {
