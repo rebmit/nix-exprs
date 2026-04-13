@@ -26,7 +26,7 @@
       "url": "https://github.com/nix-community/disko/archive/5ad85c82cc52264f4beddc934ba57f3789f28347.tar.gz",
       "hash": "sha256-PAqwnsBSI9SVC2QugvQ3xeYCB0otOwCacB1ueQj2tgw="
     },
-    "dns": {
+    "dns-nix": {
       "type": "Git",
       "repository": {
         "type": "GitHub",

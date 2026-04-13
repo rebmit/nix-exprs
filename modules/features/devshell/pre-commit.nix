@@ -17,7 +17,7 @@
             type = lib.types.path;
             default = inputs.git-hooks-nix;
             description = ''
-              Path to the git-hooks-nix source tree to be imported.
+              Path to the git-hooks.nix source tree to be imported.
             '';
           };
           config = lib.mkOption {
