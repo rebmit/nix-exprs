@@ -1,12 +1,9 @@
 {
   lib ? (
-    import (
-      let
-        lock = builtins.fromJSON (builtins.readFile ../flake/flake.lock);
-        nodeName = lock.nodes.root.inputs.nixpkgs;
-      in
-      fetchTree lock.nodes.${nodeName}.locked + "/lib"
-    )
+    let
+      sources = import ../npins;
+    in
+    import (sources.nixpkgs + "/lib")
   ),
 }:
 

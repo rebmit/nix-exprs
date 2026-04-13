@@ -2,10 +2,9 @@
   # Path to the nixpkgs source tree to be imported.
   path ? (
     let
-      lock = builtins.fromJSON (builtins.readFile ../../flake/flake.lock);
-      nodeName = lock.nodes.root.inputs.nixpkgs;
+      sources = import ../../npins;
     in
-    fetchTree lock.nodes.${nodeName}.locked
+    sources.nixpkgs
   ),
 
   # The system packages will be built on. See the manual for the

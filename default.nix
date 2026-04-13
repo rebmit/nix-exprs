@@ -1,5 +1,5 @@
 {
-  inputs ? import ./flake,
+  inputs ? import ./npins,
   lib ? import ./lib { },
 }:
 
