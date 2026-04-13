@@ -1,19 +1,17 @@
 { inputs, lib, ... }:
 
-{ project, ... }:
-
 {
   includes = [ ./targets.nix ];
 
   configs.project =
-    { ... }:
+    { forEachTarget, ... }:
     {
       options = {
         outputs = {
           packages = lib.mkOption {
             type = lib.types.lazyAttrsOf lib.types.raw;
             readOnly = true;
-            default = lib.mapAttrs (name: _: project.allTargets.${name}.pkgs) project.targets;
+            default = forEachTarget (lib.getAttr "pkgs");
             description = ''
               Nixpkgs package sets per target.
             '';

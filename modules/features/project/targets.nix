@@ -26,6 +26,8 @@
           };
         }
       );
+
+      forEachTarget = f: lib.mapAttrs (name: _: f project.allTargets.${name}) project.targets;
     in
     {
       options = {
@@ -52,6 +54,12 @@
           description = ''
             The target-specific config for each of targets.
           '';
+        };
+      };
+
+      config = {
+        _module.args = {
+          inherit forEachTarget;
         };
       };
     };

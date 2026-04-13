@@ -8,20 +8,19 @@
 { project, ... }:
 
 {
+  includes = [ ./targets.nix ];
+
   configs.project =
-    { ... }:
+    { forEachTarget, ... }:
     {
       options = {
         outputs = {
           devshells = lib.mkOption {
             type = lib.types.lazyAttrsOf lib.types.raw;
             readOnly = true;
-            default = lib.mapAttrs (
-              name: _:
-              lib.mapAttrs (
-                _: devshell: devshell.config.configs.dev.devshell.shell
-              ) project.allTargets.${name}.devshells
-            ) project.targets;
+            default = forEachTarget (
+              target: lib.mapAttrs (_: devshell: devshell.config.configs.dev.devshell.shell) target.devshells
+            );
             description = ''
               Development shells per target.
             '';
@@ -29,12 +28,12 @@
 
           formatters = lib.mkOption {
             type = lib.types.lazyAttrsOf lib.types.raw;
-            default = lib.mapAttrs (
-              name: _:
+            default = forEachTarget (
+              target:
               lib.mapAttrs (
                 _: devshell: devshell.config.configs.dev.treefmt.config.build.wrapper
-              ) project.allTargets.${name}.devshells
-            ) project.targets;
+              ) target.devshells
+            );
             description = ''
               Formatters per target.
             '';
