@@ -45,10 +45,10 @@
 
         overlays = [
           (final: prev: {
-            inherit (inputs.nixpkgs-terraform-providers-bin.overlay final prev)
+            inherit (import (inputs.nixpkgs-terraform-providers-bin + "/overlay.nix") final prev)
               terraform-providers-bin
               ;
-            inherit (inputs.nix-index-database.overlays.nix-index final prev)
+            inherit (import inputs.nix-index-database { pkgs = final; })
               nix-index-with-db
               nix-index-with-small-db
               comma-with-db

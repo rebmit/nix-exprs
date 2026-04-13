@@ -1,7 +1,6 @@
 {
   inputs ? import ./flake,
-  lib ? import ./lib { inherit (nixpkgs) lib; },
-  nixpkgs ? inputs.nixpkgs,
+  lib ? import ./lib { },
 }:
 
 (lib.rebmit.modules.lattice {
