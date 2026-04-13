@@ -19,6 +19,7 @@ let
     {
       attrsets = callLibs ./attrsets.nix;
       modules = callLibs ./modules.nix;
+      types = callLibs ./types.nix;
     }
   );
 in
