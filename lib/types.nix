@@ -50,7 +50,7 @@ let
             '';
           };
           externalConfigs = lib.mkOption {
-            type = lib.types.lazyAttrsOf lib.types.str;
+            type = lib.types.lazyAttrsOf lib.types.raw;
             description = ''
               Fully evaluated config instances provided externally.
             '';
