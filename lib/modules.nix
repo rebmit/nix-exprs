@@ -44,22 +44,41 @@ let
           _file = ./modules.nix;
 
           options = {
-            configs = lib.genAttrs internalConfigs (
-              name:
-              lib.mkOption {
-                type = lib.types.deferredModuleWith {
-                  staticModules = [ configModule ];
-                };
-                default = { };
-                apply = m: (lib.evalModules { modules = [ m ]; }).config;
-                description = ''
-                  Evaluated configuration for ${name}.
+            configs =
+              lib.genAttrs internalConfigs (
+                name:
+                lib.mkOption {
+                  type = lib.types.deferredModuleWith {
+                    staticModules = [ configModule ];
+                  };
+                  default = { };
+                  apply = m: (lib.evalModules { modules = [ m ]; }).config;
+                  description = ''
+                    Configuration for ${name} evaluated from module definitions.
 
-                  This value is exposed as an argument to the provider and can be
-                  used to construct modules.
-                '';
-              }
-            );
+                    This value is exposed as an argument to the provider and can be
+                    used to construct modules.
+                  '';
+                }
+              )
+              // lib.mapAttrs (
+                name: value:
+                lib.mkOption {
+                  type = lib.types.deferredModuleWith {
+                    staticModules = [ configModule ];
+                  };
+                  default = { };
+                  apply = _: value;
+                  description = ''
+                    Configuration for ${name} provided externally.
+
+                    Definitions in the module system are accepted but ignored.
+
+                    This value is exposed as an argument to the provider and can be
+                    used to construct modules.
+                  '';
+                }
+              ) externalConfigs;
 
             modules = lib.mkOption {
               type = lib.types.lazyAttrsOf lib.types.deferredModule;
@@ -110,8 +129,7 @@ let
             allArgs = {
               inherit (config) modules;
             }
-            // config.configs
-            // externalConfigs;
+            // config.configs;
 
             requiredArgs = lib.mapAttrs (
               name: _:
