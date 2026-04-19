@@ -16,13 +16,13 @@ in
   bird2-rebmit =
     let
       source = {
-        version = "2.18-unstable-2026-01-04";
+        version = "2.18.1-unstable-2026-04-19";
         src = fetchFromGitHub {
           owner = "rebmit";
           repo = "bird";
-          rev = "cb6f8414e25af797949529a09f1336e71e91b38e";
+          rev = "e5c717fcaebb543572e15be2f1882d8cda9eca41";
           fetchSubmodules = false;
-          hash = "sha256-gcqj+YtNqqo/2365xEAq056KTazg/HfJVk1FJ+oGDLg=";
+          hash = "sha256-NRF0JtOJgJ3A8VSlK9hly+0tM+3jJNsY4CkKJv1iP10=";
         };
       };
     in
