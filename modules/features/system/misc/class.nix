@@ -75,4 +75,8 @@ in
         };
       };
     };
+
+  modules.darwin = { };
+
+  modules.nixos = { };
 }
