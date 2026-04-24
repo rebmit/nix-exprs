@@ -32,13 +32,13 @@ let
             '';
           };
           includes = lib.mkOption {
-            type = lib.types.listOf (lib.types.oneOf [ lib.types.path ]);
+            type = lib.types.listOf lib.types.raw;
             description = ''
               Providers to include.
             '';
           };
           excludes = lib.mkOption {
-            type = lib.types.listOf (lib.types.oneOf [ lib.types.path ]);
+            type = lib.types.listOf lib.types.raw;
             description = ''
               Providers to exclude.
             '';

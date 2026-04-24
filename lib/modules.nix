@@ -114,17 +114,13 @@ let
         in
         lib.addErrorContext "while evaluating provider path from `<${name}>`:" resolved;
 
-      loadProvider =
-        m:
-        if lib.isPath m then
+      unifyProvider =
+        m: fallbackFile: fallbackKey:
+        if lib.isAttrs m || lib.isFunction m then
           { config, ... }:
           let
-            path = lib.filesystem.resolveDefaultNix m;
-
-            provider = import path;
-
-            provider' = lib.toFunction ((lib.toFunction provider) finalInputs);
-            provider'' = provider' requiredArgs;
+            provider = lib.toFunction ((lib.toFunction m) finalInputs);
+            provider' = provider requiredArgs;
 
             allArgs = {
               inherit (config) modules;
@@ -133,53 +129,69 @@ let
 
             requiredArgs = lib.mapAttrs (
               name: _:
-              lib.addErrorContext
-                ''while evaluating the lattice provider argument `${name}' in "${toString path}":''
+              lib.addErrorContext ''while evaluating the lattice provider argument `${name}' in "${key}":''
                 allArgs.${name}
-            ) (lib.functionArgs provider');
+            ) (lib.functionArgs provider);
 
-            invalid = lib.subtractLists [ "includes" "excludes" "configs" "modules" ] (
-              lib.attrNames provider''
-            );
-          in
-          assert
-            lib.isAttrs provider'' && invalid == [ ]
-            || throw "invalid provider, unsupported attributes ${toString invalid}";
-          let
+            key = provider'.key or fallbackKey;
+            file = provider'.file or fallbackFile;
+
             keys = lib.mapAttrs (_: v: v.__key__) (lib.removeAttrs requiredArgs [ "modules" ]);
+
+            invalid = lib.subtractLists [ "file" "key" "includes" "excludes" "configs" "modules" ] (
+              lib.attrNames provider'
+            );
 
             configs = lib.mapAttrs (n: v: {
               _class = n;
-              _file = path;
-              key = toString path;
+              _file = file;
+              key = key;
               imports = [ v ];
-            }) (provider''.configs or { });
+            }) (provider'.configs or { });
 
             modules = lib.mapAttrs (n: v: {
               _class = n;
-              _file = path;
-              key = "${toString path}@${lib.hashString "sha256" (lib.toJSON keys)}";
+              _file = file;
+              key = "${key}@${lib.hashString "sha256" (lib.toJSON keys)}";
               imports = [ v ];
-            }) (provider''.modules or { });
+            }) (provider'.modules or { });
           in
+          assert
+            lib.isAttrs provider' && invalid == [ ]
+            || throw "invalid provider, unsupported attributes ${toString invalid}";
           {
             _class = "provider";
-            _file = path;
-            key = toString path;
-            imports = map loadProvider provider''.includes or [ ];
-            disabledModules = provider''.excludes or [ ];
+            _file = file;
+            key = key;
+            imports = lib.imap (
+              n: m: loadProvider m fallbackFile "${fallbackKey}:anon-${toString n}"
+            ) provider'.includes or [ ];
+            disabledModules = provider'.excludes or [ ];
             config = {
               inherit configs modules;
             };
           }
         else
-          throw "invalid provider, expected path, but got ${builtins.typeOf m}";
+          throw "invalid provider, expected attrs or function, but got ${builtins.typeOf m}";
+
+      loadProvider =
+        m: fallbackFile: fallbackKey:
+        if lib.isFunction m || lib.isAttrs m then
+          unifyProvider m fallbackFile fallbackKey
+        else if lib.isPath m then
+          let
+            path = lib.filesystem.resolveDefaultNix m;
+            provider = import path;
+          in
+          unifyProvider provider path (toString path)
+        else
+          throw "invalid provider, expected path, attrs or function, but got ${builtins.typeOf m}";
     in
     (lib.evalModules {
       modules = [
         providerModule
         {
-          imports = map loadProvider includes;
+          imports = lib.imap (n: m: loadProvider m lib.options.unknownModule ":anon-${toString n}") includes;
           disabledModules = excludes;
         }
       ];
