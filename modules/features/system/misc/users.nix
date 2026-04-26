@@ -48,30 +48,35 @@ in
         users = {
           users = lib.mkOption {
             type = lib.types.lazyAttrsOf (
-              lib.rebmit.types.latticeSubmoduleWith {
-                includes = [
-                  <rebmit/features/user/misc/class>
-                  <rebmit/features/user/misc/username>
-                  <rebmit/features/user/misc/version>
+              lib.rebmit.types.latticeSubmoduleWith (
+                { name, ... }:
+                {
+                  includes = [
+                    <rebmit/features/user/misc/class>
+                    <rebmit/features/user/misc/username>
+                    <rebmit/features/user/misc/version>
 
-                  {
-                    configs.user =
-                      { ... }:
-                      {
-                        home = {
-                          homeManager.path = users.homeManager.path;
+                    {
+                      configs.user =
+                        { ... }:
+                        {
+                          userName = lib.mkDefault name;
+
+                          home = {
+                            homeManager.path = users.homeManager.path;
+                          };
                         };
-                      };
-                  }
-                ];
-                internalConfigs = [ "user" ];
-                externalConfigs = { inherit project host; };
-                inputs = lib.removeAttrs args [
-                  "__findFile"
-                  "registry"
-                ];
-                registry = registry;
-              }
+                    }
+                  ];
+                  internalConfigs = [ "user" ];
+                  externalConfigs = { inherit project host; };
+                  inputs = lib.removeAttrs args [
+                    "__findFile"
+                    "registry"
+                  ];
+                  registry = registry;
+                }
+              )
             );
             default = { };
             description = ''
