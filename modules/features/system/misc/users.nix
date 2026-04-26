@@ -48,7 +48,7 @@ in
         users = {
           users = lib.mkOption {
             type = lib.types.lazyAttrsOf (
-              lib.rebmit.types.latticeSubmoduleWith (
+              lib.rebmit.types.latticeSubmodule (
                 { name, ... }:
                 {
                   includes = [

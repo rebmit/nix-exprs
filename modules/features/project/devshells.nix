@@ -48,7 +48,7 @@
       options = {
         devshells = lib.mkOption {
           type = lib.types.lazyAttrsOf (
-            lib.rebmit.types.latticeSubmoduleWith {
+            lib.rebmit.types.latticeSubmodule {
               includes = [
                 <rebmit/features/devshell/devshell>
                 <rebmit/features/devshell/pre-commit>

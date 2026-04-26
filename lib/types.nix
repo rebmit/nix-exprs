@@ -1,7 +1,7 @@
 { self, lib, ... }:
 
 let
-  latticeSubmoduleWith =
+  latticeSubmodule =
     module:
     let
       internalModule =
@@ -80,6 +80,6 @@ let
 in
 {
   inherit
-    latticeSubmoduleWith
+    latticeSubmodule
     ;
 }
