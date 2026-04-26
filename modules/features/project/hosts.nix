@@ -14,18 +14,31 @@
       options = {
         hosts = lib.mkOption {
           type = lib.types.lazyAttrsOf (
-            lib.rebmit.types.latticeSubmoduleWith {
-              includes = [
-                <rebmit/features/system/misc/class>
-              ];
-              internalConfigs = [ "host" ];
-              externalConfigs = { inherit project; };
-              inputs = lib.removeAttrs args [
-                "__findFile"
-                "registry"
-              ];
-              registry = registry;
-            }
+            lib.rebmit.types.latticeSubmoduleWith (
+              { name, ... }:
+              {
+                includes = [
+                  <rebmit/features/system/misc/class>
+                  <rebmit/features/system/misc/version>
+                  <rebmit/features/system/networking/hostname>
+
+                  {
+                    configs.host =
+                      { ... }:
+                      {
+                        networking.hostName = lib.mkDefault name;
+                      };
+                  }
+                ];
+                internalConfigs = [ "host" ];
+                externalConfigs = { inherit project; };
+                inputs = lib.removeAttrs args [
+                  "__findFile"
+                  "registry"
+                ];
+                registry = registry;
+              }
+            )
           );
           default = { };
           description = ''
