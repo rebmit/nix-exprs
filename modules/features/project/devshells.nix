@@ -1,9 +1,10 @@
 {
+  inputs,
   lib,
   registry,
   __findFile,
   ...
-}@args:
+}:
 
 { project, ... }:
 
@@ -56,14 +57,9 @@
               ];
               internalConfigs = [ "dev" ];
               externalConfigs = { inherit project; };
-              inputs =
-                lib.removeAttrs args [
-                  "__findFile"
-                  "registry"
-                ]
-                // {
-                  inherit pkgs;
-                };
+              inputs = {
+                inherit inputs lib pkgs;
+              };
               registry = registry;
             }
           );

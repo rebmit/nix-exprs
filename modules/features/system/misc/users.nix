@@ -4,7 +4,7 @@
   registry,
   __findFile,
   ...
-}@args:
+}:
 
 { project, host, ... }:
 
@@ -70,10 +70,9 @@ in
                   ];
                   internalConfigs = [ "user" ];
                   externalConfigs = { inherit project host; };
-                  inputs = lib.removeAttrs args [
-                    "__findFile"
-                    "registry"
-                  ];
+                  inputs = {
+                    inherit inputs lib;
+                  };
                   registry = registry;
                 }
               )
