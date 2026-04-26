@@ -51,6 +51,7 @@ in
               lib.rebmit.types.latticeSubmoduleWith {
                 includes = [
                   <rebmit/features/user/misc/class>
+                  <rebmit/features/user/misc/username>
                   <rebmit/features/user/misc/version>
 
                   {
