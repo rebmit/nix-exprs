@@ -14,7 +14,7 @@ let
       callLibs = file: import file { inherit self lib; };
     in
     {
-      attrsets = callLibs ./attrsets.nix;
+      # module system
       modules = callLibs ./modules.nix;
       types = callLibs ./types.nix;
     }
