@@ -26,6 +26,7 @@ let
               Evaluated lattice configuration.
             '';
           };
+
           includes = lib.mkOption {
             type = lib.types.listOf lib.types.raw;
             default = [ ];
@@ -33,6 +34,7 @@ let
               Providers to include.
             '';
           };
+
           excludes = lib.mkOption {
             type = lib.types.listOf lib.types.raw;
             default = [ ];
@@ -40,6 +42,7 @@ let
               Providers to exclude.
             '';
           };
+
           internalConfigs = lib.mkOption {
             type = lib.types.listOf lib.types.str;
             default = [ ];
@@ -47,6 +50,7 @@ let
               Names of configs that are allowed to be defined internally.
             '';
           };
+
           externalConfigs = lib.mkOption {
             type = lib.types.lazyAttrsOf lib.types.raw;
             default = { };
@@ -54,6 +58,7 @@ let
               Fully evaluated config instances provided externally.
             '';
           };
+
           inputs = lib.mkOption {
             type = lib.types.lazyAttrsOf lib.types.raw;
             default = { };
@@ -61,6 +66,7 @@ let
               Inputs passed to providers.
             '';
           };
+
           registry = lib.mkOption {
             type = lib.types.lazyAttrsOf lib.types.raw;
             default = { };
