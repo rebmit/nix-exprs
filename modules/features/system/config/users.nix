@@ -52,8 +52,8 @@ in
                 { name, ... }:
                 {
                   includes = [
+                    <rebmit/features/user/config/username>
                     <rebmit/features/user/misc/class>
-                    <rebmit/features/user/misc/username>
                     <rebmit/features/user/misc/version>
 
                     {
@@ -67,6 +67,9 @@ in
                           };
                         };
                     }
+                  ];
+                  excludes = [
+                    <rebmit/features/user/misc/nixpkgs>
                   ];
                   internalConfigs = [ "user" ];
                   externalConfigs = { inherit project host; };
@@ -88,7 +91,7 @@ in
               type = lib.types.path;
               default = inputs.home-manager;
               description = ''
-                Path to the home-manager source tree to be imported.
+                home-manager source tree path for evaluation.
               '';
             };
           };

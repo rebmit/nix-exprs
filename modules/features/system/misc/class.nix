@@ -13,8 +13,8 @@ in
         system = {
           class = lib.mkOption {
             type = lib.types.enum [
-              "nixos"
               "darwin"
+              "nixos"
             ];
             description = ''
               Module system class of the system.
@@ -24,7 +24,12 @@ in
           config = lib.mkOption {
             type = lib.types.raw;
             readOnly = true;
-            default = cfg.${cfg.class}.config;
+            default =
+              {
+                "darwin" = cfg.darwin.config;
+                "nixos" = cfg.nixos.config;
+              }
+              .${cfg.class};
             description = ''
               Evaluated system configuration.
             '';
@@ -35,9 +40,10 @@ in
               type = lib.types.path;
               default = inputs.nix-darwin;
               description = ''
-                Path to the nix-darwin source tree to be imported.
+                nix-darwin source tree path for evaluation.
               '';
             };
+
             config = lib.mkOption {
               type = lib.types.raw;
               readOnly = true;
@@ -56,9 +62,10 @@ in
               type = lib.types.path;
               default = inputs.nixpkgs;
               description = ''
-                Path to the nixpkgs source tree to be imported.
+                Nixpkgs source tree path for NixOS evaluation.
               '';
             };
+
             config = lib.mkOption {
               type = lib.types.raw;
               readOnly = true;
@@ -68,15 +75,39 @@ in
                 modules = [ modules.nixos ];
               };
               description = ''
-                Evaluated nixos configuration.
+                Evaluated NixOS configuration.
               '';
             };
           };
         };
       };
+
+      config = {
+        _module.args.pkgs = lib.mkDefault (throw ''
+          `pkgs` was used but is not set.
+
+          Consider including the nixpkgs module or explicitly providing `pkgs`.
+        '');
+      };
     };
 
-  modules.darwin = { };
+  modules.darwin =
+    { config, ... }:
+    {
+      system = {
+        darwinRevision = lib.rebmit.trivial.revisionFromPath cfg.darwin.path;
+        darwinVersionSuffix = lib.rebmit.trivial.versionSuffixFromRevision config.system.darwinRevision;
+      };
+    };
 
-  modules.nixos = { };
+  modules.nixos =
+    { config, ... }:
+    {
+      system = {
+        nixos = {
+          revision = lib.rebmit.trivial.revisionFromPath cfg.nixos.path;
+          versionSuffix = lib.rebmit.trivial.versionSuffixFromRevision config.system.nixos.revision;
+        };
+      };
+    };
 }
