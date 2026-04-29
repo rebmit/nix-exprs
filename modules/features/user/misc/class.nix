@@ -1,8 +1,13 @@
 { inputs, lib, ... }:
 
+{ modules, user, ... }:
+
+let
+  cfg = user.home;
+in
 {
   configs.user =
-    { ... }:
+    { pkgs, ... }:
     {
       options = {
         home = {
@@ -18,18 +23,74 @@
             '';
           };
 
+          config = lib.mkOption {
+            type = lib.types.raw;
+            readOnly = true;
+            default =
+              if cfg.class == null then
+                throw "class must be set to evaluate a standalone home configuration"
+              else
+                {
+                  "homeManager" = cfg.homeManager.config;
+                }
+                .${cfg.class};
+            description = ''
+              Evaluated standalone home configuration.
+            '';
+          };
+
           homeManager = {
             path = lib.mkOption {
               type = lib.types.path;
               default = inputs.home-manager;
               description = ''
-                Path to the home-manager source tree to be imported.
+                home-manager source tree path for evaluation.
+              '';
+            };
+
+            config = lib.mkOption {
+              type = lib.types.raw;
+              readOnly = true;
+              default = import (cfg.homeManager.path + "/modules") {
+                inherit pkgs lib;
+
+                configuration = {
+                  imports = [
+                    modules.homeManager
+
+                    {
+                      programs.home-manager = {
+                        enable = true;
+                        path = cfg.homeManager.path.outPath or cfg.homeManager.path;
+                      };
+                    }
+                  ];
+                };
+              };
+              description = ''
+                Evaluated standalone home-manager configuration.
               '';
             };
           };
         };
       };
+
+      config = {
+        _module.args.pkgs = lib.mkDefault (throw ''
+          `pkgs` was used but is not set.
+
+          Consider including the nixpkgs module or explicitly providing `pkgs`.
+        '');
+      };
     };
 
-  modules.homeManager = { };
+  modules.homeManager =
+    { ... }:
+    {
+      home = {
+        version = {
+          revision = lib.rebmit.trivial.revisionFromPath cfg.homeManager.path;
+        };
+      };
+    };
 }

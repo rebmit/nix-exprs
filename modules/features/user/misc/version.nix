@@ -1,10 +1,11 @@
-{ lib, __findFile, ... }:
+{ lib, ... }:
 
 { user, ... }:
 
+let
+  cfg = user.home;
+in
 {
-  includes = [ <rebmit/features/user/misc/class> ];
-
   configs.user =
     { ... }:
     {
@@ -14,7 +15,7 @@
             stateVersion = lib.mkOption {
               type = lib.types.str;
               description = ''
-                System state version for compatibility.
+                Home state version for compatibility.
               '';
             };
           };
@@ -24,16 +25,9 @@
 
   modules.homeManager =
     { ... }:
-    let
-      homeManager = user.home.homeManager;
-    in
     {
       home = {
-        version = {
-          revision = homeManager.path.revision or homeManager.path.rev or null;
-        };
-
-        stateVersion = homeManager.stateVersion;
+        stateVersion = cfg.homeManager.stateVersion;
       };
     };
 }
