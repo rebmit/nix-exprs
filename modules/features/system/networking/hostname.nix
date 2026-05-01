@@ -1,4 +1,9 @@
-{ lib, __findFile, ... }:
+{
+  name,
+  lib,
+  __findFile,
+  ...
+}:
 
 { host, ... }:
 
@@ -15,16 +20,19 @@ in
         networking = {
           hostName = lib.mkOption {
             type = lib.types.str;
+            default = name;
             description = ''
               The hostname of this host.
             '';
           };
+
           domain = lib.mkOption {
             type = lib.types.str;
             description = ''
               The dns domain name of this host.
             '';
           };
+
           fqdn = lib.mkOption {
             type = lib.types.str;
             default = "${cfg.hostName}.${cfg.domain}";

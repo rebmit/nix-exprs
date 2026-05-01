@@ -18,24 +18,11 @@
             lib.rebmit.types.latticeSubmodule (
               { name, ... }:
               {
-                includes = [
-                  <rebmit/features/system/misc/class>
-                  <rebmit/features/system/misc/version>
-                  <rebmit/features/system/networking/hostname>
-
-                  {
-                    configs.host =
-                      { ... }:
-                      {
-                        networking.hostName = lib.mkDefault name;
-                      };
-                  }
-                ];
+                includes = [ <rebmit/profiles/system/minimal> ];
+                excludes = [ ];
                 internalConfigs = [ "host" ];
                 externalConfigs = { inherit project; };
-                inputs = {
-                  inherit inputs lib;
-                };
+                inputs = { inherit name inputs lib; };
                 registry = registry;
               }
             )

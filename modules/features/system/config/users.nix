@@ -51,31 +51,11 @@ in
               lib.rebmit.types.latticeSubmodule (
                 { name, ... }:
                 {
-                  includes = [
-                    <rebmit/features/user/config/username>
-                    <rebmit/features/user/misc/class>
-                    <rebmit/features/user/misc/version>
-
-                    {
-                      configs.user =
-                        { ... }:
-                        {
-                          userName = lib.mkDefault name;
-
-                          home = {
-                            homeManager.path = users.homeManager.path;
-                          };
-                        };
-                    }
-                  ];
-                  excludes = [
-                    <rebmit/features/user/misc/nixpkgs>
-                  ];
+                  includes = [ <rebmit/profiles/user/minimal> ];
+                  excludes = [ ];
                   internalConfigs = [ "user" ];
                   externalConfigs = { inherit project host; };
-                  inputs = {
-                    inherit inputs lib;
-                  };
+                  inputs = { inherit name inputs lib; };
                   registry = registry;
                 }
               )

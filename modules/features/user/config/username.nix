@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ name, lib, ... }:
 
 { user, ... }:
 
@@ -9,6 +9,7 @@
       options = {
         userName = lib.mkOption {
           type = lib.types.str;
+          default = name;
           description = ''
             The username for this user.
           '';
