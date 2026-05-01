@@ -163,9 +163,9 @@ let
             _class = "provider";
             _file = file;
             key = key;
-            imports = lib.imap (
-              n: m: loadProvider m fallbackFile "${fallbackKey}:anon-${toString n}"
-            ) provider'.includes or [ ];
+            imports =
+              lib.imap (n: m: loadProvider m file "${key}:anon-${toString n}")
+                provider'.includes or [ ];
             disabledModules = provider'.excludes or [ ];
             config = {
               inherit configs modules;
@@ -191,7 +191,9 @@ let
       modules = [
         providerModule
         {
-          imports = lib.imap (n: m: loadProvider m lib.options.unknownModule ":anon-${toString n}") includes;
+          imports = lib.imap (
+            n: m: loadProvider m "<unknown-lattice>" "<unknown-lattice>:anon-${toString n}"
+          ) includes;
           disabledModules = excludes;
         }
       ];
