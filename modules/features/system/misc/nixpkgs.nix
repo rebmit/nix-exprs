@@ -48,14 +48,6 @@ in
     {
       _module.args.pkgs = lib.mkForce cfg.pkgs;
 
-      nixpkgs = {
-        flake = {
-          source = cfg.path;
-          setNixPath = true;
-          setFlakeRegistry = true;
-        };
-      };
-
       system = {
         nixpkgsRevision = lib.rebmit.trivial.revisionFromPath cfg.path;
         nixpkgsVersionSuffix = lib.rebmit.trivial.versionSuffixFromRevision config.system.nixpkgsRevision;
@@ -69,12 +61,6 @@ in
 
       nixpkgs = {
         inherit (cfg) pkgs;
-
-        flake = {
-          source = cfg.path;
-          setNixPath = true;
-          setFlakeRegistry = true;
-        };
       };
     };
 }

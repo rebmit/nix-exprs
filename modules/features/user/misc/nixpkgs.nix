@@ -52,14 +52,5 @@ in
     { ... }:
     {
       _module.args.pkgs = lib.mkForce cfg.pkgs;
-
-      nix = {
-        nixPath = lib.mkBefore [ "nixpkgs=flake:nixpkgs" ];
-
-        registry.nixpkgs.to = {
-          type = "path";
-          path = cfg.path;
-        };
-      };
     };
 }
