@@ -1,6 +1,11 @@
 { inputs, lib, ... }:
 
-{ modules, user, ... }:
+{
+  modules,
+  host ? null,
+  user,
+  ...
+}:
 
 let
   cfg = user.home;
@@ -81,6 +86,10 @@ in
 
           Consider including the nixpkgs module or explicitly providing `pkgs`.
         '');
+
+        home = {
+          homeManager.path = lib.mkIf (host != null) (lib.mkForce host.users.homeManager.path);
+        };
       };
     };
 

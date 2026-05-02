@@ -1,6 +1,11 @@
 { lib, ... }:
 
-{ project, user, ... }:
+{
+  project,
+  host ? null,
+  user,
+  ...
+}:
 
 let
   cfg = user.nixpkgs;
@@ -14,7 +19,7 @@ in
           path = lib.mkOption {
             type = lib.types.path;
             readOnly = true;
-            default = project.allTargets.${cfg.target}.nixpkgs.path;
+            default = if host != null then host.nixpkgs.path else project.allTargets.${cfg.target}.nixpkgs.path;
             description = ''
               Nixpkgs source tree path for pkgs.
             '';
@@ -23,7 +28,7 @@ in
           pkgs = lib.mkOption {
             type = lib.types.pkgs;
             readOnly = true;
-            default = project.allTargets.${cfg.target}.pkgs;
+            default = if host != null then host.nixpkgs.pkgs else project.allTargets.${cfg.target}.pkgs;
             description = ''
               Nixpkgs package set for this user.
             '';

@@ -129,7 +129,7 @@ let
               name: _:
               lib.addErrorContext ''while evaluating the lattice provider argument `${name}' in "${key}":''
                 allArgs.${name}
-            ) (lib.functionArgs provider);
+            ) (lib.filterAttrs (name: value: allArgs ? ${name} || !value) (lib.functionArgs provider));
 
             key = provider'.key or fallbackKey;
             file = provider'.file or fallbackFile;
