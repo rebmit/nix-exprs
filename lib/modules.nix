@@ -68,14 +68,11 @@ let
                     staticModules = [ configModule ];
                   };
                   default = { };
-                  apply = _: value;
                   description = ''
                     Configuration for ${name} provided externally.
 
-                    Definitions in the module system are accepted but ignored.
-
-                    This value is exposed as an argument to the provider and can be
-                    used to construct modules.
+                    Definitions in the module system are still collected but ignored
+                    in favor of the external configuration.
                   '';
                 }
               ) externalConfigs;
@@ -125,7 +122,8 @@ let
             allArgs = {
               inherit (config) modules;
             }
-            // config.configs;
+            // lib.getAttrs internalConfigs config.configs
+            // externalConfigs;
 
             requiredArgs = lib.mapAttrs (
               name: _:
