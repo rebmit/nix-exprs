@@ -100,9 +100,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "b4fb7b696cdf8c164c28cde8f093a5c40244e17b",
-      "url": "https://github.com/rebmit/nixpkgs/archive/b4fb7b696cdf8c164c28cde8f093a5c40244e17b.tar.gz",
-      "hash": "sha256-wjbaQQo4OUmJN5hTK8txK0ZXwgnUbU73oHMZaNNSVw0="
+      "revision": "b54481a536527df9f2e7e662c50ef589e9a417d9",
+      "url": "https://github.com/rebmit/nixpkgs/archive/b54481a536527df9f2e7e662c50ef589e9a417d9.tar.gz",
+      "hash": "sha256-M/GxPN3+ExIOB3xbTMKXxro2tv7i6+XDROWqpWrInlY="
     },
     "nixpkgs-terraform-providers-bin": {
       "type": "Git",
