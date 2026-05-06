@@ -1,10 +1,6 @@
 {
-  lib ? (
-    let
-      sources = import ../npins;
-    in
-    import (sources.nixpkgs + "/lib")
-  ),
+  inputs ? import ../npins,
+  lib ? import (inputs.nixpkgs + "/lib"),
 }:
 
 let
