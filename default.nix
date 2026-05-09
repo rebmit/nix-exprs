@@ -1,6 +1,6 @@
 {
   inputs ? import ./npins,
-  lib ? import ./lib { inherit inputs; },
+  lib ? import ./lib { path = inputs.nixpkgs; },
 }:
 
 (lib.rebmit.modules.lattice {

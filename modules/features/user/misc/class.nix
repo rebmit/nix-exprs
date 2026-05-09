@@ -84,7 +84,7 @@ in
         _module.args.pkgs = lib.mkDefault (throw ''
           `pkgs` was used but is not set.
 
-          Consider including the nixpkgs module or explicitly providing `pkgs`.
+          Consider including the Nixpkgs module or explicitly providing `pkgs`.
         '');
 
         home = {

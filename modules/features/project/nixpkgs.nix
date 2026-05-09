@@ -37,7 +37,7 @@
             type = lib.types.path;
             default = inputs.nixpkgs;
             description = ''
-              Path to the nixpkgs source tree to be imported.
+              Nixpkgs source tree path for pkgs.
             '';
           };
           config = lib.mkOption {

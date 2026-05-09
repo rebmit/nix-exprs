@@ -1,5 +1,5 @@
 {
-  # Path to the nixpkgs source tree to be imported.
+  # Path to the Nixpkgs source tree to be imported.
   path ? (import ../../npins).nixpkgs,
 
   # The system packages will be built on. See the manual for the
