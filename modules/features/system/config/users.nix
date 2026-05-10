@@ -55,7 +55,10 @@ in
                   excludes = [ ];
                   internalConfigs = [ "user" ];
                   externalConfigs = { inherit project host; };
-                  inputs = { inherit name inputs lib; };
+                  inputs = {
+                    inherit name inputs lib;
+                    standalone = false;
+                  };
                   registry = registry;
                 }
               )

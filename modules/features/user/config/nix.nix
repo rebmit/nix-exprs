@@ -1,13 +1,9 @@
 { lib, ... }:
 
-{
-  host ? null,
-  user,
-  ...
-}:
+{ user, ... }:
 
 let
-  cfg = user.config.nix;
+  opt = user.options.nix;
 in
 {
   configs.user =
@@ -15,16 +11,10 @@ in
     {
       options = {
         nix = {
-          package = lib.mkPackageOption pkgs "nix" {
-            default = [
-              "nixVersions"
-              "latest"
-            ];
-          };
+          package = lib.mkPackageOption pkgs "nix" { };
 
           settings = lib.mkOption {
             type = lib.types.json;
-            default = { };
             description = ''
               Configuration for Nix.
             '';
@@ -32,7 +22,6 @@ in
 
           nixPath = lib.mkOption {
             type = lib.types.listOf lib.types.str;
-            default = [ ];
             description = ''
               Adds new directories to the Nix expression search path.
             '';
@@ -40,7 +29,6 @@ in
 
           registry = lib.mkOption {
             type = lib.types.attrsOf lib.types.json;
-            default = { };
             description = ''
               User level flake registry.
             '';
@@ -50,7 +38,10 @@ in
 
       config = {
         nix = {
-          package = lib.mkIf (host != null) host.config.nix.package;
+          package = lib.mkOverride 1400 pkgs.nixVersions.latest;
+          settings = { };
+          nixPath = [ ];
+          registry = { };
         };
       };
     };
@@ -58,14 +49,13 @@ in
   modules.homeManager =
     { ... }:
     {
-      nix = {
-        inherit (cfg)
+      nix = lib.rebmit.modules.mkAliasDefsRecursiveWithPriority {
+        inherit (opt)
+          package
           settings
           nixPath
           registry
           ;
-
-        package = lib.mkForce cfg.package;
       };
     };
 }
