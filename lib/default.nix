@@ -1,6 +1,6 @@
 {
   # Path to the Nixpkgs source tree to be imported.
-  path ? (import ../../npins).nixpkgs,
+  path ? (import ../npins).nixpkgs,
 
   # Nixpkgs library used to construct this library set.
   lib ? import (path + "/lib"),
