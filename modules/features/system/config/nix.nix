@@ -3,7 +3,7 @@
 { host, ... }:
 
 let
-  cfg = host.config.nix;
+  opt = host.options.nix;
 in
 {
   configs.host =
@@ -11,24 +11,26 @@ in
     {
       options = {
         nix = {
-          package = lib.mkPackageOption pkgs "nix" {
-            default = [
-              "nixVersions"
-              "latest"
-            ];
-          };
+          package = lib.mkPackageOption pkgs "nix" { };
 
           settings = lib.mkOption {
             type = lib.types.json;
-            default = { };
             description = ''
               Configuration for Nix.
             '';
           };
 
+          channel = {
+            enable = lib.mkOption {
+              type = lib.types.bool;
+              description = ''
+                Whether to enable Nix channels.
+              '';
+            };
+          };
+
           nixPath = lib.mkOption {
             type = lib.types.listOf lib.types.str;
-            default = [ ];
             description = ''
               The default Nix expression search path.
             '';
@@ -36,11 +38,20 @@ in
 
           registry = lib.mkOption {
             type = lib.types.attrsOf lib.types.json;
-            default = { };
             description = ''
               A system-wide flake registry.
             '';
           };
+        };
+      };
+
+      config = {
+        nix = {
+          package = lib.mkOverride 1400 pkgs.nixVersions.latest;
+          settings = { };
+          channel.enable = lib.mkOverride 1400 false;
+          nixPath = [ ];
+          registry = { };
         };
       };
     };
@@ -48,30 +59,28 @@ in
   modules.darwin =
     { ... }:
     {
-      nix = {
-        inherit (cfg)
+      nix = lib.rebmit.modules.mkAliasDefsRecursiveWithPriority {
+        inherit (opt)
           package
           settings
+          channel
           nixPath
           registry
           ;
-
-        channel.enable = false;
       };
     };
 
   modules.nixos =
     { ... }:
     {
-      nix = {
-        inherit (cfg)
+      nix = lib.rebmit.modules.mkAliasDefsRecursiveWithPriority {
+        inherit (opt)
           package
           settings
+          channel
           nixPath
           registry
           ;
-
-        channel.enable = false;
       };
     };
 }

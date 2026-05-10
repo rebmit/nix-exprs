@@ -2,11 +2,13 @@
 
 {
   includes = [
-    <rebmit/features/system/config/nix/settings>
+    # keep-sorted start
     <rebmit/features/system/misc/class>
     <rebmit/features/system/misc/nixpkgs>
     <rebmit/features/system/misc/version>
     <rebmit/features/system/networking/hostname>
+    <rebmit/profiles/system/nix/common>
+    # keep-sorted end
   ];
 
   modules.darwin =
