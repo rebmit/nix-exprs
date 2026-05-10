@@ -27,7 +27,8 @@
         }
       );
 
-      forEachTarget = f: lib.mapAttrs (name: _: f project.allTargets.${name}) project.targets;
+      forEachTarget =
+        f: lib.mapAttrs (name: _: f project.config.allTargets.${name}) project.config.targets;
     in
     {
       options = {
@@ -50,7 +51,7 @@
               modules = [ modules.perTarget ];
               specialArgs = { inherit target; };
             }).config
-          ) project.targets;
+          ) project.config.targets;
           description = ''
             The target-specific config for each of targets.
           '';

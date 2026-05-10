@@ -37,7 +37,9 @@
           hosts = lib.mkOption {
             type = lib.types.lazyAttrsOf lib.types.raw;
             readOnly = true;
-            default = lib.mapAttrs (_: host: host.config.configs.host.system.config) project.hosts;
+            default = lib.mapAttrs (
+              _: host: host.config.configs.host.config.system.config
+            ) project.config.hosts;
             description = ''
               Host configurations.
             '';

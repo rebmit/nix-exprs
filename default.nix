@@ -8,4 +8,4 @@
   internalConfigs = [ "project" ];
   inputs = { inherit inputs lib; };
   registry.rebmit = ./modules;
-}).configs.project.outputs
+}).configs.project.config.outputs

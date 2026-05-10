@@ -3,7 +3,7 @@
 { host, ... }:
 
 let
-  cfg = host.system;
+  cfg = host.config.system;
 in
 {
   configs.host =

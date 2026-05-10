@@ -7,7 +7,7 @@
 }:
 
 let
-  cfg = user.nix;
+  cfg = user.config.nix;
 in
 {
   configs.user =
@@ -50,7 +50,7 @@ in
 
       config = {
         nix = {
-          package = lib.mkIf (host != null) host.nix.package;
+          package = lib.mkIf (host != null) host.config.nix.package;
         };
       };
     };

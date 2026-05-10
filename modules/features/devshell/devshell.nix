@@ -8,11 +8,7 @@
 { modules, dev, ... }:
 
 let
-  devshell = import dev.devshell.path {
-    system = throw "system not allowed to be used";
-    inputs = throw "inputs not allowed to be used";
-    nixpkgs = pkgs;
-  };
+  cfg = dev.config.devshell;
 in
 {
   configs.dev =
@@ -31,10 +27,17 @@ in
             type = lib.types.raw;
             readOnly = true;
             default =
-              (devshell.eval {
-                configuration = modules.devshell;
-                inherit lib;
-              }).config;
+              (
+                (import cfg.path {
+                  system = throw "system not allowed to be used";
+                  inputs = throw "inputs not allowed to be used";
+                  nixpkgs = pkgs;
+                }).eval
+                {
+                  configuration = modules.devshell;
+                  inherit lib;
+                }
+              ).config;
             description = ''
               Evaluated devshell configuration.
             '';
@@ -42,7 +45,7 @@ in
           shell = lib.mkOption {
             type = lib.types.package;
             readOnly = true;
-            default = dev.devshell.config.devshell.shell;
+            default = cfg.config.devshell.shell;
             description = ''
               Evaluated devshell derivation.
             '';

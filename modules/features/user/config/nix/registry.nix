@@ -25,7 +25,7 @@
           nixpkgs = lib.mkIf (host == null) {
             to = {
               type = "path";
-              path = user.nixpkgs.path;
+              path = user.config.nixpkgs.path;
             };
           };
         };

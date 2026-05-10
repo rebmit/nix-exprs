@@ -21,7 +21,7 @@
           nixpkgs = {
             to = {
               type = "path";
-              path = host.nixpkgs.path;
+              path = host.config.nixpkgs.path;
             };
           };
         };

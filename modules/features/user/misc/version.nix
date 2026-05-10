@@ -3,7 +3,7 @@
 { user, ... }:
 
 let
-  cfg = user.home;
+  cfg = user.config.home;
 in
 {
   configs.user =

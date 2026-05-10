@@ -20,7 +20,8 @@
             type = lib.types.lazyAttrsOf lib.types.raw;
             readOnly = true;
             default = forEachTarget (
-              target: lib.mapAttrs (_: devshell: devshell.config.configs.dev.devshell.shell) target.devshells
+              target:
+              lib.mapAttrs (_: devshell: devshell.config.configs.dev.config.devshell.shell) target.devshells
             );
             description = ''
               Development shells per target.
@@ -32,7 +33,7 @@
             default = forEachTarget (
               target:
               lib.mapAttrs (
-                _: devshell: devshell.config.configs.dev.treefmt.config.build.wrapper
+                _: devshell: devshell.config.configs.dev.config.treefmt.config.build.wrapper
               ) target.devshells
             );
             description = ''

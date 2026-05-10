@@ -7,6 +7,9 @@
 
 { modules, dev, ... }:
 
+let
+  cfg = dev.config.pre-commit;
+in
 {
   configs.dev =
     { ... }:
@@ -26,7 +29,7 @@
             default =
               (lib.evalModules {
                 modules = [
-                  (dev.pre-commit.path + "/modules/all-modules.nix")
+                  (cfg.path + "/modules/all-modules.nix")
                   modules.pre-commit
                 ];
                 specialArgs = { inherit pkgs; };
@@ -42,7 +45,7 @@
   modules.devshell =
     { ... }:
     {
-      devshell.startup.pre-commit-hook.text = dev.pre-commit.config.shellHook;
+      devshell.startup.pre-commit-hook.text = cfg.config.shellHook;
     };
 
   modules.pre-commit =

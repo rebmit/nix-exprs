@@ -52,7 +52,7 @@ let
                     staticModules = [ configModule ];
                   };
                   default = { };
-                  apply = m: (lib.evalModules { modules = [ m ]; }).config;
+                  apply = m: lib.evalModules { modules = [ m ]; };
                   description = ''
                     Configuration for ${name} evaluated from module definitions.
 
@@ -134,7 +134,7 @@ let
             key = provider'.key or fallbackKey;
             file = provider'.file or fallbackFile;
 
-            keys = lib.mapAttrs (_: v: v.__key__) (lib.removeAttrs requiredArgs [ "modules" ]);
+            keys = lib.mapAttrs (_: v: v.config.__key__) (lib.removeAttrs requiredArgs [ "modules" ]);
 
             invalid = lib.subtractLists [ "file" "key" "includes" "excludes" "configs" "modules" ] (
               lib.attrNames provider'

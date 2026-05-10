@@ -8,7 +8,7 @@
 { modules, dev, ... }:
 
 let
-  treefmt-nix = import dev.treefmt.path;
+  cfg = dev.config.treefmt;
 in
 {
   configs.dev =
@@ -33,7 +33,7 @@ in
           config = lib.mkOption {
             type = lib.types.raw;
             readOnly = true;
-            default = (treefmt-nix.evalModule pkgs modules.treefmt).config;
+            default = ((import cfg.path).evalModule pkgs modules.treefmt).config;
             description = ''
               Evaluated treefmt configuration.
             '';
@@ -47,7 +47,7 @@ in
     {
       commands = [
         {
-          package = dev.treefmt.config.build.wrapper;
+          package = cfg.config.build.wrapper;
         }
       ];
     };
@@ -58,7 +58,7 @@ in
       hooks.treefmt = {
         enable = true;
         name = "treefmt";
-        entry = lib.getExe dev.treefmt.config.build.wrapper;
+        entry = lib.getExe cfg.config.build.wrapper;
         pass_filenames = false;
       };
     };
@@ -66,6 +66,6 @@ in
   modules.treefmt =
     { ... }:
     {
-      inherit (dev.treefmt) projectRootFile;
+      inherit (cfg) projectRootFile;
     };
 }

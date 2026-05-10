@@ -8,7 +8,7 @@
 { host, ... }:
 
 let
-  cfg = host.networking;
+  cfg = host.config.networking;
 in
 {
   includes = [ <rebmit/features/system/networking/addresses> ];

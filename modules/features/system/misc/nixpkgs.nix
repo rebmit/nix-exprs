@@ -3,7 +3,7 @@
 { project, host, ... }:
 
 let
-  cfg = host.nixpkgs;
+  cfg = host.config.nixpkgs;
 in
 {
   configs.host =
@@ -14,7 +14,7 @@ in
           path = lib.mkOption {
             type = lib.types.path;
             readOnly = true;
-            default = project.allTargets.${cfg.target}.nixpkgs.path;
+            default = project.config.allTargets.${cfg.target}.nixpkgs.path;
             description = ''
               Nixpkgs source tree path for pkgs.
             '';
@@ -23,7 +23,7 @@ in
           pkgs = lib.mkOption {
             type = lib.types.pkgs;
             readOnly = true;
-            default = project.allTargets.${cfg.target}.pkgs;
+            default = project.config.allTargets.${cfg.target}.pkgs;
             description = ''
               Nixpkgs package set for this host.
             '';

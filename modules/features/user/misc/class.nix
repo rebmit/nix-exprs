@@ -8,7 +8,7 @@
 }:
 
 let
-  cfg = user.home;
+  cfg = user.config.home;
 in
 {
   configs.user =
@@ -88,7 +88,7 @@ in
         '');
 
         home = {
-          homeManager.path = lib.mkIf (host != null) (lib.mkForce host.users.homeManager.path);
+          homeManager.path = lib.mkIf (host != null) (lib.mkForce host.config.users.homeManager.path);
         };
       };
     };

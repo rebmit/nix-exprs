@@ -9,12 +9,12 @@
 { project, host, ... }:
 
 let
-  users = host.users;
+  users = host.config.users;
 
   homeManagerFor =
     class:
     let
-      hasHomeManager = user: user.config.configs.user.home.class == "homeManager";
+      hasHomeManager = user: user.config.configs.user.config.home.class == "homeManager";
     in
     lib.optionalAttrs (lib.any hasHomeManager (lib.attrValues users.users)) {
       imports = [

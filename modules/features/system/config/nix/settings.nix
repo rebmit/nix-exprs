@@ -21,7 +21,7 @@
           keep-outputs = true;
           use-xdg-base-directories = true;
         }
-        // lib.optionalAttrs (host.system.class == "darwin") {
+        // lib.optionalAttrs (host.config.system.class == "darwin") {
           allowed-users = [ "@staff" ];
           experimental-features = [
             "nix-command"
@@ -29,7 +29,7 @@
           ];
           trusted-users = [ "@admin" ];
         }
-        // lib.optionalAttrs (host.system.class == "nixos") {
+        // lib.optionalAttrs (host.config.system.class == "nixos") {
           allowed-users = [ "@users" ];
           auto-allocate-uids = true;
           auto-optimise-store = true;
