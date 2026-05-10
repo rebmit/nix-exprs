@@ -37,12 +37,24 @@
     {
       imports = [ (modulesPath + "/profiles/minimal.nix") ];
 
+      boot.bcache.enable = lib.mkDefault false;
+
+      networking = {
+        firewall.enable = lib.mkDefault false;
+        useNetworkd = lib.mkDefault true;
+      };
+
       nixpkgs.flake = {
         setNixPath = lib.mkDefault false;
         setFlakeRegistry = lib.mkDefault false;
       };
 
-      services.userborn.enable = lib.mkDefault true;
+      programs.fuse.enable = lib.mkDefault false;
+
+      services = {
+        lvm.enable = lib.mkDefault false;
+        userborn.enable = lib.mkDefault true;
+      };
 
       system = {
         activatable = lib.mkDefault false;
