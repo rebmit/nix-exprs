@@ -196,9 +196,17 @@ let
         }
       ];
     }).config;
+
+  mkAliasDefsWithPriority = lib.modules.mkAliasAndWrapDefsWithPriority lib.id;
+
+  mkAliasDefsRecursiveWithPriority = lib.mapAttrsRecursiveCond (as: !(lib.isOption as)) (
+    _: mkAliasDefsWithPriority
+  );
 in
 {
   inherit
     lattice
+    mkAliasDefsWithPriority
+    mkAliasDefsRecursiveWithPriority
     ;
 }
