@@ -12,7 +12,7 @@ in
       options = {
         nixpkgs = {
           path = lib.mkOption {
-            type = lib.types.path;
+            type = lib.types.pathInStore;
             readOnly = true;
             default = project.config.allTargets.${cfg.target}.nixpkgs.path;
             description = ''

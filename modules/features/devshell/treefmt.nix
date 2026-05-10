@@ -17,7 +17,7 @@ in
       options = {
         treefmt = {
           path = lib.mkOption {
-            type = lib.types.path;
+            type = lib.types.pathInStore;
             default = inputs.treefmt-nix;
             description = ''
               Path to the treefmt-nix source tree to be imported.

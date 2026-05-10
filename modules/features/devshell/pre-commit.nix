@@ -17,7 +17,7 @@ in
       options = {
         pre-commit = {
           path = lib.mkOption {
-            type = lib.types.path;
+            type = lib.types.pathInStore;
             default = inputs.git-hooks-nix;
             description = ''
               Path to the git-hooks.nix source tree to be imported.

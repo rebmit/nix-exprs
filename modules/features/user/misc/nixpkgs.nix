@@ -17,7 +17,7 @@ in
       options = {
         nixpkgs = {
           path = lib.mkOption {
-            type = lib.types.path;
+            type = lib.types.pathInStore;
             readOnly = true;
             default =
               if host != null then

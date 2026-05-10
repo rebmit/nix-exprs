@@ -17,7 +17,7 @@ in
       options = {
         devshell = {
           path = lib.mkOption {
-            type = lib.types.path;
+            type = lib.types.pathInStore;
             default = inputs.devshell;
             description = ''
               Path to the devshell source tree to be imported.

@@ -37,7 +37,7 @@ in
 
           darwin = {
             path = lib.mkOption {
-              type = lib.types.path;
+              type = lib.types.pathInStore;
               default = inputs.nix-darwin;
               description = ''
                 nix-darwin source tree path for evaluation.
@@ -59,7 +59,7 @@ in
 
           nixos = {
             path = lib.mkOption {
-              type = lib.types.path;
+              type = lib.types.pathInStore;
               default = inputs.nixpkgs;
               description = ''
                 Nixpkgs source tree path for NixOS evaluation.

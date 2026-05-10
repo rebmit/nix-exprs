@@ -34,7 +34,7 @@
       options = {
         nixpkgs = {
           path = lib.mkOption {
-            type = lib.types.path;
+            type = lib.types.pathInStore;
             default = inputs.nixpkgs;
             description = ''
               Nixpkgs source tree path for pkgs.

@@ -68,7 +68,7 @@ in
 
           homeManager = {
             path = lib.mkOption {
-              type = lib.types.path;
+              type = lib.types.pathInStore;
               default = inputs.home-manager;
               description = ''
                 home-manager source tree path for evaluation.
