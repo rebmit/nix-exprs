@@ -93,12 +93,12 @@ in
       mtxclient = final.mtxclient_unstable;
 
       source = {
-        version = "0.12.1-unstable-2026-04-07";
+        version = "0.12.1-unstable-2026-05-08";
         src = fetchFromGitHub {
           owner = "Nheko-Reborn";
           repo = "nheko";
-          rev = "84d3d9a354b175bfcddfcf24ec9f74b350758059";
-          hash = "sha256-GCH6VneFfx0UPw5TlWK4j6HRu70VAWmGcFo+lYatj1w=";
+          rev = "90ff9c6f36dd9df9e0e23212c34b83ec61772bba";
+          hash = "sha256-Zyvfxuk77FYBYwPJykK6YBnnCLG1BeN6jJ5gcDA5Go4=";
         };
       };
     in
