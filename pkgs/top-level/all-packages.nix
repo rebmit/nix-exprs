@@ -46,14 +46,14 @@ in
   caddy-rebmit =
     let
       source = {
-        version = "2.11.2-unstable-2026-03-19";
+        version = "2.11.3-unstable-2026-05-12";
         src = fetchFromGitHub {
           owner = "rebmit";
           repo = "caddy";
-          rev = "1a36552bf7218409c98caaf4f6b00cd7e0a10f2e";
-          hash = "sha256-8R+x9Ym2/vjGpl1xbrgVGrsE/Z59Yz4ZggrF6OkpnBQ=";
+          rev = "a0d859a2bb31e106090774811aca265d8a1be9a3";
+          hash = "sha256-fHJs6FVrcPDm85TJogPLTwnKfdwMiS8WfCsWSkRh8/Q=";
         };
-        vendorHash = "sha256-Zerl+Pa1bnM2I/p3HQzA8TRgzVxE6O/5/qJhI3J+TZc=";
+        vendorHash = "sha256-1w1Rr6fCQ49KdUkCL1UwItPWj32EGxe8PsTMF7KO+dk=";
       };
     in
     final.callPackage ../by-name/caddy { } source;
