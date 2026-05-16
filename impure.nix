@@ -13,7 +13,8 @@ let
 
   outputs = import ./. { };
 in
-outputs.packages.${target}
+outputs
+// outputs.packages.${target}
 // {
   devshells = outputs.devshells.${target};
   formatters = outputs.formatters.${target};
