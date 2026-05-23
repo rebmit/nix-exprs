@@ -22,9 +22,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "63b4e7e6cf75307c1d26ac3762b886b5b0247267",
-      "url": "https://github.com/nix-community/disko/archive/63b4e7e6cf75307c1d26ac3762b886b5b0247267.tar.gz",
-      "hash": "sha256-8GzXDOXckDWwST8TY5DbwYFjdvQLlP7K9CLSVx6iTTo="
+      "revision": "65fb947964bd44fc0008faf77d1fcb7a9f40bb32",
+      "url": "https://github.com/nix-community/disko/archive/65fb947964bd44fc0008faf77d1fcb7a9f40bb32.tar.gz",
+      "hash": "sha256-wuOkjI6pRiN4sEn/EPBRnNW5cmcpvd7xtIM8y5LooAs="
     },
     "dns-nix": {
       "type": "Git",
@@ -61,9 +61,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "d5ece85b6d3d6b5ab5a514b2785fb952b629bfea",
-      "url": "https://github.com/nix-community/home-manager/archive/d5ece85b6d3d6b5ab5a514b2785fb952b629bfea.tar.gz",
-      "hash": "sha256-OzLAT0G96WlT/WWaNdkTvQ7E9ohq9h0xQTdL1oe3gm0="
+      "revision": "509ed3c603349a9d43de9e2ae6613baea6bd5b34",
+      "url": "https://github.com/nix-community/home-manager/archive/509ed3c603349a9d43de9e2ae6613baea6bd5b34.tar.gz",
+      "hash": "sha256-7wOwi8B6D0BYsieZCnHZZj2sNUzgJhLoIVSfkwB7lxQ="
     },
     "nix-darwin": {
       "type": "Git",
@@ -74,9 +74,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "8c62fba0854ba15c8917aed18894dbccb48a3777",
-      "url": "https://github.com/nix-darwin/nix-darwin/archive/8c62fba0854ba15c8917aed18894dbccb48a3777.tar.gz",
-      "hash": "sha256-8wURyQMdDkGUarSTKOGdCuFfYiwa3HbzwscUfn3STDE="
+      "revision": "56c666e108467d87d13508936aade6d567f2a501",
+      "url": "https://github.com/nix-darwin/nix-darwin/archive/56c666e108467d87d13508936aade6d567f2a501.tar.gz",
+      "hash": "sha256-zXcwYQGCT6pzinK+1dBB2ekTVtfxGZAapb3Evdcu4fY="
     },
     "nix-index-database": {
       "type": "Git",
@@ -87,9 +87,9 @@
       },
       "branch": "main",
       "submodules": false,
-      "revision": "01466c414c7357ae2ce32be4a272a7c69e94ab5f",
-      "url": "https://github.com/Mic92/nix-index-database/archive/01466c414c7357ae2ce32be4a272a7c69e94ab5f.tar.gz",
-      "hash": "sha256-mOtQxUjtKaPHLeoLOY/YEDctmud1X9KwJr4kE1MJ3Wc="
+      "revision": "f680e0d3c1dbefe298c423691662e238496890f2",
+      "url": "https://github.com/Mic92/nix-index-database/archive/f680e0d3c1dbefe298c423691662e238496890f2.tar.gz",
+      "hash": "sha256-V5GquqJvAqwFTcpN6hxKSQAtwuJFRUEHmyNKbeaTQDg="
     },
     "nixpkgs": {
       "type": "Git",
@@ -100,9 +100,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "5e68b93fb83fca5667673f07c69a3f18c9df48cc",
-      "url": "https://github.com/rebmit/nixpkgs/archive/5e68b93fb83fca5667673f07c69a3f18c9df48cc.tar.gz",
-      "hash": "sha256-uDsGJfC6Go87fxkaDKbpoNtuJAtNCBcO4qtKBPngC9s="
+      "revision": "61e138de2b18a70bb67250b1a9587a690702ae67",
+      "url": "https://github.com/rebmit/nixpkgs/archive/61e138de2b18a70bb67250b1a9587a690702ae67.tar.gz",
+      "hash": "sha256-9vXLTfhYJPVbVReMVqcFDsivu61ipRynoqGHG6sYQBA="
     },
     "nixpkgs-terraform-providers-bin": {
       "type": "Git",
@@ -113,9 +113,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "ba02832c36549f8a2a4a175b6696aef76b70e47f",
-      "url": "https://github.com/nix-community/nixpkgs-terraform-providers-bin/archive/ba02832c36549f8a2a4a175b6696aef76b70e47f.tar.gz",
-      "hash": "sha256-knSsMdx8HikK9qI/lHCH5K+iQP16TgvjPhrUmBbHk8M="
+      "revision": "39ac1c40e55ddcad7a5052d8979ae7d919a6f4ec",
+      "url": "https://github.com/nix-community/nixpkgs-terraform-providers-bin/archive/39ac1c40e55ddcad7a5052d8979ae7d919a6f4ec.tar.gz",
+      "hash": "sha256-0WF6dgXHOTT7T4BEww9Nxph2oMdvHX5aYSLdoRMpC4k="
     },
     "sops-nix": {
       "type": "Git",
