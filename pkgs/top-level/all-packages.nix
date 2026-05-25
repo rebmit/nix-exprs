@@ -31,13 +31,13 @@ in
   bird3-rebmit =
     let
       source = {
-        version = "3.2.1-unstable-2026-04-19";
+        version = "3.3.0-unstable-2026-05-25";
         src = fetchFromGitHub {
           owner = "rebmit";
           repo = "bird";
-          rev = "6448a9f03538b81ad6f095edaa2ed9dc4e64fa4e";
+          rev = "13079fd3a067d6bfd8077a76d742d0e6d4ef2b46";
           fetchSubmodules = false;
-          hash = "sha256-OHr/JgYDima1T0NtqeZr3tjt3RFKT64enLHO+XbMZ9Y=";
+          hash = "sha256-cPGkfKkvyXTZzQUc1pwNSBeat5j+DGOS2Rq2y9+i/Wc=";
         };
       };
     in
