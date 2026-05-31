@@ -58,20 +58,6 @@ in
     in
     final.callPackage ../by-name/caddy { } source;
 
-  canokey-manager =
-    let
-      source = {
-        version = "5.4.0-unstable-2025-03-26";
-        src = fetchFromGitHub {
-          owner = "canokeys";
-          repo = "yubikey-manager";
-          rev = "088ab31778d94a5447b4ffa98529d4dafde618f1";
-          hash = "sha256-fqrMCF1PSOaQ9K4eFGs9w6wjUGuHp+GwO/PBFh6xKSM=";
-        };
-      };
-    in
-    final.callPackage ../by-name/canokey-manager { } source;
-
   canokey-udev-rules = final.callPackage ../by-name/canokey-udev-rules { } { };
 
   mtxclient_unstable =
