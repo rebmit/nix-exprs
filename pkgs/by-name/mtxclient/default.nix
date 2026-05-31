@@ -1,62 +1,33 @@
+final: prev:
+
+let
+  inherit
+    (final.callPackage (
+      {
+        fetchFromGitHub,
+      }@args:
+      args
+    ) { })
+    fetchFromGitHub
+    ;
+in
 {
-  lib,
-  stdenv,
-  cmake,
-  pkg-config,
-  coeurl,
-  curl,
-  libevent,
-  nlohmann_json,
-  olm,
-  openssl,
-  re2,
-  spdlog,
-  gtest,
-}:
-
-{
-  pname ? "mtxclient",
-  version,
-  src,
-}:
-
-stdenv.mkDerivation (finalAttrs: {
-  inherit pname version src;
-
-  patches = [
-    ./remove-network-tests.patch
-  ];
-
-  cmakeFlags = [
-    (lib.cmakeBool "BUILD_LIB_TESTS" finalAttrs.finalPackage.doCheck)
-    (lib.cmakeBool "BUILD_LIB_EXAMPLES" false)
-  ];
-
-  nativeBuildInputs = [
-    cmake
-    pkg-config
-  ];
-
-  buildInputs = [
-    coeurl
-    curl
-    libevent
-    nlohmann_json
-    olm
-    openssl
-    re2
-    spdlog
-  ];
-
-  checkInputs = [ gtest ];
-
-  doCheck = true;
-
-  meta = {
-    description = "Client API library for the Matrix protocol";
-    homepage = "https://github.com/Nheko-Reborn/mtxclient";
-    license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ rebmit ];
-    platforms = lib.platforms.all;
-  };
-})
+  mtxclient_unstable =
+    let
+      packageArgs = {
+        version = "0.10.1-unstable-2026-03-02";
+        src = fetchFromGitHub {
+          owner = "Nheko-Reborn";
+          repo = "mtxclient";
+          rev = "f5766cb53c244a808b7e512c7b83b3942fb67834";
+          hash = "sha256-5LapoeXRiRi4tSpFvcVu4Z6+aDIz43UBoDU1Rx2y8TA=";
+        };
+        nixUpdateExtraArgs = [
+          "--version=branch=master"
+          "--override-filename"
+          "pkgs/by-name/mtxclient/default.nix"
+        ];
+      };
+    in
+    final.callPackage (import ./package.nix packageArgs) { };
+}

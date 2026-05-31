@@ -1,4 +1,11 @@
 {
+  pname ? "bird",
+  version,
+  src,
+  nixUpdateExtraArgs ? [ ],
+}:
+
+{
   lib,
   stdenv,
   autoreconfHook,
@@ -6,12 +13,7 @@
   bison,
   readline,
   libssh,
-}:
-
-{
-  pname ? "bird",
-  version,
-  src,
+  nix-update-script,
 }:
 
 stdenv.mkDerivation {
@@ -38,6 +40,15 @@ stdenv.mkDerivation {
     "--localstatedir=/var"
     "--runstatedir=/run/bird"
   ];
+
+  passthru = {
+    updateScript = nix-update-script {
+      extraArgs = nixUpdateExtraArgs ++ [
+        "--version-regex"
+        "v(${lib.versions.major version}\\..*)"
+      ];
+    };
+  };
 
   meta = {
     description = "BIRD Internet Routing Daemon";

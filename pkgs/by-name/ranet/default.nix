@@ -1,32 +1,33 @@
-{
-  lib,
-  rustPlatform,
-}:
+final: prev:
 
-{
-  pname ? "ranet",
-  version,
-  src,
-  cargoHash,
-}:
-
-rustPlatform.buildRustPackage {
+let
   inherit
-    pname
-    version
-    src
-    cargoHash
+    (final.callPackage (
+      {
+        fetchFromGitHub,
+      }@args:
+      args
+    ) { })
+    fetchFromGitHub
     ;
-
-  checkFlags = [
-    "--skip=address::test::remote"
-  ];
-
-  meta = {
-    description = "Redundant array of networks";
-    homepage = "https://github.com/NickCao/ranet";
-    license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ rebmit ];
-    platforms = lib.platforms.linux;
-  };
+in
+{
+  ranet =
+    let
+      packageArgs = {
+        version = "0.13.0";
+        src = fetchFromGitHub {
+          owner = "NickCao";
+          repo = "ranet";
+          rev = "v${packageArgs.version}";
+          hash = "sha256-XuB6nHOEkzZl/V48pGHvgmoPineEBFa8dI1yuXB9pTM=";
+        };
+        cargoHash = "sha256-qSjJaMpYKRZMkhjw0/8BVCjxgnTjBBhTtPPbhv38Ia4=";
+        nixUpdateExtraArgs = [
+          "--override-filename"
+          "pkgs/by-name/ranet/default.nix"
+        ];
+      };
+    in
+    final.callPackage (import ./package.nix packageArgs) { };
 }
