@@ -104,10 +104,6 @@ in
     in
     final.callPackage ../by-name/nheko { inherit mtxclient; } source;
 
-  pythonPackagesExtensions = (prev.pythonPackagesExtensions or [ ]) ++ [
-    (import ./python-packages.nix)
-  ];
-
   ranet =
     let
       source = {
