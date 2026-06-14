@@ -15,13 +15,13 @@ in
   bird2-rebmit =
     let
       packageArgs = {
-        version = "2.19.0-unstable-2026-05-25";
+        version = "2.19.1-unstable-2026-06-14";
         src = fetchFromGitHub {
           owner = "rebmit";
           repo = "bird";
-          rev = "cb83d86daae68ce4da0b36b3783fe820c5fb8e49";
+          rev = "48c352b4d6e5005eb97d22cd1df666bb1d833321";
           fetchSubmodules = false;
-          hash = "sha256-lLjV9xAcusGBWomeCGL5yk9U9ZJMqzL4S+dwwL1t41s=";
+          hash = "sha256-Cj0EZAXLPydwcuFRyxYgfLVQMDCd282AwDif7lVmTeA=";
         };
         nixUpdateExtraArgs = [
           "--version=branch=unstable-v2"
