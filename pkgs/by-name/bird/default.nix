@@ -35,13 +35,13 @@ in
   bird3-rebmit =
     let
       packageArgs = {
-        version = "3.3.0-unstable-2026-05-25";
+        version = "3.3.1-unstable-2026-06-14";
         src = fetchFromGitHub {
           owner = "rebmit";
           repo = "bird";
-          rev = "13079fd3a067d6bfd8077a76d742d0e6d4ef2b46";
+          rev = "2821995dc900bd1a86c1dc16266a710157a39584";
           fetchSubmodules = false;
-          hash = "sha256-cPGkfKkvyXTZzQUc1pwNSBeat5j+DGOS2Rq2y9+i/Wc=";
+          hash = "sha256-e3H9Y+KCpUULLXeNwEodJVaLhwdmJI3CwjIrG1VJ7BQ=";
         };
         nixUpdateExtraArgs = [
           "--version=branch=unstable-v3"
