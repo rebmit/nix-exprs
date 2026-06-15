@@ -10,7 +10,6 @@
     },
     "NET-REBMIT-CORE": {
       "nodes": [
-        "kanako-ham0",
         "kogasa-iad0",
         "kogasa-iad1",
         "kogasa-iad2",
@@ -44,16 +43,6 @@
       "enthalpy_node_organization": "NET-REBMIT-EDGE",
       "enthalpy_node_prefix": "2a0e:aa07:e21c:3970::/60",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBzjHXO9T+WSeWmYk5gr8AJ3gHtT+qzRrIQNUuevGnBl"
-    },
-    "kanako-ham0": {
-      "b2_backup_bucket_name": "rebmit-backup-kanako-ham0",
-      "endpoints": ["91.108.80.168", "2a05:901:6:1015::1"],
-      "endpoints_v4": ["91.108.80.168"],
-      "endpoints_v6": ["2a05:901:6:1015::1"],
-      "enthalpy_node_id": 728,
-      "enthalpy_node_organization": "NET-REBMIT-CORE",
-      "enthalpy_node_prefix": "2a0e:aa07:e21c:2d80::/60",
-      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGEkLMkzqrWp03DwgLTp+vXhKSfZvvRGdcY7UHhraKtD"
     },
     "kogasa-iad0": {
       "b2_backup_bucket_name": "rebmit-backup-kogasa-iad0",
