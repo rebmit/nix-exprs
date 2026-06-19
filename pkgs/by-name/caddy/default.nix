@@ -15,14 +15,14 @@ in
   caddy-rebmit =
     let
       packageArgs = {
-        version = "2.11.4-unstable-2026-06-03";
+        version = "2.11.4-unstable-2026-06-19";
         src = fetchFromGitHub {
           owner = "rebmit";
           repo = "caddy";
-          rev = "623c5f1f2f72a8155eb36e0a74af3d74d77d8db3";
-          hash = "sha256-SOTYsjaILxNhoQwlve6ExoD7O9MAsIH1flbJzT34KVI=";
+          rev = "dcd7d1d3531db87dfa7f5cc59331d93b466cc76c";
+          hash = "sha256-1+VOqKQs2nL08GuRlatZzCYGTOqwZDu1ZYnpEvGrhiw=";
         };
-        vendorHash = "sha256-Ymof5u4ECNQ4U7rKiCTdx2P/Q2HBHviNSj8+FocyS5k=";
+        vendorHash = "sha256-kWaQdKHNFYNp3a85axMCEw20sBLyxmAJs1Bp3Qu/rg0=";
         nixUpdateExtraArgs = [
           "--version=branch=master"
           "--override-filename"
