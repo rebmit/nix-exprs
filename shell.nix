@@ -1,1 +1,1 @@
-(import ./impure.nix { }).devshells.self
+(import ./. { }).devshells.self

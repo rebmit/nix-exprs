@@ -1,6 +1,6 @@
 {
   # Path to the Nixpkgs source tree to be imported.
-  path ? (import ../../npins).nixpkgs,
+  path ? (import ../../inputs.nix).nixpkgs,
 
   # The system packages will be built on. See the manual for the
   # subtle division of labor between these two `*System`s and the three
