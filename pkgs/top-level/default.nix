@@ -31,7 +31,7 @@ let
 
     overlays = [
       (import ./lib.nix)
-      (import ./all-packages.nix)
+      (import ./by-name-overlay.nix ../by-name)
     ]
     ++ overlays;
   };

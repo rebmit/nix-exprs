@@ -1,34 +1,25 @@
 {
-  pname ? "ranet",
-  version,
-  src,
-  cargoHash,
-  nixUpdateExtraArgs ? [ ],
-}:
-
-{
   lib,
   rustPlatform,
-  nix-update-script,
+  fetchFromGitHub,
 }:
 
-rustPlatform.buildRustPackage {
-  inherit
-    pname
-    version
-    src
-    cargoHash
-    ;
+rustPlatform.buildRustPackage (finalAttrs: {
+  pname = "ranet";
+  version = "0.13.0";
+
+  src = fetchFromGitHub {
+    owner = "NickCao";
+    repo = "ranet";
+    rev = "v${finalAttrs.version}";
+    hash = "sha256-XuB6nHOEkzZl/V48pGHvgmoPineEBFa8dI1yuXB9pTM=";
+  };
+
+  cargoHash = "sha256-qSjJaMpYKRZMkhjw0/8BVCjxgnTjBBhTtPPbhv38Ia4=";
 
   checkFlags = [
     "--skip=address::test::remote"
   ];
-
-  passthru = {
-    updateScript = nix-update-script {
-      extraArgs = nixUpdateExtraArgs;
-    };
-  };
 
   meta = {
     description = "Redundant array of networks";
@@ -37,4 +28,4 @@ rustPlatform.buildRustPackage {
     maintainers = with lib.maintainers; [ rebmit ];
     platforms = lib.platforms.linux;
   };
-}
+})

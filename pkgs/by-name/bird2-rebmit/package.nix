@@ -1,13 +1,7 @@
 {
-  pname ? "bird",
-  version,
-  src,
-  nixUpdateExtraArgs ? [ ],
-}:
-
-{
   lib,
   stdenv,
+  fetchFromGitHub,
   autoreconfHook,
   flex,
   bison,
@@ -16,8 +10,17 @@
   nix-update-script,
 }:
 
-stdenv.mkDerivation {
-  inherit pname version src;
+stdenv.mkDerivation (finalAttrs: {
+  pname = "bird";
+  version = "2.19.1-unstable-2026-06-14";
+
+  src = fetchFromGitHub {
+    owner = "rebmit";
+    repo = "bird";
+    rev = "48c352b4d6e5005eb97d22cd1df666bb1d833321";
+    fetchSubmodules = false;
+    hash = "sha256-Cj0EZAXLPydwcuFRyxYgfLVQMDCd282AwDif7lVmTeA=";
+  };
 
   nativeBuildInputs = [
     autoreconfHook
@@ -43,9 +46,11 @@ stdenv.mkDerivation {
 
   passthru = {
     updateScript = nix-update-script {
-      extraArgs = nixUpdateExtraArgs ++ [
+      extraArgs = [
+        "--version"
+        "branch=unstable-v2"
         "--version-regex"
-        "v(${lib.versions.major version}\\..*)"
+        "v(${lib.versions.major finalAttrs.version}\\..*)"
       ];
     };
   };
@@ -57,4 +62,4 @@ stdenv.mkDerivation {
     maintainers = with lib.maintainers; [ rebmit ];
     platforms = lib.platforms.linux;
   };
-}
+})

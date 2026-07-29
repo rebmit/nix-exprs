@@ -1,14 +1,7 @@
 {
-  pname ? "caddy",
-  version,
-  src,
-  vendorHash,
-  nixUpdateExtraArgs ? [ ],
-}:
-
-{
   lib,
-  buildGo125Module,
+  buildGoModule,
+  fetchFromGitHub,
   installShellFiles,
   stdenv,
   writableTmpDirAsHomeHook,
@@ -16,13 +9,20 @@
   nix-update-script,
 }:
 
-buildGo125Module (finalAttrs: {
-  inherit
-    pname
-    version
-    src
-    vendorHash
-    ;
+buildGoModule (finalAttrs: {
+  pname = "caddy";
+  version = "2.11.4-unstable-2026-06-19";
+
+  __structuredAttrs = true;
+
+  src = fetchFromGitHub {
+    owner = "rebmit";
+    repo = "caddy";
+    rev = "dcd7d1d3531db87dfa7f5cc59331d93b466cc76c";
+    hash = "sha256-1+VOqKQs2nL08GuRlatZzCYGTOqwZDu1ZYnpEvGrhiw=";
+  };
+
+  vendorHash = "sha256-kWaQdKHNFYNp3a85axMCEw20sBLyxmAJs1Bp3Qu/rg0=";
 
   ldflags = [
     "-s"
@@ -67,7 +67,10 @@ buildGo125Module (finalAttrs: {
 
   passthru = {
     updateScript = nix-update-script {
-      extraArgs = nixUpdateExtraArgs;
+      extraArgs = [
+        "--version"
+        "branch=master"
+      ];
     };
   };
 
