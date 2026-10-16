@@ -12,14 +12,14 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "bird";
-  version = "3.3.2-unstable-2026-08-01";
+  version = "3.4.0-unstable-2026-10-16";
 
   src = fetchFromGitHub {
     owner = "rebmit";
     repo = "bird";
-    rev = "2245c2d151485700caf6af8a51940b08cbc835bc";
+    rev = "a55482f994954fed683b27d27ad9990878a5c7ec";
     fetchSubmodules = false;
-    hash = "sha256-PGmrmlRwBkbYiq1M0QPQ4GtTOqn1qB/6S9DrIF4YP94=";
+    hash = "sha256-SQxQHPnCK09ymtMUfpjDWw+4lcKnai0ib0q4iUTB4KQ=";
   };
 
   nativeBuildInputs = [
