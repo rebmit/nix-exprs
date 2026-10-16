@@ -7,13 +7,13 @@
 }:
 
 (nheko.override { mtxclient = mtxclient_unstable; }).overrideAttrs (oldAttrs: {
-  version = "0.12.1-unstable-2026-05-08";
+  version = "0.12.1-unstable-2026-09-11";
 
   src = fetchFromGitHub {
     owner = "Nheko-Reborn";
     repo = "nheko";
-    rev = "90ff9c6f36dd9df9e0e23212c34b83ec61772bba";
-    hash = "sha256-Zyvfxuk77FYBYwPJykK6YBnnCLG1BeN6jJ5gcDA5Go4=";
+    rev = "b15dcd137e5384e0aabfd35583b5a6eba5f71ed9";
+    hash = "sha256-2mRt9WZ/2/WGBHs4Cj3RaefQ/i7+DqNJBt1NJrLVcXQ=";
   };
 
   patches = lib.filter (
@@ -29,7 +29,7 @@
     updateScript = nix-update-script {
       extraArgs = [
         "--override-filename"
-        "pkgs/by-name/nh/nheko_unstable/package.nix"
+        "pkgs/by-name/nheko_unstable/package.nix"
         "--version"
         "branch=master"
       ];

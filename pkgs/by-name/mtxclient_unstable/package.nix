@@ -18,7 +18,7 @@ mtxclient.overrideAttrs (oldAttrs: {
     updateScript = nix-update-script {
       extraArgs = [
         "--override-filename"
-        "pkgs/by-name/mt/mtxclient_unstable/package.nix"
+        "pkgs/by-name/mtxclient_unstable/package.nix"
         "--version"
         "branch=master"
       ];
