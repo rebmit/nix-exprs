@@ -37,10 +37,6 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-terraform-providers-bin = {
-      url = "github:nix-community/nixpkgs-terraform-providers-bin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixpkgs.url = "github:rebmit/nixpkgs";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -54,5 +50,10 @@
     # keep-sorted end
   };
 
-  outputs = inputs: import ./outputs.nix { inherit inputs; };
+  outputs =
+    inputs:
+    import ./outputs.nix {
+      inherit inputs;
+      view = config: config.views.flake.outputs;
+    };
 }

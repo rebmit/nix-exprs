@@ -1,11 +1,19 @@
 {
   inputs ? import ./inputs.nix,
-  lib ? import ./lib { path = inputs.nixpkgs; },
+  lib ? import ./lib { source = inputs.nixpkgs; },
+  view ? config: config.outputs,
 }:
 
-(lib.rebmit.modules.lattice {
-  includes = [ ./modules/configs/projects/self ];
-  internalConfigs = [ "project" ];
-  inputs = { inherit inputs lib; };
-  registry.rebmit = ./modules;
-}).configs.project.config.outputs
+let
+  config =
+    (lib.rebmit.evalModules {
+      class = "project";
+      args = { inherit inputs lib; };
+      modules = [
+        ./configs/project/self/nixpkgs.nix
+        ./configs/project/self/targets.nix
+        ./configs/project/self/views.nix
+      ];
+    }).config;
+in
+view config

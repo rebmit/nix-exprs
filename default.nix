@@ -3,19 +3,6 @@
 }:
 
 let
-  target =
-    {
-      "aarch64-darwin" = "aarch64-darwin";
-      "aarch64-linux" = "aarch64-linux-gnu";
-      "x86_64-linux" = "x86_64-linux-gnu";
-    }
-    .${system};
-
-  outputs = import ./outputs.nix { };
+  project = import ./outputs.nix { view = config: config; };
 in
-outputs
-// outputs.packages.${target}
-// {
-  devshells = outputs.devshells.${target};
-  formatters = outputs.formatters.${target};
-}
+project.outputs // project.views.flake.outputs.legacyPackages.${system}

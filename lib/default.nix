@@ -1,9 +1,9 @@
 {
-  # Path to the Nixpkgs source tree to be imported.
-  path ? (import ../inputs.nix).nixpkgs,
+  # Nixpkgs source tree to be imported.
+  source ? (import ../inputs.nix).nixpkgs,
 
   # Nixpkgs library used to construct this library set.
-  lib ? import (path + "/lib"),
+  lib ? source.lib,
 }:
 
 let
@@ -13,12 +13,7 @@ let
       callLibs = file: import file { inherit self lib; };
     in
     {
-      # often used, or depending on very little
-      trivial = callLibs ./trivial.nix;
-
-      # module system
-      modules = callLibs ./modules.nix;
-      types = callLibs ./types.nix;
+      evalModules = callLibs ./eval-modules.nix;
     }
   );
 in
