@@ -11,18 +11,18 @@
 
 buildGoModule (finalAttrs: {
   pname = "caddy";
-  version = "2.11.7-unstable-2026-10-16";
+  version = "2.11.9-unstable-2026-11-17";
 
   __structuredAttrs = true;
 
   src = fetchFromGitHub {
     owner = "rebmit";
     repo = "caddy";
-    rev = "0efbc87c7a9be4f945fbea6094ad02efa5a1fdca";
-    hash = "sha256-JDZUa7m7xetxt0DoC+7JNKITV2FFSkFa3TSiC4jD7m0=";
+    rev = "b34644fc227b8a280b44d0a8b80c6f9739d3612c";
+    hash = "sha256-o/sl5oDzenALLhLHLsBalM/n0JVKjGkWlNNjy2klV/M=";
   };
 
-  vendorHash = "sha256-yyLIEx9SLQ0XC8G7uIzSLDJ8Gc5/DJz5ZrnZtydtpi4=";
+  vendorHash = "sha256-HG4J7x6M6GGVlpVyGe5YbQwBRzYh5P02EcpL1ZfGMzU=";
 
   ldflags = [
     "-s"
