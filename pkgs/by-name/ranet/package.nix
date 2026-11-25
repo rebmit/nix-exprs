@@ -6,16 +6,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "ranet";
-  version = "0.14.0";
+  version = "0.15.0";
 
   src = fetchFromGitHub {
     owner = "NickCao";
     repo = "ranet";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-U9445WUb7yZIqwsmemiyVZ0LCWuqB2Ohz9jtyQ1gQoM=";
+    hash = "sha256-WqoGIK0bIBgOFd8EkfiwGxDdEQhXdxxfup1ObIuK/c0=";
   };
 
-  cargoHash = "sha256-KginksEfr0Be7knoYpuLW+i07VCrb19aVIvUDOUNh5M=";
+  cargoHash = "sha256-9egoV3yUgpmP5rajWJWAp5uy4zG+/zGzKsS72eyT4EI=";
 
   checkFlags = [
     "--skip=address::test::remote"
