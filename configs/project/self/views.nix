@@ -14,5 +14,7 @@
     in
     {
       legacyPackages = lib.mapAttrs (_: target: outputs.packages.${target}) targets;
+      devShells = lib.mapAttrs (_: target: outputs.devshells.${target}) targets;
+      formatter = lib.mapAttrs (_: target: outputs.formatters.${target}.self) targets;
     };
 }

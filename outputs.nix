@@ -9,11 +9,7 @@ let
     (lib.rebmit.evalModules {
       class = "project";
       args = { inherit inputs lib; };
-      modules = [
-        ./configs/project/self/nixpkgs.nix
-        ./configs/project/self/targets.nix
-        ./configs/project/self/views.nix
-      ];
+      modules = [ ./configs/project/self ];
     }).config;
 in
 view config

@@ -77,7 +77,7 @@
 
       config = {
         _module.args = {
-          inherit (config) pkgs;
+          inherit (cfg) pkgs;
         };
       };
     };
