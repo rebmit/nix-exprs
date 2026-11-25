@@ -1,1 +1,1 @@
-(import ./. { }).devshells.self
+(import ./. { }).devShells.self
