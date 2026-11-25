@@ -10,23 +10,38 @@
 
 let
   normalize =
-    m:
     let
-      loaded = lib.toFunction (if builtins.isPath m then import m else m) args;
+      go =
+        m:
+        let
+          loaded = lib.toFunction (if builtins.isPath m then import m else m) args;
+        in
+        if builtins.isPath m then
+          {
+            _file = toString m;
+            key = toString m;
+            imports = [ (rec' loaded) ];
+          }
+        else
+          rec' loaded;
+
+      rec' =
+        m:
+        if !builtins.isAttrs m then
+          m
+        else
+          m
+          // {
+            imports = map go (m.imports or [ ]);
+          };
     in
-    if builtins.isPath m then
-      {
-        _file = toString m;
-        key = toString m;
-        imports = [ loaded ];
-      }
-    else
-      loaded;
+    go;
 in
 lib.evalModules (
   lib.removeAttrs evalModulesArgs [
     "args"
     "baseModules"
+    "specialArgs"
   ]
   // {
     inherit class;
