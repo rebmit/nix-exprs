@@ -14,6 +14,7 @@ let
     in
     {
       evalModules = callLibs ./eval-modules.nix;
+      submoduleWith = callLibs ./submodule-with.nix;
     }
   );
 in
