@@ -49,7 +49,10 @@ in
         type = lib.types.raw;
         readOnly = true;
         default = cfg.darwin.source.lib.darwinSystem {
-          modules = [ (config._.darwin or { }) ];
+          modules = [
+            (config._.darwin or { })
+            { inherit (config) assertions warnings; }
+          ];
         };
         description = ''
           nix-darwin configuration.
@@ -75,7 +78,10 @@ in
         type = lib.types.raw;
         readOnly = true;
         default = cfg.nixos.source.lib.nixosSystem {
-          modules = [ (config._.nixos or { }) ];
+          modules = [
+            (config._.nixos or { })
+            { inherit (config) assertions warnings; }
+          ];
         };
         description = ''
           NixOS configuration.
